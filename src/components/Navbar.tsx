@@ -21,14 +21,20 @@ const Navbar = () => {
             Discover and reserve secure, convenient parking near you in seconds.
             Stress-free parking, always!
           </div>
-          <div className="flex justify-between relative">
-            <Input type="email" placeholder="Search a place" />
-            <Icon
-              icon="line-md:search"
-              width="24"
-              height="24"
-              className="absolute"
-            />
+          <div className="flex justify-center">
+            <div className="flex justify-between relative w-[80%]">
+              <Input
+                type="email"
+                placeholder="Search a place"
+                className="rounded-full"
+              />
+              <Icon
+                icon="line-md:search"
+                width="24"
+                height="24"
+                className="absolute right-2 top-1.5 font-bold"
+              />
+            </div>
           </div>
         </div>
         <div>
