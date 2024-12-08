@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Searchbox from "./Searchbox";
 import Seperator from "./Seperator";
@@ -17,9 +18,10 @@ const Navbar = () => {
         <div className="flex justify-between gap-5 pr-5">
           <div className="pt-8">Become a host</div>
           <div className="pt-8">Sign up</div>
-          <div className="text-white bg-purple-500 mt-6 text-center p-2  rounded-lg ">
+
+          <Button className="text-white bg-purple-500 mt-6 hover:bg-purple-600">
             Login
-          </div>
+          </Button>
         </div>
       </div>
       <div className="flex justify-between pl-5">
