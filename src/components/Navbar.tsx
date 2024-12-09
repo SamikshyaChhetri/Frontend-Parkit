@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Searchbox from "./Searchbox";
+import Seperator from "./Seperator";
 
 const Navbar = () => {
   return (
@@ -40,6 +41,7 @@ const Navbar = () => {
           <img src="./park.png" alt="parking" />
         </div>
       </div>
+      <Seperator></Seperator>
     </div>
   );
 };
