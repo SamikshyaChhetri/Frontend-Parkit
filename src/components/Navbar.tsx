@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { Input } from "./ui/input";
 
 const Navbar = () => {
@@ -20,13 +21,14 @@ const Navbar = () => {
             Discover and reserve secure, convenient parking near you in seconds.
             Stress-free parking, always!
           </div>
-          <div>
-            <Input
-              type="email"
-              placeholder="Search a place"
-              className="w-[70%]"
+          <div className="flex justify-between relative">
+            <Input type="email" placeholder="Search a place" />
+            <Icon
+              icon="line-md:search"
+              width="24"
+              height="24"
+              className="absolute"
             />
-            <Icon icon="line-md:search" width="24" height="24" />
           </div>
         </div>
         <div>
