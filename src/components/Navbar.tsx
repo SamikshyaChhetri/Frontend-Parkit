@@ -4,8 +4,8 @@ import Searchbox from "./Searchbox";
 const Navbar = () => {
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between pt-10 pr-10 font-bold">
-        <div className="text-xl  pl-5 flex justify-between">
+      <div className="flex justify-between pr-10 font-bold">
+        <div className="text-xl pt-8  pl-5 flex justify-between">
           <Icon
             icon="fluent:vehicle-car-parking-16-filled"
             width="34"
@@ -14,9 +14,11 @@ const Navbar = () => {
           Mero Parkinge
         </div>
         <div className="flex justify-between gap-5 pr-5">
-          <div>Become a host</div>
-          <div>Sign up</div>
-          <div>Login</div>
+          <div className="pt-8">Become a host</div>
+          <div className="pt-8">Sign up</div>
+          <div className="text-white bg-purple-500 mt-6 text-center p-2  rounded-lg ">
+            Login
+          </div>
         </div>
       </div>
       <div className="flex justify-between pl-5">
@@ -29,7 +31,10 @@ const Navbar = () => {
             Stress-free parking, always!
           </div>
 
-          <Searchbox></Searchbox>
+          <Searchbox
+            iconImage="line-md:search"
+            placeHolder="Search a place"
+          ></Searchbox>
         </div>
         <div>
           <img src="./park.png" alt="parking" />
