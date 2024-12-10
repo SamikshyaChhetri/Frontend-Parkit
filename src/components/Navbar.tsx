@@ -66,7 +66,7 @@ const Navbar = () => {
           </div>
           <div>
             <img src="/earn.png" alt="" className="h-40" />
-            <h2 className="flex justify-center">Start learning</h2>
+            <h2 className="flex justify-center">Start earning</h2>
           </div>
         </div>
         <Button className="bg-purple-500 px-10 hover:bg-purple-600">
@@ -74,67 +74,127 @@ const Navbar = () => {
         </Button>
       </div>
       <Seperator></Seperator>
-      <div className=" flex justify-center flex-col pt-14 mb-14 ">
-        <div className="flex justify-center text-center text-3xl font-bold">
+      <div className=" flex justify-center flex-col pt-14 ">
+        <div className="flex justify-center text-center text-3xl font-bold pb-14">
           Features we <span className="text-purple-500"> Offer</span>
         </div>
-        <div className="flex justify-between  ">
+        <div className="flex justify-evenly">
           <div className="flex flex-col gap-4">
             <div>
-              <div>Search by location</div>
+              <div className="font-bold text-lg">Search by location</div>
               <div>
                 Quickly find parking spaces near landmarks, addresses, or
                 cities.
               </div>
             </div>
             <div>
-              <div>Real-time availability</div>
+              <div className="font-bold text-lg">Real-time availability</div>
               <div>
                 View up-to-date information on available spots for immediate or
                 future bookings.
               </div>
             </div>
             <div>
-              <div>Flexible booking and reservation</div>
+              <div className="font-bold text-lg">
+                Flexible booking and reservation
+              </div>
               <div>
                 Reserve parking for your desired duration—hourly, daily, or
                 monthly.
               </div>
             </div>
             <div>
-              <div>Secure Online Payments</div>
+              <div className="font-bold text-lg">Secure Online Payments</div>
               <div>
                 Pay seamlessly with multiple payment options, ensuring a safe
                 transaction.
               </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
             <div>
-              <div>Navigation Assistance</div>
+              <div className="font-bold text-lg">Navigation Assistance</div>
               <div>
                 Get step-by-step directions to your reserved parking spot via
                 integrated maps.
               </div>
             </div>
             <div>
-              <div>Filter and Sort</div>
+              <div className="font-bold text-lg">Filter and Sort</div>
               <div>
                 Refine searches by price, amenities (e.g., EV charging), or type
                 (covered/uncovered).
               </div>
             </div>
             <div>
-              <div>Parking History</div>
+              <div className="font-bold text-lg">Parking History</div>
               <div>
                 Keep track of your past bookings and receipts for convenience.
               </div>
             </div>
             <div>
-              <div>Customer Reviews</div>
+              <div className="font-bold text-lg">Customer Reviews</div>
               <div>
                 Read feedback from other parkers to choose the best parking
                 space for your needs.
+              </div>
+            </div>
+          </div>
+          <div className="border-[1px] border-gray-600  mx-[100px]"></div>
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <div className="font-bold text-lg">Easy Listing Management</div>
+              <div>
+                Track revenue, payouts, and overall performance with detailed
+                analytics.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Flexible Scheduling</div>
+              <div>
+                Set available time slots and block off dates when the space is
+                unavailable.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Dynamic Pricing Control</div>
+              <div>
+                Adjust prices based on demand, time of day, or proximity to
+                events.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">
+                Real-Time Booking Notifications
+              </div>
+              <div>
+                Get instant alerts for new reservations, cancellations, or
+                inquiries.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Secure Transactions</div>
+              <div>
+                Receive payments directly through the platform with safe and
+                reliable processing.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Space Optimization Tools</div>
+              <div>
+                Manage multiple parking spots efficiently from a single account.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Parking History</div>
+              <div>
+                Keep track of your past bookings and receipts for convenience.
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-lg">Customer Feedback</div>
+              <div>
+                View reviews and ratings to improve service and attract more
+                renters.
               </div>
             </div>
           </div>
