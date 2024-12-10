@@ -17,7 +17,10 @@ const Navbar = () => {
         </div>
         <div className="flex justify-between gap-5 pr-5">
           <div className="pt-8">Become a host</div>
-          <div className="pt-8">Sign up</div>
+          {/* <div className="pt-8">Sign up</div> */}
+          <Button className="mt-6" variant={"outline"}>
+            Sign up
+          </Button>
 
           <Button className="text-white bg-purple-500 mt-6 hover:bg-purple-600">
             Login
