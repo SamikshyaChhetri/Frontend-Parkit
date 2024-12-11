@@ -49,10 +49,6 @@ export function MarqueeDemo() {
           </div>
         </div>
       </Marquee>
-
-      {/* Yo marquee tag vitra jati oota children halyo, tyo children harui aauta item hunxa */}
-      {/* so multiple image haru rakhdeu vai halyo */}
-
       <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
