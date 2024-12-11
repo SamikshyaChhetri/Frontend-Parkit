@@ -9,13 +9,13 @@ const Navbar = () => {
     <div>
       <div className="flex flex-col">
         <div className="flex justify-between pr-10 font-bold">
-          <div className="text-xl pt-8  pl-5 flex justify-between">
+          <div className="text-2xl  pt-8  pl-5 flex justify-between">
             <Icon
               icon="fluent:vehicle-car-parking-16-filled"
               width="34"
               height="34"
             />
-            Mero Parkinge
+            Par <span className="text-purple-500">ki</span>fy
           </div>
           <div className="flex justify-between gap-5 pr-5">
             <div className="pt-8">Become a host</div>
@@ -76,10 +76,10 @@ const Navbar = () => {
       </div>
       <Seperator></Seperator>
 
-      <div className="flex justify-center text-2xl font-bold pt-10">
+      <div className="flex justify-center text-4xl font-bold pt-10">
         Features we <span className="text-purple-500"> Offer</span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between m-8">
         <div>
           <Features
             title="Search by Location"
@@ -114,6 +114,7 @@ const Navbar = () => {
             color="bg-gray-300"
           ></Features>
         </div>
+
         <div>
           <Features
             title="Easy Listing Management"
@@ -137,7 +138,7 @@ const Navbar = () => {
             icon={
               <Icon icon="ic:twotone-manage-history" width="24" height="24" />
             }
-            color="bg-gray-300"
+            color="bg-lime-300"
           ></Features>
           <Features
             title="Dynamic Pricing Control"
