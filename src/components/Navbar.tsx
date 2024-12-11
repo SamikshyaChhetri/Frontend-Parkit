@@ -116,12 +116,44 @@ const Navbar = () => {
         </div>
         <div>
           <Features
-            title="Parking History"
-            description="Keep track of your past bookings and receipts for convenience."
+            title="Easy Listing Management"
+            description="Add and manage parking spaces with details like location, price, and availability."
+            icon={
+              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+            }
+            color="bg-yellow-300"
+          ></Features>
+          <Features
+            title="Earnings Dashboard"
+            description="Track revenue, payouts, and overall performance with detailed analytics."
             icon={
               <Icon icon="ic:twotone-manage-history" width="24" height="24" />
             }
             color="bg-gray-300"
+          ></Features>
+          <Features
+            title="Flexible Scheduling"
+            description="Set available time slots and block off dates when the space is unavailable."
+            icon={
+              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+            }
+            color="bg-gray-300"
+          ></Features>
+          <Features
+            title="Dynamic Pricing Control"
+            description="Adjust prices based on demand, time of day, or proximity to events."
+            icon={
+              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+            }
+            color="bg-cyan-300"
+          ></Features>
+          <Features
+            title="Customer Feedback"
+            description="View reviews and ratings to improve service and attract more renters."
+            icon={
+              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+            }
+            color="bg-purple-300"
           ></Features>
         </div>
       </div>
