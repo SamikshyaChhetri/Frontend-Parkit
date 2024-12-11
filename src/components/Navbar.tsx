@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Features from "./Features";
 import Searchbox from "./Searchbox";
 import Seperator from "./Seperator";
+import MarqueeDemo from "./ui/marquee";
 
 const Navbar = () => {
   return (
@@ -77,9 +78,9 @@ const Navbar = () => {
       <Seperator></Seperator>
 
       <div className="flex justify-center text-4xl font-bold pt-10">
-        Features we <span className="text-purple-500"> Offer</span>
+        Features we <span className="text-purple-500"> &nbsp; Offer</span>
       </div>
-      <div className="flex justify-between m-8">
+      <div className="flex justify-between mx-10">
         <div>
           <Features
             title="Search by Location"
@@ -119,24 +120,24 @@ const Navbar = () => {
           <Features
             title="Easy Listing Management"
             description="Add and manage parking spaces with details like location, price, and availability."
-            icon={
-              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
-            }
+            icon={<Icon icon="ion:list-sharp" width="24" height="24" />}
             color="bg-yellow-300"
           ></Features>
           <Features
             title="Earnings Dashboard"
             description="Track revenue, payouts, and overall performance with detailed analytics."
-            icon={
-              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
-            }
+            icon={<Icon icon="mage:dashboard" width="24" height="24" />}
             color="bg-gray-300"
           ></Features>
           <Features
             title="Flexible Scheduling"
             description="Set available time slots and block off dates when the space is unavailable."
             icon={
-              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+              <Icon
+                icon="ant-design:schedule-outlined"
+                width="24"
+                height="24"
+              />
             }
             color="bg-lime-300"
           ></Features>
@@ -144,19 +145,21 @@ const Navbar = () => {
             title="Dynamic Pricing Control"
             description="Adjust prices based on demand, time of day, or proximity to events."
             icon={
-              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
+              <Icon icon="ic:outline-price-change" width="24" height="24" />
             }
             color="bg-cyan-300"
           ></Features>
           <Features
             title="Customer Feedback"
             description="View reviews and ratings to improve service and attract more renters."
-            icon={
-              <Icon icon="ic:twotone-manage-history" width="24" height="24" />
-            }
+            icon={<Icon icon="codicon:feedback" width="28" height="28" />}
             color="bg-purple-300"
           ></Features>
         </div>
+      </div>
+      <Seperator></Seperator>
+      <div>
+        <MarqueeDemo name="james" username="jamessss"></MarqueeDemo>
       </div>
     </div>
   );
