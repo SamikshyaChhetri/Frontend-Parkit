@@ -37,8 +37,8 @@ const Navbar = () => {
               Instantly!
             </div>
             <div className="text-gray-500">
-              Discover and reserve secure, convenient parking near you in
-              seconds. Stress-free parking, always!
+              Say goodbye to parking hassles and enjoy a seamless, stress-free
+              experience—anytime, anywhere.
             </div>
 
             <Searchbox

@@ -17,7 +17,7 @@ const reviews = [
 
 export function MarqueeDemo() {
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 mt-[50px] mb-[50px]">
       <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
         <Marquee pauseOnHover className="[--duration:20s]">
           <div>
@@ -59,6 +59,7 @@ export function MarqueeDemo() {
           Safe, Closer and Convenient parking space in palm of your hands{" "}
         </div>
       </div>
+      {/* <div className="border-[1px] border-gray-600 mt-[30px] mx-[100px]"></div> */}
     </div>
   );
 }

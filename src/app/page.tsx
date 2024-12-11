@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { MarqueeDemo } from "@/components/MarqueeDemo";
 import Navbar from "@/components/Navbar";
 
@@ -6,6 +7,7 @@ const page = () => {
     <div>
       <Navbar></Navbar>
       <MarqueeDemo></MarqueeDemo>
+      <Footer></Footer>
     </div>
   );
 };
