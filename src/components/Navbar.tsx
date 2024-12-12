@@ -1,14 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Features from "./Features";
 import Searchbox from "./Searchbox";
 import Seperator from "./Seperator";
 import MarqueeDemo from "./ui/marquee";
 
 const Navbar = () => {
-  const router = useRouter();
   return (
     <div>
       <div className="flex flex-col">
@@ -27,14 +26,11 @@ const Navbar = () => {
               Sign up
             </Button>
 
-            <Button
-              className="text-white bg-purple-500 mt-6 hover:bg-purple-600"
-              onClick={() => {
-                router.push("/login");
-              }}
-            >
-              Login
-            </Button>
+            <Link href={"/login"}>
+              <Button className="text-white bg-purple-500 mt-6 hover:bg-purple-600">
+                Login
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="flex justify-between pl-5">
