@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -46,7 +47,10 @@ const Page = () => {
                     height="18"
                   />
                 </Label>
-                <Input placeholder="Enter your password" />
+                <Input
+                  placeholder="Enter your password"
+                  type={isOpen ? "text" : "password"}
+                />
                 <Icon
                   icon={
                     isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
@@ -54,6 +58,9 @@ const Page = () => {
                   className="absolute top-[34px] right-2 cursor-pointer"
                   width="20"
                   height="20"
+                  onClick={() => {
+                    setOpen(isOpen ? false : true);
+                  }}
                 />
               </div>
               <div className="flex justify-between">
