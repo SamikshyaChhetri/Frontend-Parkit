@@ -1,11 +1,14 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 import Features from "./Features";
 import Searchbox from "./Searchbox";
 import Seperator from "./Seperator";
 import MarqueeDemo from "./ui/marquee";
 
 const Navbar = () => {
+  const router = useRouter();
   return (
     <div>
       <div className="flex flex-col">
@@ -16,16 +19,20 @@ const Navbar = () => {
               width="34"
               height="34"
             />
-            Par <span className="text-purple-500">ki</span>fy
+            Par <span className="text-purple-500">ki</span>
           </div>
           <div className="flex justify-between gap-5 pr-5">
             <div className="pt-8">Become a host</div>
-            {/* <div className="pt-8">Sign up</div> */}
             <Button className="mt-6" variant={"outline"}>
               Sign up
             </Button>
 
-            <Button className="text-white bg-purple-500 mt-6 hover:bg-purple-600">
+            <Button
+              className="text-white bg-purple-500 mt-6 hover:bg-purple-600"
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
               Login
             </Button>
           </div>

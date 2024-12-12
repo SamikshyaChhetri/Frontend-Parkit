@@ -9,7 +9,7 @@ const Features: FC<{
   return (
     <div className="flex gap-3 mt-10 ">
       <div
-        className={`flex justify-center items-center rounded-full w-14 h-14 ${color} `}
+        className={`flex justify-center items-center rounded-full w-14 h-14 ${color}  `}
       >
         {icon}
       </div>
