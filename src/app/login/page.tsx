@@ -10,12 +10,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useState } from "react";
 
-const page = () => {
+const Page = () => {
+  const [isOpen, setOpen] = useState(true);
+
   return (
     <div className="bg-gradient-to-r from-purple-400 to-white">
       <div className="flex justify-center h-screen items-center">
-        <Card className="w-[450px] flex flex-col gap-8 bg-gradient-to-r from-purple-200 to-white  ">
+        <Card className="w-[450px] flex flex-col gap-8 bg-gradient-to-r from-purple-200 to-white">
           <CardHeader>
             <CardTitle className="flex justify-center text-2xl font-bold text-purple-600">
               Login Form
@@ -29,9 +32,9 @@ const page = () => {
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email" className="flex gap-1 items-center">
                   Email
-                  <Icon icon="iconamoon:email" width="20" height="20" />{" "}
+                  <Icon icon="iconamoon:email" width="20" height="20" />
                 </Label>
-                <Input placeholder="Enter your email"></Input>
+                <Input placeholder="Enter your email" />
               </div>
               <div className="flex flex-col gap-2 relative">
                 <Label htmlFor="password" className="flex gap-1 items-center">
@@ -43,15 +46,17 @@ const page = () => {
                     height="18"
                   />
                 </Label>
-                <Input placeholder="Enter your password"></Input>
+                <Input placeholder="Enter your password" />
                 <Icon
-                  icon="heroicons-solid:eye"
-                  className="absolute top-[34px] right-2"
+                  icon={
+                    isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
+                  }
+                  className="absolute top-[34px] right-2 cursor-pointer"
                   width="20"
                   height="20"
                 />
               </div>
-              <div className="flex justify-between ">
+              <div className="flex justify-between">
                 <div className="flex gap-1 items-center">
                   <Checkbox id="remember" />
                   <Label htmlFor="remember">Remember me</Label>
@@ -62,7 +67,7 @@ const page = () => {
               <Button>Submit</Button>
 
               <div className="flex justify-center items-center">
-                Don't have account?
+                Don't have an account?
                 <Button variant={"link"}>Register</Button>
               </div>
             </form>
@@ -73,4 +78,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
