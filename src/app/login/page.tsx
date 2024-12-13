@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const createSchema = z.object({
-  email: z.string().email("Invalid email ID"),
+  email: z.string().email("Please enter valid email ID"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters long")
@@ -108,7 +108,7 @@ const Page = () => {
               </div>
             </CardContent>
           </form>
-          <div className="flex justify-center items-center pb-5">
+          <div className="flex justify-center items-center pb-6">
             Don't have an account?
             <Button variant={"link"}>Register</Button>
           </div>
