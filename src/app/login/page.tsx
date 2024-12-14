@@ -7,16 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { z } from "zod";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { z } from "zod";
 const createSchema = z.object({
   email: z.string().email("Please enter valid email ID"),
   password: z
@@ -110,7 +109,9 @@ const Page = () => {
           </form>
           <div className="flex justify-center items-center pb-6">
             Don't have an account?
-            <Button variant={"link"}>Register</Button>
+            <Link href={"/signUp"}>
+              <Button variant={"link"}>Register</Button>
+            </Link>
           </div>
         </Card>
       </div>
