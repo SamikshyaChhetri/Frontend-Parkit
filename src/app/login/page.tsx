@@ -38,7 +38,7 @@ const Page = () => {
     console.log(data);
   };
   return (
-    <div className="bg-gradient-to-r from-purple-400 to-white">
+    <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
       <div className="flex justify-center h-screen items-center">
         <Card className="w-[450px] flex flex-col bg-gradient-to-r from-purple-200 to-white">
           <form onSubmit={form.handleSubmit(onsubmit)}>
