@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 const createSchema = z.object({
+  username: z.string().username("Please enter username"),
   email: z.string().email("Please enter valid email ID"),
   password: z
     .string()
@@ -45,7 +46,7 @@ const Page = () => {
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
       <div className="flex justify-center h-screen items-center">
-        <Card className="w-[450px] flex flex-col bg-gradient-to-r from-purple-200 to-white">
+        <Card className="w-[500px] flex flex-col bg-gradient-to-r from-purple-200 to-white">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
               <CardTitle className="flex justify-center text-2xl font-bold text-purple-600">
@@ -60,7 +61,7 @@ const Page = () => {
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="username" className="flex gap-1 items-center">
                     Username
-                    <Icon icon="iconamoon:email" width="20" height="20" />
+                    <Icon icon="lucide:user-round" width="20" height="20" />
                   </Label>
                   <Input
                     placeholder="Enter your username"
@@ -86,12 +87,7 @@ const Page = () => {
                 <div className="flex flex-col gap-2 relative">
                   <Label htmlFor="password" className="flex gap-1 items-center">
                     Password
-                    <Icon
-                      icon="ooui:lock"
-                      className="inline"
-                      width="18"
-                      height="18"
-                    />
+                    <Icon icon="bx:lock" width="20" height="20" />
                   </Label>
                   <Input
                     placeholder="Enter your password"
@@ -113,6 +109,7 @@ const Page = () => {
                     }}
                   />
                 </div>
+
                 <div className="flex justify-between">
                   <div className="flex gap-1 items-center">
                     <Checkbox id="remember" />
@@ -126,9 +123,9 @@ const Page = () => {
             </CardContent>
           </form>
           <div className="flex justify-center items-center pb-6">
-            Don't have an account?
-            <Link href={"/signUp"}>
-              <Button variant={"link"}>Register</Button>
+            Already have an account?
+            <Link href={"/login"}>
+              <Button variant={"link"}>Login</Button>
             </Link>
           </div>
         </Card>
