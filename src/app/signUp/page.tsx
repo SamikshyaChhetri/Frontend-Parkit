@@ -17,17 +17,18 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 const createSchema = z.object({
-  username: z.string().username("Please enter username"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(30, "Username must not exceed 30 characters"),
   email: z.string().email("Please enter valid email ID"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters long")
     .max(20, "Password must not exceed 20 characters"),
 });
-
 const Page = () => {
   const [isOpen, setOpen] = useState(true);
-
   const form = useForm({
     defaultValues: {
       username: "",
@@ -68,7 +69,7 @@ const Page = () => {
                     {...form.register("username")}
                   />
                   <label className="text-red-500 text-sm">
-                    {form.formState.errors.email?.message}
+                    {form.formState.errors.username?.message}
                   </label>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -109,7 +110,6 @@ const Page = () => {
                     }}
                   />
                 </div>
-
                 <div className="flex justify-between">
                   <div className="flex gap-1 items-center">
                     <Checkbox id="remember" />
@@ -133,5 +133,4 @@ const Page = () => {
     </div>
   );
 };
-
 export default Page;

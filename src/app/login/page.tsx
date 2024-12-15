@@ -23,10 +23,8 @@ const createSchema = z.object({
     .min(6, "Password must be at least 6 characters long")
     .max(20, "Password must not exceed 20 characters"),
 });
-
 const Page = () => {
   const [isOpen, setOpen] = useState(true);
-
   const form = useForm({
     defaultValues: {
       email: "",
@@ -68,12 +66,7 @@ const Page = () => {
                 <div className="flex flex-col gap-2 relative">
                   <Label htmlFor="password" className="flex gap-1 items-center">
                     Password
-                    <Icon
-                      icon="ooui:lock"
-                      className="inline"
-                      width="18"
-                      height="18"
-                    />
+                    <Icon icon="bx:lock" width="20" height="20" />
                   </Label>
                   <Input
                     placeholder="Enter your password"
@@ -102,7 +95,6 @@ const Page = () => {
                   </div>
                   <div className="text-sm">Forgot password?</div>
                 </div>
-
                 <Button>Submit</Button>
               </div>
             </CardContent>
