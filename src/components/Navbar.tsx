@@ -18,13 +18,15 @@ const Navbar = () => {
               width="34"
               height="34"
             />
-            Par <span className="text-purple-500">ki</span>
+            Par <span className="text-purple-500">ki</span>fy
           </div>
           <div className="flex justify-between gap-5 pr-5">
             <div className="pt-8">Become a host</div>
-            <Button className="mt-6" variant={"outline"}>
-              Sign up
-            </Button>
+            <Link href={"/signUp"}>
+              <Button className="mt-6" variant={"outline"}>
+                Sign up
+              </Button>
+            </Link>
 
             <Link href={"/login"}>
               <Button className="text-white bg-purple-500 mt-6 hover:bg-purple-600">

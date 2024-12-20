@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import ProvidersWrapper from "@/providers/ProvidersWrapper";
+import { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -25,11 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <ProvidersWrapper>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {children}
+        </body>
+      </ProvidersWrapper>
     </html>
   );
 }

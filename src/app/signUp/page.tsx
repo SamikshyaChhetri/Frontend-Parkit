@@ -7,6 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +19,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
 const createSchema = z.object({
   username: z
     .string()
@@ -26,6 +30,11 @@ const createSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters long")
     .max(20, "Password must not exceed 20 characters"),
+  phone: z
+    .string()
+    .min(10, "Phone number must be atleast of 10 characters")
+    .max(15, "Phone number cannot exceed 15 characters"),
+  address: z.string().min(1, "Address cannot be empty"),
 });
 const Page = () => {
   const [isOpen, setOpen] = useState(true);
@@ -34,16 +43,33 @@ const Page = () => {
       username: "",
       email: "",
       password: "",
+      phone: "",
+      address: "",
     },
     resolver: zodResolver(createSchema),
   });
+
   const onsubmit = (data: {
     username: string;
     email: string;
     password: string;
+    phone: string;
+    address: string;
   }) => {
     console.log(data);
+    submitDataMutation.mutate();
   };
+  const submitDataMutation = useMutation({
+    mutationFn: async () => {
+      const value = form.getValues();
+      const response = await axios.post(
+        "http://localhost:3333/auth/register",
+        value
+      );
+      return response.data;
+      console.log(response.data);
+    },
+  });
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
       <div className="flex justify-center h-screen items-center">
@@ -57,8 +83,8 @@ const Page = () => {
                 Sign up to create your account and unlock exclusive features!
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-6">
+            <CardContent className="p-1 px-6">
+              <div className="flex flex-col gap-3">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="username" className="flex gap-1 items-center">
                     Username
@@ -87,17 +113,13 @@ const Page = () => {
                 </div>
                 <div className="flex flex-col gap-2 relative">
                   <Label htmlFor="password" className="flex gap-1 items-center">
-                    Password
-                    <Icon icon="bx:lock" width="20" height="20" />
+                    Password <Icon icon="bx:lock" width="20" height="20" />
                   </Label>
                   <Input
                     placeholder="Enter your password"
-                    type={isOpen ? "text" : "password"}
                     {...form.register("password")}
+                    type={isOpen ? "text" : "password"}
                   />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.password?.message}
-                  </label>
                   <Icon
                     icon={
                       isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
@@ -109,6 +131,39 @@ const Page = () => {
                       setOpen(isOpen ? false : true);
                     }}
                   />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.password?.message}
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="address" className="flex gap-1 items-center">
+                    Address
+                    <Icon
+                      icon="mdi:address-marker-outline"
+                      width="24"
+                      height="24"
+                    />
+                  </Label>
+                  <Input
+                    placeholder="Enter your username"
+                    {...form.register("address")}
+                  />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.address?.message}
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2 relative">
+                  <Label htmlFor="phone" className="flex gap-1 items-center">
+                    Phone
+                    <Icon icon="tabler:phone" width="24" height="24" />
+                  </Label>
+                  <Input
+                    placeholder="Enter your phone number"
+                    {...form.register("phone")}
+                  />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.phone?.message}
+                  </label>
                 </div>
                 <div className="flex justify-between">
                   <div className="flex gap-1 items-center">
@@ -117,12 +172,11 @@ const Page = () => {
                   </div>
                   <div className="text-sm">Forgot password?</div>
                 </div>
-
                 <Button>Submit</Button>
               </div>
             </CardContent>
           </form>
-          <div className="flex justify-center items-center pb-6">
+          <div className="flex justify-center items-center pb-1">
             Already have an account?
             <Link href={"/login"}>
               <Button variant={"link"}>Login</Button>
