@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -16,8 +16,10 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -37,7 +39,8 @@ const createSchema = z.object({
   address: z.string().min(1, "Address cannot be empty"),
 });
 const Page = () => {
-  const [isOpen, setOpen] = useState(true);
+  const router = useRouter();
+  const [isOpen, setOpen] = useState(false);
   const form = useForm({
     defaultValues: {
       username: "",
@@ -67,7 +70,16 @@ const Page = () => {
         value
       );
       return response.data;
+
       console.log(response.data);
+    },
+    onSuccess: (data) => {
+      toast.success(data.message);
+      form.reset();
+      router.push("/login");
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      toast.error(err.response?.data.message);
     },
   });
   return (
@@ -145,7 +157,7 @@ const Page = () => {
                     />
                   </Label>
                   <Input
-                    placeholder="Enter your username"
+                    placeholder="Enter your address"
                     {...form.register("address")}
                   />
                   <label className="text-red-500 text-sm">

@@ -28,7 +28,7 @@ const createSchema = z.object({
     .max(20, "Password must not exceed 20 characters"),
 });
 const Page = () => {
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -54,7 +54,6 @@ const Page = () => {
     },
 
     onSuccess: (data: { message: string }) => {
-      // console.log(data);
       toast.success(data.message);
     },
     onError: (err: AxiosError<{ message: string }>) => {
