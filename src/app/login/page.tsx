@@ -7,13 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "sonner";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,6 +29,7 @@ const createSchema = z.object({
 });
 const Page = () => {
   const [isOpen, setOpen] = useState(true);
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -48,6 +51,15 @@ const Page = () => {
       console.log(response.data);
 
       return response.data;
+    },
+
+    onSuccess: (data: { message: string }) => {
+      // console.log(data);
+      toast.success(data.message);
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      // console.log(err);
+      toast.error(err.response?.data.message);
     },
   });
   return (
