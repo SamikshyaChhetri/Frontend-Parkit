@@ -76,7 +76,7 @@ const Page = () => {
         <Card className="w-[500px] flex flex-col bg-gradient-to-r from-purple-200 to-white">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
-              <CardTitle className="flex justify-center text-2xl font-bold text-purple-600">
+              <CardTitle className="flex justify-center text-xl font-bold text-purple-600">
                 Sign up here
               </CardTitle>
               <CardDescription className="flex justify-center">
@@ -85,7 +85,7 @@ const Page = () => {
             </CardHeader>
             <CardContent className="p-1 px-6">
               <div className="flex flex-col gap-3">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <Label htmlFor="username" className="flex gap-1 items-center">
                     Username
                     <Icon icon="lucide:user-round" width="20" height="20" />
@@ -98,7 +98,7 @@ const Page = () => {
                     {form.formState.errors.username?.message}
                   </label>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <Label htmlFor="email" className="flex gap-1 items-center">
                     Email
                     <Icon icon="iconamoon:email" width="20" height="20" />
@@ -111,7 +111,7 @@ const Page = () => {
                     {form.formState.errors.email?.message}
                   </label>
                 </div>
-                <div className="flex flex-col gap-2 relative">
+                <div className="flex flex-col gap-1 relative">
                   <Label htmlFor="password" className="flex gap-1 items-center">
                     Password <Icon icon="bx:lock" width="20" height="20" />
                   </Label>
@@ -124,7 +124,7 @@ const Page = () => {
                     icon={
                       isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
                     }
-                    className="absolute top-[34px] right-2 cursor-pointer"
+                    className="absolute top-[32px] right-2 cursor-pointer"
                     width="20"
                     height="20"
                     onClick={() => {
@@ -135,7 +135,7 @@ const Page = () => {
                     {form.formState.errors.password?.message}
                   </label>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <Label htmlFor="address" className="flex gap-1 items-center">
                     Address
                     <Icon
@@ -152,7 +152,7 @@ const Page = () => {
                     {form.formState.errors.address?.message}
                   </label>
                 </div>
-                <div className="flex flex-col gap-2 relative">
+                <div className="flex flex-col gap-1 relative">
                   <Label htmlFor="phone" className="flex gap-1 items-center">
                     Phone
                     <Icon icon="tabler:phone" width="24" height="24" />

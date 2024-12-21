@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +36,18 @@ const Page = () => {
   });
   const onsubmit = (data: { email: string; password: string }) => {
     console.log(data);
+    submitDataMutation.mutate();
   };
+  const submitDataMutation = useMutation({
+    mutationFn: async () => {
+      const value = form.getValues();
+      const response = await axios.post(
+        "http://localhost:3333/auth/login",
+        value
+      );
+      return response.data;
+    },
+  });
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
       <div className="flex justify-center h-screen items-center">
