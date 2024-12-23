@@ -31,11 +31,13 @@ const Header = () => {
                     className="bg-gray-400 w-12 h-12 border border-black rounded-full "
                   ></Button>
                 </SheetTrigger>
-                <SheetContent className="flex flex-col gap-10">
+                <SheetContent className="flex flex-col gap-10 rounded-lg m-2 bg-gray-800 text-white">
                   <SheetHeader className="flex gap-5 flex-row">
                     <div className="bg-gray-400 w-14 border border-black rounded-full "></div>
                     <div>
-                      <SheetTitle>Samikshya Baniya</SheetTitle>
+                      <SheetTitle className="text-white">
+                        Samikshya Baniya
+                      </SheetTitle>
                       <SheetDescription>
                         samikshyabchhetri@gmail.com
                       </SheetDescription>
@@ -75,7 +77,13 @@ const Header = () => {
                   </div>
                   <SheetFooter>
                     <SheetClose asChild>
-                      <Button type="submit">Save changes</Button>
+                      <Button
+                        type="submit"
+                        variant={"outline"}
+                        className="text-white bg-gray-800 w-full py-5"
+                      >
+                        Logout
+                      </Button>
                     </SheetClose>
                   </SheetFooter>
                 </SheetContent>
