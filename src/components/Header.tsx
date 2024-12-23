@@ -63,14 +63,14 @@ const Header = () => {
                       />
                       <div>Reservation</div>
                     </div>
-                    <div>
+                    <div className="flex gap-2">
                       <Icon
                         icon="ion:list-sharp"
                         width="24"
                         height="24"
                         className="inline"
                       />
-                      Your Listings
+                      <div>Your Listings</div>
                     </div>
                   </div>
                   <SheetFooter>
