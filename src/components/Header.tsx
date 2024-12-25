@@ -1,5 +1,17 @@
-import { Input } from "@/components/ui/input";
+import Search from "./Search";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const Header = () => {
   return (
@@ -13,18 +25,57 @@ const Header = () => {
               <div className="p-2">Places</div>
               <div className="p-2">Reservation</div>
               <div className="p-2">Your listings</div>
-              <div className="bg-gray-400 w-12 border border-black rounded-full "></div>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="bg-gray-400 w-12 h-12 border border-black rounded-full "
+                  ></Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader className="flex gap-5 flex-row">
+                    <div className="bg-gray-400 w-14 border border-black rounded-full "></div>
+                    <div>
+                      <SheetTitle>Samikshya Baniya</SheetTitle>
+                      <SheetDescription>
+                        samikshyabchhetri@gmail.com
+                      </SheetDescription>
+                    </div>
+                  </SheetHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Name
+                      </Label>
+                      <Input
+                        id="name"
+                        value="Pedro Duarte"
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="username" className="text-right">
+                        Username
+                      </Label>
+                      <Input
+                        id="username"
+                        value="@peduarte"
+                        className="col-span-3"
+                      />
+                    </div>
+                  </div>
+                  <SheetFooter>
+                    <SheetClose asChild>
+                      <Button type="submit">Save changes</Button>
+                    </SheetClose>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
           <div className="border border-gray-400"></div>
         </div>
-
-        <div className="flex justify-center">
-          <div className="flex gap-3 w-[50%]">
-            <Input type="search" placeholder="Search for place" />
-            <Button>Create post</Button>
-          </div>
-        </div>
+        <Search></Search>
       </div>
     </div>
   );
