@@ -7,8 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "sonner";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +17,7 @@ import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 const createSchema = z.object({
   email: z.string().email("Please enter valid email ID"),
@@ -52,12 +51,10 @@ const Page = () => {
 
       return response.data;
     },
-
     onSuccess: (data: { message: string }) => {
       toast.success(data.message);
     },
     onError: (err: AxiosError<{ message: string }>) => {
-      // console.log(err);
       toast.error(err.response?.data.message);
     },
   });
@@ -136,5 +133,4 @@ const Page = () => {
     </div>
   );
 };
-
 export default Page;
