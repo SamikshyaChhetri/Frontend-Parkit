@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import Search from "./Search";
 import { Button } from "./ui/button";
 import {
@@ -11,6 +10,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+const sideBarItems = [
+  { menu: "Home", icon: "clarity:home-solid" },
+  { menu: "Places", icon: "tdesign:location-filled" },
+  { menu: "Reservation", icon: "mdi:file-document-box-tick-outline" },
+  { menu: "Your Listings", icon: "ion:list-sharp" },
+];
 
 const Header = () => {
   return (
@@ -44,36 +49,6 @@ const Header = () => {
                         </SheetDescription>
                       </div>
                     </SheetHeader>
-                    <div className="flex flex-col mt-6">
-                      <div className="flex gap-2 hover:bg-gray-500 p-4 rounded-lg">
-                        <Icon
-                          icon="clarity:home-solid"
-                          width="24"
-                          height="24"
-                        />
-                        <div>Home</div>
-                      </div>
-                      <div className="flex gap-2 hover:bg-gray-500 p-4 rounded-lg">
-                        <Icon
-                          icon="tdesign:location-filled"
-                          width="24"
-                          height="24"
-                        />
-                        <div>Places</div>
-                      </div>
-                      <div className="flex gap-2 hover:bg-gray-500 p-4 rounded-lg">
-                        <Icon
-                          icon="mdi:file-document-box-tick-outline"
-                          width="24"
-                          height="24"
-                        />
-                        <div>Reservation</div>
-                      </div>
-                      <div className="flex gap-2 hover:bg-gray-500 p-4 rounded-lg">
-                        <Icon icon="ion:list-sharp" width="24" height="24" />
-                        <div>Your Listings</div>
-                      </div>
-                    </div>
                   </div>
                   <SheetFooter>
                     <SheetClose asChild>
