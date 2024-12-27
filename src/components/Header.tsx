@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
 import Search from "./Search";
 import { Button } from "./ui/button";
 import {
@@ -36,9 +37,9 @@ const Header = () => {
                     className="bg-gray-400 w-12 h-12 border border-black rounded-full"
                   ></Button>
                 </SheetTrigger>
-                <SheetContent className="flex flex-col justify-between rounded-lg m-2 bg-gray-800 text-white h-[95%]">
+                <SheetContent className="flex flex-col  rounded-lg m-2 bg-gray-800 text-white h-[95%]">
                   <div className="flex flex-col gap-10">
-                    <SheetHeader className="flex gap-5 flex-row">
+                    <SheetHeader className="flex gap-3 flex-row">
                       <div className="bg-gray-400 w-14 border border-black rounded-full"></div>
                       <div>
                         <SheetTitle className="text-white">
@@ -50,6 +51,15 @@ const Header = () => {
                       </div>
                     </SheetHeader>
                   </div>
+                  <div className="flex flex-col gap-6 mt-6">
+                    {sideBarItems.map((item) => (
+                      <div key={item.menu} className="flex gap-2">
+                        <Icon icon={item.icon} width="24" height="24" />
+                        <div>{item.menu}</div>
+                      </div>
+                    ))}
+                  </div>
+
                   <SheetFooter>
                     <SheetClose asChild>
                       <Button
