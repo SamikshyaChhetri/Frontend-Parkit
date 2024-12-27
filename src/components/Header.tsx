@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className=" ">
+    <div className="text-white bg-gray-800 h-screen ">
       <div className="flex flex-col gap-6">
         <div>
           <div className="flex justify-between m-3">
