@@ -15,10 +15,12 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+
 const createSchema = z.object({
   email: z.string().email("Please enter valid email ID"),
   password: z
@@ -27,6 +29,7 @@ const createSchema = z.object({
     .max(20, "Password must not exceed 20 characters"),
 });
 const Page = () => {
+  const router = useRouter();
   const [isOpen, setOpen] = useState(false);
 
   const form = useForm({
@@ -45,14 +48,19 @@ const Page = () => {
       const value = form.getValues();
       const response = await axios.post(
         "http://localhost:3333/auth/login",
-        value
+        value,
+        {
+          withCredentials: true,
+        }
       );
       console.log(response.data);
 
       return response.data;
     },
-    onSuccess: (data: { message: string }) => {
+    onSuccess: (data: { message: string; data: { user: { id: string } } }) => {
       toast.success(data.message);
+      console.log(data);
+      router.push(`/p/${data.data.user.id}/dashboard`);
     },
     onError: (err: AxiosError<{ message: string }>) => {
       toast.error(err.response?.data.message);
