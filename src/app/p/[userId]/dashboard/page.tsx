@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/components/Header";
+import Search from "@/components/Search";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { FC, Usable } from "react";
@@ -23,8 +24,13 @@ const page: FC<{
   }
 
   return (
-    <div>
-      <Header name={userQuery.data.name} email={userQuery.data.email}></Header>
+    <div className="bg-gray-800 h-screen">
+      <Header
+        name={userQuery.data.name}
+        email={userQuery.data.email}
+        avatar={userQuery.data.avatar}
+      ></Header>
+      <Search></Search>
     </div>
   );
 };
