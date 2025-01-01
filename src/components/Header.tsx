@@ -81,7 +81,6 @@ const Header: FC<{
               </Sheet>
             </div>
           </div>
-          {/* <div className="border border-gray-400"></div> */}
         </div>
       </div>
     </div>

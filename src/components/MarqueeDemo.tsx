@@ -59,7 +59,6 @@ export function MarqueeDemo() {
           Safe, Closer and Convenient parking space in palm of your hands{" "}
         </div>
       </div>
-      {/* <div className="border-[1px] border-gray-600 mt-[30px] mx-[100px]"></div> */}
     </div>
   );
 }
