@@ -31,7 +31,6 @@ const createSchema = z.object({
 const Page = () => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
-
   const form = useForm({
     defaultValues: {
       email: "",
@@ -54,7 +53,6 @@ const Page = () => {
         }
       );
       console.log(response.data);
-
       return response.data;
     },
     onSuccess: (data: { message: string; data: { user: { id: string } } }) => {
