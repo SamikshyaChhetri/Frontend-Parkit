@@ -69,9 +69,9 @@ const Page = () => {
         "http://localhost:3333/auth/register",
         value
       );
-      return response.data;
-
       console.log(response.data);
+
+      return response.data;
     },
     onSuccess: (data) => {
       toast.success(data.message);
