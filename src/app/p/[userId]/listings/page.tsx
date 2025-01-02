@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
 import React, { FC, Usable } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -176,7 +177,9 @@ const page: FC<{
             {/* </form> */}
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="outline">Cancel</Button>
+            <Link href={`/p/${rparams.userId}/dashboard`}>
+              <Button variant="outline">Cancel</Button>
+            </Link>
             <Button
               onClick={() => {
                 console.log(form.formState.errors);
