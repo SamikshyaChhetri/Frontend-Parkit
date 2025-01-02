@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,19 +20,68 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import React, { FC, Usable } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const page = () => {
+const createSchema = z.object({
+  description: z.string().min(1, "Description cannot be empty"),
+  type: z.string().min(1, "Please choose a type"),
+  numberOfvehicle: z.coerce.string().min(1, "No. of vehicles cannot be empty"),
+  street: z.string().min(2, "Street cannot be empty"),
+  zipcode: z.string().min(1, "Zipcode cannot be empty"),
+  price: z.string().min(1, "Price cannot be empty"),
+  city: z.string().min(1, "City cannot be empty"),
+  country: z.string().min(1, "Country cannot be empty"),
+});
+
+const page: FC<{
+  params: Usable<{ userId: string }>;
+}> = ({ params }) => {
+  const rparams = React.use(params);
+  const form = useForm({
+    defaultValues: {
+      description: "",
+      type: "",
+      noOfVehicle: "",
+      street: "",
+      zipcode: "",
+      price: "",
+      city: "",
+      country: "",
+    },
+    resolver: zodResolver(createSchema),
+  });
+  const onsubmit = () => {
+    submitDataMutation.mutate();
+  };
+  const submitDataMutation = useMutation({
+    mutationFn: async () => {
+      const value = form.getValues();
+      const response = await axios.post(`http://localhost:3333/listing`, {
+        ...value,
+        ownerId: rparams.userId,
+      });
+      console.log(response.data);
+
+      return response.data;
+    },
+  });
   return (
-    <div className="flex justify-center items-center  h-screen">
-      <Card className="w-[40%]">
-        <CardHeader className="flex justify-center items-center">
-          <CardTitle className="text-xl">Create Listing</CardTitle>
-          <CardDescription></CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="  gap-5 grid grid-cols-2 ">
-              <div className="flex flex-col gap-1 relative col-span-2">
+    <div className="flex justify-center items-center  h-screen  ">
+      <Card className="md:w-[40%] sm:w-[70%] w-[100%] flex flex-col gap- ">
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <CardHeader className="flex justify-center items-center">
+            <CardTitle className="text-xl">Create Listing</CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* <form> */}
+            <div className="md:gap-5 grid md:grid-cols-2  sm:grid-cols-1 sm:gap-5 gap-5 ">
+              <div className="sm:flex sm:flex-col gap-1 relative md:col-span-2 sm:col-span-1">
                 <Label
                   htmlFor="description"
                   className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
@@ -42,6 +92,7 @@ const page = () => {
                   id="description"
                   className="border  rounded-md p-2"
                   rows={4}
+                  {...form.register("description")}
                 />
               </div>
               <div className="flex flex-col gap-1 relative">
@@ -51,7 +102,7 @@ const page = () => {
                 >
                   Type
                 </Label>
-                <Select>
+                <Select onValueChange={(value) => form.setValue("type", value)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -74,7 +125,7 @@ const page = () => {
                 >
                   Price
                 </Label>
-                <Input type="number" />
+                <Input type="number" {...form.register("price")} />
               </div>
               <div className="flex flex-col gap-1 relative">
                 <Label
@@ -83,7 +134,7 @@ const page = () => {
                 >
                   Number of Vehicles
                 </Label>
-                <Input type="number" />
+                <Input type="number" {...form.register("noOfVehicle")} />
               </div>
               <div className="flex flex-col gap-1 relative">
                 <Label
@@ -92,7 +143,7 @@ const page = () => {
                 >
                   City
                 </Label>
-                <Input />
+                <Input {...form.register("city")} />
               </div>
               <div className="flex flex-col gap-1 relative">
                 <Label
@@ -101,7 +152,7 @@ const page = () => {
                 >
                   Street
                 </Label>
-                <Input />
+                <Input {...form.register("street")} />
               </div>
               <div className="flex flex-col gap-1 relative">
                 <Label
@@ -110,7 +161,7 @@ const page = () => {
                 >
                   Country
                 </Label>
-                <Input />
+                <Input {...form.register("country")} />
               </div>
               <div className="flex flex-col gap-1 relative">
                 <Label
@@ -119,18 +170,24 @@ const page = () => {
                 >
                   Zip Code
                 </Label>
-                <Input />
+                <Input {...form.register("zipcode")} />
               </div>
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Create</Button>
-        </CardFooter>
+            {/* </form> */}
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline">Cancel</Button>
+            <Button
+              onClick={() => {
+                console.log(form.formState.errors);
+              }}
+            >
+              Create
+            </Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   );
 };
-
 export default page;
