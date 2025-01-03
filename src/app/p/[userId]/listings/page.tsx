@@ -24,8 +24,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { FC, Usable } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -42,6 +44,7 @@ const createSchema = z.object({
 const page: FC<{
   params: Usable<{ userId: string }>;
 }> = ({ params }) => {
+  const router = useRouter();
   const rparams = React.use(params);
   const form = useForm({
     defaultValues: {
@@ -69,6 +72,13 @@ const page: FC<{
       console.log(response.data);
 
       return response.data;
+    },
+    onSuccess: (data: { message: string }) => {
+      toast.success(data.message);
+      router.push(`dashboard`);
+    },
+    onError: (data: { error: string }) => {
+      toast.error(data.error);
     },
   });
   return (
@@ -118,7 +128,6 @@ const page: FC<{
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="flex flex-col gap-1 relative">
                 <Label
                   htmlFor="price"

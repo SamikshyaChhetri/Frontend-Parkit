@@ -1,3 +1,5 @@
+"use client";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -7,7 +9,9 @@ const Search = () => {
       <div className="flex justify-center">
         <div className="flex gap-3 w-[50%]">
           <Input type="search" placeholder="Search for place..." />
-          <Button>Create post</Button>
+          <Link href={`listings`}>
+            <Button>Create post</Button>
+          </Link>
         </div>
       </div>
     </div>
