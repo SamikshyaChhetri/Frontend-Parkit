@@ -39,6 +39,7 @@ const createSchema = z.object({
   price: z.string().min(1, "Price cannot be empty"),
   city: z.string().min(1, "City cannot be empty"),
   country: z.string().min(1, "Country cannot be empty"),
+  photo: z.string().min(1, "Photo is required"),
 });
 
 const page: FC<{
@@ -56,6 +57,7 @@ const page: FC<{
       price: "",
       city: "",
       country: "",
+      photo: "",
     },
     resolver: zodResolver(createSchema),
   });
@@ -181,6 +183,15 @@ const page: FC<{
                   Zip Code
                 </Label>
                 <Input {...form.register("zipcode")} />
+              </div>
+              <div className="flex flex-col gap-1 relative">
+                <Label
+                  htmlFor="image"
+                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
+                >
+                  Upload Image
+                </Label>
+                <Input {...form.register("photo")} type="file" />
               </div>
             </div>
             {/* </form> */}
