@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -39,7 +40,8 @@ const createSchema = z.object({
   price: z.string().min(1, "Price cannot be empty"),
   city: z.string().min(1, "City cannot be empty"),
   country: z.string().min(1, "Country cannot be empty"),
-  photo: z.string().min(1, "Photo is required"),
+  photo: z.object({}),
+  // .nonempty({ message: "You must upload at least one file" }),
 });
 
 const page: FC<{
@@ -61,16 +63,36 @@ const page: FC<{
     },
     resolver: zodResolver(createSchema),
   });
+
   const onsubmit = () => {
+    // console.log(form.getValues());
     submitDataMutation.mutate();
   };
   const submitDataMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
-      const response = await axios.post(`http://localhost:3333/listing`, {
-        ...value,
-        ownerId: rparams.userId,
-      });
+
+      // Create a form data because image cannot be send in json
+      const formData = new FormData();
+
+      // Append the field to the form data
+      formData.append("description", value.description);
+      formData.append("type", value.type);
+      formData.append("city", value.city);
+      formData.append("price", value.price);
+      formData.append("noOfVehicle", value.noOfVehicle);
+      formData.append("street", value.street);
+      formData.append("country", value.country);
+      formData.append("zipcode", value.zipcode);
+      formData.append("photo", value.photo[0]);
+      formData.append("ownerId", rparams.userId);
+
+      // console.log(value.photo[0]);
+
+      const response = await axios.post(
+        `http://localhost:3333/listing`,
+        formData
+      );
       console.log(response.data);
 
       return response.data;
@@ -83,6 +105,7 @@ const page: FC<{
       toast.error(data.error);
     },
   });
+
   return (
     <div className="flex justify-center items-center  h-screen  ">
       <Card className="md:w-[40%] sm:w-[70%] w-[100%] flex flex-col gap- ">
@@ -122,10 +145,10 @@ const page: FC<{
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Select the type</SelectLabel>
-                      <SelectItem value="Bus">Bus</SelectItem>
+                      <SelectItem value="bus">Bus</SelectItem>
                       <SelectItem value="2-wheeler">2-wheeler</SelectItem>
-                      <SelectItem value="Car">Car</SelectItem>
-                      <SelectItem value="Truck">Truck</SelectItem>
+                      <SelectItem value="car">Car</SelectItem>
+                      <SelectItem value="truck">Truck</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -191,7 +214,13 @@ const page: FC<{
                 >
                   Upload Image
                 </Label>
-                <Input {...form.register("photo")} type="file" />
+                <Input
+                  {...form.register("photo")}
+                  type="file"
+                  onChange={(e) => {
+                    console.log(typeof e.target.value);
+                  }}
+                />
               </div>
             </div>
             {/* </form> */}
