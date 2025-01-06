@@ -42,7 +42,7 @@ const Header: FC<{
                     className="w-10 h-10 rounded-full cursor-pointer"
                   />
                 </SheetTrigger>
-                <SheetContent className="flex flex-col justify-between  rounded-lg m-2 bg-gray-800 text-white h-[90%]">
+                <SheetContent className="flex flex-col justify-between  rounded-lg m-2 bg-gray-800 text-white ">
                   <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-10">
                       <SheetHeader className="flex gap-3 flex-row items-center">
