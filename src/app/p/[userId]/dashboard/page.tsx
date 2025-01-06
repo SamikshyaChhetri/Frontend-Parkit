@@ -30,7 +30,7 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="bg-gray-800 h-screen">
+    <div className="bg-gray-800 h-screen flex flex-col gap-8">
       <Header
         name={userQuery.data.name}
         email={userQuery.data.email}
