@@ -30,10 +30,10 @@ const Header: FC<{
           <div className="flex justify-between m-3">
             <div className="text-2xl font-semibold">Parkify</div>
             <div className="flex justify-between gap-10 text-xl">
-              <div className="p-2">Home</div>
-              <div className="p-2">Places</div>
-              <div className="p-2">Reservation</div>
-              <div className="p-2">Your listings</div>
+              <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
+              <div className="lg:p-2 hidden md:p1 md:flex">Places</div>
+              <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
+              <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
               <Sheet>
                 <SheetTrigger asChild>
                   <img
