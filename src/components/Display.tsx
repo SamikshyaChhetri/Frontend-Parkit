@@ -14,22 +14,22 @@ const Display: FC<{
   }[];
 }> = ({ listingQueryData }) => {
   return (
-    <div className="px-4">
-      <div className="flex justify-between flex-wrap flex-1  ">
+    <div className="sm:px-5 bg-gray-800 sm:h-screen sm:pb-5  ">
+      <div className="grid sm:grid-cols-3  sm:flex-wrap sm:flex-1 w-full gap-4 lg:grid-cols-5  ">
         {listingQueryData.map((item, index) => {
           return (
-            <div key={index} className=" flex flex-col gap-3 pt-7">
-              <Card>
-                <CardContent className="text-white flex flex-col justify-center items-center h-fit p-0 ">
+            <div key={index} className=" flex flex-col sm:gap-3 sm:pt-10 ">
+              <Card className="bg-transparent">
+                <CardContent className="text-white flex flex-col h-fit p-0 ">
                   <div>
                     <img
                       src={item.photo}
-                      className="h-52 w-64 rounded-xl"
+                      className="h-52 sm:w-full rounded-xl w-full"
                       alt=""
                     />
                   </div>
-                  <div>
-                    <div className="text-black">
+                  <div className="p-2">
+                    <div className="text-white">
                       {item.city},{item.country}
                     </div>
                     <CardDescription>Rs.{item.price} per hour</CardDescription>
