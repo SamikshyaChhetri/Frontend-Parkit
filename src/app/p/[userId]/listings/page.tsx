@@ -105,7 +105,6 @@ const page: FC<{
       toast.error(data.error);
     },
   });
-
   return (
     <div className="flex justify-center items-center  h-screen  ">
       <Card className="md:w-[40%] sm:w-[70%] w-[100%] flex flex-col gap- ">

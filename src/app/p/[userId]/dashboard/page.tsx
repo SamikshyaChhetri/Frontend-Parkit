@@ -1,4 +1,5 @@
 "use client";
+import Display from "@/components/Display";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { useQuery } from "@tanstack/react-query";
@@ -31,6 +32,7 @@ const page: FC<{
         avatar={userQuery.data.avatar}
       ></Header>
       <Search></Search>
+      <Display></Display>
     </div>
   );
 };
