@@ -5,9 +5,7 @@ import Search from "@/components/Search";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { FC, Usable } from "react";
-const page: FC<{
-  params: Usable<{ userId: string }>;
-}> = ({ params }) => {
+const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);
   const userQuery = useQuery({
     queryKey: ["singleUserQuery"],
@@ -18,12 +16,19 @@ const page: FC<{
       return response.data;
     },
   });
-  const resolvedParams = React.use(params);
+  // const resolvedParams = React.use(params);
 
+  const listingQuery = useQuery({
+    queryKey: ["allListings"],
+    queryFn: async () => {
+      const response = await axios.get("http://localhost:3333/listing");
+      console.log(response.data);
+      return response.data;
+    },
+  });
   if (userQuery.isLoading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="bg-gray-800 h-screen">
       <Header
@@ -32,8 +37,14 @@ const page: FC<{
         avatar={userQuery.data.avatar}
       ></Header>
       <Search></Search>
-      <Display></Display>
+
+      {/* {listingQuery.data.data.map((item) => {
+        return item.description; 
+      })} */}
+
+      <Display listingQueryData={listingQuery.data.data}></Display>
     </div>
   );
 };
+
 export default page;
