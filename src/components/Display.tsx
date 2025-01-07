@@ -1,8 +1,11 @@
 import { capitalize } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Card, CardContent, CardDescription } from "./ui/card";
 const Display: FC<{
+  userId: string;
   listingQueryData: {
+    id: string;
     description: string;
     type: string;
     price: string;
@@ -13,13 +16,17 @@ const Display: FC<{
     zipcode: string;
     photo: string;
   }[];
-}> = ({ listingQueryData }) => {
+}> = ({ listingQueryData, userId }) => {
+  const router = useRouter();
   return (
     <div className="sm:px-5 bg-gray-800 sm:h-screen sm:pb-5  ">
       <div className="grid sm:grid-cols-3  sm:flex-wrap sm:flex-1 w-full gap-4 lg:grid-cols-5  ">
         {listingQueryData.map((item, index) => {
           return (
             <div
+              onClick={() => {
+                router.push(`/p/${userId}/listings/${item.id}`);
+              }}
               key={index}
               className=" flex flex-col sm:gap-3 sm:pt-10 mx-5 md:mx-0"
             >

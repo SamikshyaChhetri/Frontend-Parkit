@@ -38,11 +38,14 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
       ></Header>
       <Search></Search>
 
-      {/* {listingQuery.data.data.map((item) => {
-        return item.description; 
-      })} */}
-
-      <Display listingQueryData={listingQuery.data.data}></Display>
+      {listingQuery.isSuccess ? (
+        <Display
+          listingQueryData={listingQuery.data.data}
+          userId={rparams.userId}
+        ></Display>
+      ) : (
+        "Fetching Listings"
+      )}
     </div>
   );
 };
