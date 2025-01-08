@@ -35,4 +35,3 @@ const page: FC<{
   return <div>{listingsQuery.data.data.price}</div>;
 };
 export default page;
-// viber for explanantion okk

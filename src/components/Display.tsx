@@ -54,5 +54,4 @@ const Display: FC<{
     </div>
   );
 };
-
 export default Display;
