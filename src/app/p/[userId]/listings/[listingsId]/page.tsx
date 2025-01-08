@@ -9,14 +9,6 @@ const page: FC<{
   params: Usable<{
     listingsId: string;
     userId: string;
-    city: string;
-    street: String;
-    country: string;
-    zipcode: string;
-    type: string;
-    description: string;
-    noOfVehicle: string;
-    photo: string;
   }>;
 }> = ({ params }) => {
   const rparams = use(params);
@@ -36,7 +28,8 @@ const page: FC<{
 
   return (
     <div className="p-6 bg-gray-800 min-h-screen ">
-      <div className="flex justify-center">
+      {/* <Header></Header> */}
+      <div className="flex justify-center mt-5">
         <img
           src={listingsQuery.data.data.photo}
           className="w-full max-w-4xl h-72 bg-gray-300 rounded-lg"
@@ -88,8 +81,12 @@ const page: FC<{
             <div className="flex items-center gap-4 mt-2">
               <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
               <div>
-                <div className="font-medium text-white">Samikshya Baniya</div>
-                <div className="text-sm text-gray-500">samikshya@gmail.com</div>
+                <div className="font-medium text-white">
+                  {listingsQuery.data.data.owner.name}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {listingsQuery.data.data.owner.email}
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +94,6 @@ const page: FC<{
           {/* Reviews */}
           <div className="flex-1">
             <div className="font-semibold text-white">Reviews</div>
-            <div className="bg-gray-200 h-16 rounded-lg mt-2"></div>
             <div className="bg-gray-200 h-16 rounded-lg mt-2"></div>
           </div>
         </div>
