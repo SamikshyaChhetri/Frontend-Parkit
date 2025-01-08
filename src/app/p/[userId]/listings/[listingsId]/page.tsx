@@ -13,7 +13,7 @@ const page: FC<{
 }> = ({ params }) => {
   const rparams = use(params);
   const listingsQuery = useQuery({
-    queryKey: ["singleUserQuery"],
+    queryKey: ["singleListingQuery"],
     queryFn: async () => {
       const response = await axios.get(
         `http://localhost:3333/listing/${rparams.listingsId}`
@@ -22,15 +22,19 @@ const page: FC<{
     },
   });
 
-  if (listingsQuery.isLoading || listingsQuery.isFetching) {
+  if (
+    listingsQuery.isLoading ||
+    listingsQuery.isFetching ||
+    listingsQuery.isError
+  ) {
     return "Loading...";
   }
-
+  listingsQuery.isSuccess && console.log(listingsQuery.data);
   return (
     <div className="p-6 bg-gray-800 min-h-screen ">
       <div className="flex justify-center mt-5">
         <img
-          src={listingsQuery.data.data.photo}
+          src={listingsQuery.data.data.photo ?? ""}
           className="w-full max-w-4xl h-72 bg-gray-300 rounded-lg"
         ></img>
       </div>
@@ -40,7 +44,7 @@ const page: FC<{
         {/* Title and Price */}
         <div className="flex justify-between items-center">
           <div className="text-2xl font-bold text-white">
-            {capitalize(listingsQuery.data.data.street)},{" "}
+            {capitalize(listingsQuery.data.data.street)},
             {capitalize(listingsQuery.data.data.city)}
           </div>
           <div className="text-lg font-semibold text-violet-800 flex items-center">
