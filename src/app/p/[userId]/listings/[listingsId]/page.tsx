@@ -28,7 +28,6 @@ const page: FC<{
 
   return (
     <div className="p-6 bg-gray-800 min-h-screen ">
-      {/* <Header></Header> */}
       <div className="flex justify-center mt-5">
         <img
           src={listingsQuery.data.data.photo}
