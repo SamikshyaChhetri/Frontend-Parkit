@@ -1,4 +1,7 @@
+"use client";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { FC } from "react";
 import { Button } from "./ui/button";
 import {
@@ -19,10 +22,21 @@ const sideBarItems = [
 ];
 
 const Header: FC<{
-  name: string;
-  avatar: string;
-  email: string;
-}> = ({ name, email, avatar }) => {
+  userId: string;
+}> = ({ userId }) => {
+  const userQuery = useQuery({
+    queryKey: ["singleDataQuery"],
+    refetchOnWindowFocus: true,
+    queryFn: async () => {
+      const response = await axios.get(
+        `http://localhost:3333/users/getSingleuser/${userId}`
+      );
+      return response.data;
+    },
+  });
+  if (userQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="text-white bg-gray-800">
       <div className="flex flex-col gap-6">
@@ -37,7 +51,7 @@ const Header: FC<{
               <Sheet>
                 <SheetTrigger asChild>
                   <img
-                    src={avatar}
+                    src={userQuery.data.data.avatar}
                     alt="avatar"
                     className="w-10 h-10 rounded-full cursor-pointer"
                   />
@@ -46,10 +60,17 @@ const Header: FC<{
                   <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-10">
                       <SheetHeader className="flex gap-3 flex-row items-center">
-                        <img className=" w-14 rounded-full" src={avatar}></img>
+                        <img
+                          className=" w-14 rounded-full"
+                          src={userQuery.data.data.avatar}
+                        ></img>
                         <div>
-                          <SheetTitle className="text-white">{name}</SheetTitle>
-                          <SheetDescription>{email}</SheetDescription>
+                          <SheetTitle className="text-white">
+                            {userQuery.data.data.name}
+                          </SheetTitle>
+                          <SheetDescription>
+                            {userQuery.data.data.email}
+                          </SheetDescription>
                         </div>
                       </SheetHeader>
                     </div>
