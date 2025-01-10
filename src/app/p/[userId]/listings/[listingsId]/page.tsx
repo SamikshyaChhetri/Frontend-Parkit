@@ -21,7 +21,6 @@ const page: FC<{
       return response.data;
     },
   });
-
   if (
     listingsQuery.isLoading ||
     listingsQuery.isFetching ||
@@ -47,8 +46,8 @@ const page: FC<{
             {capitalize(listingsQuery.data.data.street)},
             {capitalize(listingsQuery.data.data.city)}
           </div>
-          <div className="text-lg font-semibold text-violet-800 flex items-center">
-            <span className="mr-1 text-xl">
+          <div className="text-lg font-semibold text-white flex items-center">
+            <span className="mr-1 text-lg font-bold">
               {listingsQuery.data.data.price}
             </span>
             <span className="text-sm">per hour</span>
@@ -68,7 +67,7 @@ const page: FC<{
         <div className="flex items-center gap-4">
           <div className="flex  gap-2 flex-col">
             <span className="text-white font-medium">
-              {listingsQuery.data.data.type}
+              {capitalize(listingsQuery.data.data.type)}
             </span>
             <div className="flex items-center gap-2">
               <Icon icon="noto:star" width="24" height="24" />
@@ -80,7 +79,7 @@ const page: FC<{
         <div className="flex justify-between items-start gap-8 mt-10">
           {/* Owner Details */}
           <div className="flex-1">
-            <div className="font-semibold text-white">Owner Details</div>
+            <div className="font-semibold text-white  mb-5">Owner Details</div>
             <div className="flex items-center gap-4 mt-2">
               <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
               <div>
@@ -102,8 +101,8 @@ const page: FC<{
         </div>
 
         {/* Add a Review Section */}
-        <div className="mt-2">
-          <div className="font-semibold text-white">Add a Review</div>
+        <div className="mt-5">
+          <div className="font-semibold text-white text-md">Add a Review</div>
           <div className="flex items-center gap-2 mt-2">
             <Icon icon="noto:star" width="24" height="24" />
             <Icon icon="noto:star" width="24" height="24" />
