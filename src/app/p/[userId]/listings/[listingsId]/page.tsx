@@ -113,7 +113,7 @@ const Page: FC<{
             </span>
             <div className="flex items-center gap-2">
               <Icon icon="noto:star" width="24" height="24" />
-              <span className="text-white font-medium">3.5</span>
+              <span className="text-white font-medium">{listing.rating}</span>
             </div>
           </div>
         </div>
