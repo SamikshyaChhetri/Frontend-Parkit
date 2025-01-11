@@ -1,73 +1,104 @@
 "use client";
 import { capitalize } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { FC, Usable, use } from "react";
+import React, { FC, Usable } from "react";
+import { useForm } from "react-hook-form";
 
-const page: FC<{
+const Page: FC<{
   params: Usable<{
     listingsId: string;
     userId: string;
   }>;
 }> = ({ params }) => {
-  const rparams = use(params);
+  const rparams = React.use(params);
+  // Initialize the form with default values
+  const form = useForm({
+    defaultValues: {
+      rating: "",
+      review: "",
+      reviewerId: rparams.userId,
+      listingId: rparams.listingsId,
+    },
+  });
+
+  const { listingsId } = rparams;
+
+  // Query to fetch listing details
   const listingsQuery = useQuery({
-    queryKey: ["singleListingQuery"],
+    queryKey: ["singleListingQuery", listingsId],
     queryFn: async () => {
       const response = await axios.get(
-        `http://localhost:3333/listing/${rparams.listingsId}`
+        `http://localhost:3333/listing/${listingsId}`
       );
       return response.data;
     },
   });
+
+  // Mutation to submit the review
+  const submitReview = useMutation({
+    mutationFn: async () => {
+      const values = form.getValues();
+      const response = await axios.post("http://localhost:3333/review", values);
+      return response.data;
+    },
+  });
+
+  // Form submit handler
+  const onSubmit = (data: {
+    rating: string;
+    review: string;
+    reviewerId: string;
+    listingId: string;
+  }) => {
+    console.log(data);
+    submitReview.mutate();
+  };
+
+  // Render loading or error state
   if (
     listingsQuery.isLoading ||
     listingsQuery.isFetching ||
     listingsQuery.isError
   ) {
-    return "Loading...";
+    return <div>Loading...</div>;
   }
-  listingsQuery.isSuccess && console.log(listingsQuery.data);
+
+  const listing = listingsQuery.data.data;
+
   return (
-    <div className="p-6 bg-gray-800 min-h-screen ">
+    <div className="p-6 bg-gray-800 min-h-screen">
+      {/* Listing Image */}
       <div className="flex justify-center mt-5">
         <img
-          src={listingsQuery.data.data.photo ?? ""}
-          className="w-full max-w-4xl h-72 bg-gray-300 rounded-lg"
-        ></img>
+          src={listing.photo || ""}
+          alt="Listing"
+          className="w-[50%] max-w-4xl h-96 bg-gray-300 rounded-lg"
+        />
       </div>
 
-      {/* Details Section */}
+      {/* Listing Details */}
       <div className="max-w-4xl mx-auto mt-6 flex flex-col gap-4">
         {/* Title and Price */}
         <div className="flex justify-between items-center">
           <div className="text-2xl font-bold text-white">
-            {capitalize(listingsQuery.data.data.street)},
-            {capitalize(listingsQuery.data.data.city)}
+            {capitalize(listing.street)}, {capitalize(listing.city)}
           </div>
           <div className="text-lg font-semibold text-white flex items-center">
-            <span className="mr-1 text-lg font-bold">
-              {listingsQuery.data.data.price}
-            </span>
+            <span className="mr-1 text-lg font-bold">{listing.price}</span>
             <span className="text-sm">per hour</span>
           </div>
         </div>
 
         {/* Description */}
-        <div className="text-gray-400 text-sm">
-          {listingsQuery.data.data.description}
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
-          nostrum veniam rerum pariatur, unde quasi consequuntur expedita
-          nesciunt! Inventore ad dolores illum deserunt sed veritatis aliquam
-          officia repudiandae consectetur architecto.
-        </div>
+        <div className="text-gray-400 text-sm">{listing.description}</div>
 
         {/* Features */}
         <div className="flex items-center gap-4">
-          <div className="flex  gap-2 flex-col">
+          <div className="flex gap-2 flex-col">
             <span className="text-white font-medium">
-              {capitalize(listingsQuery.data.data.type)}
+              {capitalize(listing.type)}
             </span>
             <div className="flex items-center gap-2">
               <Icon icon="noto:star" width="24" height="24" />
@@ -76,24 +107,25 @@ const page: FC<{
           </div>
         </div>
 
+        {/* Owner Details and Reviews Section */}
         <div className="flex justify-between items-start gap-8 mt-10">
           {/* Owner Details */}
           <div className="flex-1">
-            <div className="font-semibold text-white  mb-5">Owner Details</div>
+            <div className="font-semibold text-white mb-5">Owner Details</div>
             <div className="flex items-center gap-4 mt-2">
               <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
               <div>
                 <div className="font-medium text-white">
-                  {listingsQuery.data.data.owner.name}
+                  {listing.owner.name}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {listingsQuery.data.data.owner.email}
+                  {listing.owner.email}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Reviews */}
+          {/* Reviews Section */}
           <div className="flex-1">
             <div className="font-semibold text-white">Reviews</div>
             <div className="bg-gray-200 h-16 rounded-lg mt-2"></div>
@@ -103,24 +135,24 @@ const page: FC<{
         {/* Add a Review Section */}
         <div className="mt-5">
           <div className="font-semibold text-white text-md">Add a Review</div>
-          <div className="flex items-center gap-2 mt-2">
-            <Icon icon="noto:star" width="24" height="24" />
-            <Icon icon="noto:star" width="24" height="24" />
-          </div>
-          <div className="mt-3">
-            <textarea
-              placeholder="Write your review here..."
-              className="w-full h-28 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
-            ></textarea>
-          </div>
-          <div className="flex justify-end mt-3">
-            <button className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-700 transition">
-              Submit
-            </button>
-          </div>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="mt-3">
+              <textarea
+                placeholder="Write your review here..."
+                {...form.register("review")}
+                className="w-full h-28 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
+              ></textarea>
+            </div>
+            <div className="flex justify-end mt-3">
+              <button className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-700 transition">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
-export default page;
+
+export default Page;
