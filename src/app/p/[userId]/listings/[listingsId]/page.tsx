@@ -1,6 +1,9 @@
 "use client";
 import { capitalize } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { FC, Usable } from "react";
@@ -16,8 +19,8 @@ const Page: FC<{
   // Initialize the form with default values
   const form = useForm({
     defaultValues: {
-      rating: "",
-      review: "",
+      rating: 2,
+      comment: "",
       reviewerId: rparams.userId,
       listingId: rparams.listingsId,
     },
@@ -58,8 +61,8 @@ const Page: FC<{
 
   // Form submit handler
   const onSubmit = (data: {
-    rating: string;
-    review: string;
+    rating: number;
+    comment: string;
     reviewerId: string;
     listingId: string;
   }) => {
@@ -88,7 +91,6 @@ const Page: FC<{
           className="w-[50%] max-w-4xl h-96 bg-gray-300 rounded-lg"
         />
       </div>
-
       {/* Listing Details */}
       <div className="max-w-4xl mx-auto mt-6 flex flex-col gap-4">
         {/* Title and Price */}
@@ -117,7 +119,6 @@ const Page: FC<{
             </div>
           </div>
         </div>
-
         {/* Owner Details and Reviews Section */}
         <div className="flex justify-between items-start gap-8 mt-10">
           {/* Owner Details */}
@@ -150,9 +151,38 @@ const Page: FC<{
             <div className="mt-3">
               <textarea
                 placeholder="Write your review here..."
-                {...form.register("review")}
+                {...form.register("comment")}
                 className="w-full h-28 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
               ></textarea>
+            </div>
+            <div className=" rounded-md w-fit flex items-center justify-center">
+              <Rating
+                name="customized-stars"
+                defaultValue={2}
+                onChange={(event, newValue) => {
+                  form.setValue("rating", newValue!);
+                }}
+                icon={
+                  <StarIcon
+                    style={{
+                      stroke: "white", // color for the border
+                      strokeWidth: 1, // thickness of the border
+                      fill: "gold", // fill color for the star
+                      width: "30px",
+                    }}
+                  />
+                }
+                /* 2) Empty star */
+                emptyIcon={
+                  <StarBorderIcon
+                    style={{
+                      stroke: "white",
+                      strokeWidth: 1,
+                      width: "30px",
+                    }}
+                  />
+                }
+              />
             </div>
             <div className="flex justify-end mt-3">
               <button className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-700 transition">
