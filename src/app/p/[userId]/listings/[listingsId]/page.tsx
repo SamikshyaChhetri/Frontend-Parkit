@@ -35,6 +35,17 @@ const Page: FC<{
       return response.data;
     },
   });
+  // Query to fetch review
+  const reviewQuery = useQuery({
+    queryKey: ["reviewQuery"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `http://localhost:3333/review/${listingsId}`
+      );
+      console.log(response.data);
+      return response.data;
+    },
+  });
 
   // Mutation to submit the review
   const submitReview = useMutation({
