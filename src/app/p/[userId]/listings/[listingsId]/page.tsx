@@ -38,12 +38,13 @@ const Page: FC<{
       return response.data;
     },
   });
-  // Query to fetch review
-  const reviewQuery = useQuery({
-    queryKey: ["reviewQuery"],
+
+  // Query to fetch reviews of the listing
+  const reviewsOfListing = useQuery({
+    queryKey: ["reviewsOfListing"],
     queryFn: async () => {
       const response = await axios.get(
-        `http://localhost:3333/review/${listingsId}`
+        `http://localhost:3333/review/listing/${listingsId}`
       );
       console.log(response.data);
       return response.data;
@@ -140,10 +141,41 @@ const Page: FC<{
           {/* Reviews Section */}
           <div className="flex-1">
             <div className="font-semibold text-white">Reviews</div>
-            <div className="bg-gray-200 h-16 rounded-lg mt-2"></div>
+            <div className="   flex flex-col gap-2 w-full">
+              {reviewsOfListing.isSuccess &&
+                reviewsOfListing.data.data.map((review) => (
+                  <div
+                    key={review.id}
+                    className="flex justify-between bg-gray-200 rounded-lg mt-2 items-center"
+                  >
+                    <div className="flex justify-between items-center gap-2 p-2">
+                      <img
+                        src=""
+                        alt=""
+                        className="bg-white rounded-full h-14 w-14"
+                      />
+                      <div className="flex flex-col ">
+                        <div className="mt-2 text-sm border ">
+                          {review.comment}
+                        </div>
+                        <div>samikshya</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1 ">
+                      {listing.rating}
+                      <Icon
+                        icon="pepicons-pencil:star-filled"
+                        width="20"
+                        height="20"
+                        className="inline mr-1"
+                      />
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
-
         {/* Add a Review Section */}
         <div className="mt-5">
           <div className="font-semibold text-white text-md">Add a Review</div>
