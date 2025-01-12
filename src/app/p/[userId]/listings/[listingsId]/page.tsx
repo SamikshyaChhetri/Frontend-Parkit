@@ -5,9 +5,10 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { FC, Usable } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const Page: FC<{
   params: Usable<{
@@ -57,6 +58,14 @@ const Page: FC<{
       const values = form.getValues();
       const response = await axios.post("http://localhost:3333/review", values);
       return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Review submitted successfully");
+      form.reset();
+      reviewsOfListing.refetch();
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
     },
   });
 
@@ -126,7 +135,11 @@ const Page: FC<{
           <div className="flex-1">
             <div className="font-semibold text-white mb-5">Owner Details</div>
             <div className="flex items-center gap-4 mt-2">
-              <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+              {/* <div className="w-12 h-12 bg-gray-300 rounded-full"></div> */}
+              <img
+                src={listing.owner.avatar}
+                className="w-12 h-12  rounded-full"
+              />
               <div>
                 <div className="font-medium text-white">
                   {listing.owner.name}
@@ -143,14 +156,14 @@ const Page: FC<{
             <div className="font-semibold text-white">Reviews</div>
             <div className="   flex flex-col gap-2 w-full">
               {reviewsOfListing.isSuccess &&
-                reviewsOfListing.data.data.map((review) => (
+                reviewsOfListing.data.data.map((review: any) => (
                   <div
                     key={review.id}
                     className="flex justify-between bg-gray-200 rounded-lg mt-2 items-center"
                   >
                     <div className="flex justify-between items-center gap-2 p-2">
                       <img
-                        src=""
+                        src={review.reviewer.avatar}
                         alt=""
                         className="bg-white rounded-full h-14 w-14"
                       />
@@ -158,12 +171,12 @@ const Page: FC<{
                         <div className="mt-2 text-sm border ">
                           {review.comment}
                         </div>
-                        <div>samikshya</div>
+                        <div>{review.reviewer.name}</div>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-1 ">
-                      {listing.rating}
+                      {review.rating}
                       <Icon
                         icon="pepicons-pencil:star-filled"
                         width="20"
