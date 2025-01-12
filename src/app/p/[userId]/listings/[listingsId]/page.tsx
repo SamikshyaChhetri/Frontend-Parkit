@@ -63,6 +63,7 @@ const Page: FC<{
       toast.success("Review submitted successfully");
       form.reset();
       reviewsOfListing.refetch();
+      listingsQuery.refetch();
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message);
@@ -156,7 +157,7 @@ const Page: FC<{
             <div className="font-semibold text-white">Reviews</div>
             <div className="   flex flex-col gap-2 w-full">
               {reviewsOfListing.isSuccess &&
-                reviewsOfListing.data.data.map((review: any) => (
+                reviewsOfListing.data.data.slice(0, 3).map((review: any) => (
                   <div
                     key={review.id}
                     className="flex justify-between bg-gray-200 rounded-lg mt-2 items-center"
