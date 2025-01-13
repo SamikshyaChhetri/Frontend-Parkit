@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { capitalize } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import StarIcon from "@mui/icons-material/Star";
@@ -109,9 +110,13 @@ const Page: FC<{
           <div className="text-2xl font-bold text-white">
             {capitalize(listing.street)}, {capitalize(listing.city)}
           </div>
-          <div className="text-lg font-semibold text-white flex items-center">
-            <span className="mr-1 text-lg font-bold">{listing.price}</span>
-            <span className="text-sm">per hour</span>
+          <div className="flex flex-col gap-2">
+            <Button onClick={() => {}}>Reserve</Button>
+
+            <div className="text-lg font-semibold text-white flex items-center">
+              <span className="mr-1 text-lg font-bold">{listing.price}</span>
+              <span className="text-sm">per hour</span>
+            </div>
           </div>
         </div>
 
