@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
@@ -65,7 +66,6 @@ const page: FC<{
   });
 
   const onsubmit = () => {
-    // console.log(form.getValues());
     submitDataMutation.mutate();
   };
   const submitDataMutation = useMutation({
@@ -87,13 +87,10 @@ const page: FC<{
       formData.append("photo", value.photo[0]);
       formData.append("ownerId", rparams.userId);
 
-      // console.log(value.photo[0]);
-
       const response = await axios.post(
         `http://localhost:3333/listing`,
         formData
       );
-      console.log(response.data);
 
       return response.data;
     },
@@ -213,13 +210,7 @@ const page: FC<{
                 >
                   Upload Image
                 </Label>
-                <Input
-                  {...form.register("photo")}
-                  type="file"
-                  onChange={(e) => {
-                    console.log(typeof e.target.value);
-                  }}
-                />
+                <Input {...form.register("photo")} type="file" />
               </div>
             </div>
             {/* </form> */}
@@ -228,11 +219,10 @@ const page: FC<{
             <Link href={`/p/${rparams.userId}/dashboard`}>
               <Button variant="outline">Cancel</Button>
             </Link>
-            <Button
-              onClick={() => {
-                console.log(form.formState.errors);
-              }}
-            >
+            <Button disabled={submitDataMutation.isPending}>
+              {submitDataMutation.isPending && (
+                <Icon icon="svg-spinners:270-ring" width="24" height="24" />
+              )}
               Create
             </Button>
           </CardFooter>

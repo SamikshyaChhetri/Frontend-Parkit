@@ -10,7 +10,6 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
     queryKey: ["allListings"],
     queryFn: async () => {
       const response = await axios.get("http://localhost:3333/listing");
-      console.log(response.data);
       return response.data;
     },
   });

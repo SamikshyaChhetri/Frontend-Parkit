@@ -39,7 +39,6 @@ const Page = () => {
     resolver: zodResolver(createSchema),
   });
   const onsubmit = (data: { email: string; password: string }) => {
-    console.log(data);
     submitDataMutation.mutate();
   };
   const submitDataMutation = useMutation({
@@ -52,12 +51,10 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
       return response.data;
     },
     onSuccess: (data: { message: string; data: { user: { id: string } } }) => {
       toast.success(data.message);
-      console.log(data);
       router.push(`/p/${data.data.user.id}/dashboard`);
     },
     onError: (err: AxiosError<{ message: string }>) => {
