@@ -25,6 +25,11 @@ const Page: FC<{
     userId: string;
   }>;
 }> = ({ params }) => {
+  const reserveForm = useForm({
+    defaultValues: {
+      date: new Date(),
+    },
+  });
   const rparams = React.use(params);
   // Initialize the form with default values
   const form = useForm({
@@ -56,7 +61,6 @@ const Page: FC<{
       const response = await axios.get(
         `http://localhost:3333/review/listing/${listingsId}`
       );
-      console.log(response.data);
       return response.data;
     },
   });
@@ -86,7 +90,6 @@ const Page: FC<{
     reviewerId: string;
     listingId: string;
   }) => {
-    console.log(data);
     submitReview.mutate();
   };
 
@@ -120,7 +123,7 @@ const Page: FC<{
           </div>
           <div className="flex flex-col gap-2">
             <Dialog>
-              <DialogTrigger>
+              <DialogTrigger asChild>
                 <Button>Reserve</Button>
               </DialogTrigger>
               <DialogContent>
@@ -129,22 +132,37 @@ const Page: FC<{
                     Create a reservation
                   </DialogTitle>
                 </DialogHeader>
-                <div className="flex justify-center items-center h-[350px]">
-                  <Calendar
-                    mode="single"
-                    className="rounded-md border shadow"
-                  />
-                </div>
-                <div className="flex justify-between">
-                  <div className="inline justify-start">
-                    <Button className="w-fit" variant="destructive">
-                      Cancel
-                    </Button>
+                <form
+                  onSubmit={reserveForm.handleSubmit(() => {
+                    console.log(reserveForm.getValues());
+                  })}
+                >
+                  <div className="flex justify-center items-center h-[350px]">
+                    <Calendar
+                      mode="single"
+                      className="rounded-md border shadow "
+                      {...reserveForm.register("date")}
+                      selected={reserveForm.watch("date")}
+                      onSelect={(value) => {
+                        reserveForm.setValue("date", value!);
+                      }}
+                    />
                   </div>
-                  <div className="flex justify-end">
-                    <Button className="w-fit">Reserve</Button>
+                  <div className="flex justify-between">
+                    <div className="inline justify-start">
+                      <Button
+                        className="w-fit"
+                        type="button"
+                        variant="destructive"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button className="w-fit">Reserve</Button>
+                    </div>
                   </div>
-                </div>
+                </form>
               </DialogContent>
             </Dialog>
 
