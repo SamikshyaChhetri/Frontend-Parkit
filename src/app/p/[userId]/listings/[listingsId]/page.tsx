@@ -1,5 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { capitalize } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import StarIcon from "@mui/icons-material/Star";
@@ -111,7 +119,34 @@ const Page: FC<{
             {capitalize(listing.street)}, {capitalize(listing.city)}
           </div>
           <div className="flex flex-col gap-2">
-            <Button onClick={() => {}}>Reserve</Button>
+            <Dialog>
+              <DialogTrigger>
+                <Button>Reserve</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="flex justify-center mt-5">
+                    Create a reservation
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="flex justify-center items-center h-[350px]">
+                  <Calendar
+                    mode="single"
+                    className="rounded-md border shadow"
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <div className="inline justify-start">
+                    <Button className="w-fit" variant="destructive">
+                      Cancel
+                    </Button>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button className="w-fit">Reserve</Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             <div className="text-lg font-semibold text-white flex items-center">
               <span className="mr-1 text-lg font-bold">{listing.price}</span>
