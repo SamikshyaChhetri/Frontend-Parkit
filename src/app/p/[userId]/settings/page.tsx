@@ -6,7 +6,6 @@ const page: FC<{
 }> = ({ params }) => {
   const resolvedParams = React.use(params);
 
-  console.log(resolvedParams);
   return <div>{/* <Header></Header> */}</div>;
 };
 export default page;

@@ -59,7 +59,6 @@ const Page = () => {
     phone: string;
     address: string;
   }) => {
-    console.log(data);
     submitDataMutation.mutate();
   };
   const submitDataMutation = useMutation({
@@ -69,7 +68,6 @@ const Page = () => {
         "http://localhost:3333/auth/register",
         value
       );
-      console.log(response.data);
 
       return response.data;
     },
