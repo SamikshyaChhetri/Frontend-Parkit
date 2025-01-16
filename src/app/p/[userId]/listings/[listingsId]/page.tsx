@@ -15,10 +15,10 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import moment from "moment";
 import React, { FC, Usable } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
 const Page: FC<{
   params: Usable<{
     listingsId: string;
@@ -168,8 +168,18 @@ const Page: FC<{
                       {...reserveForm.register("date")}
                       selected={reserveForm.watch("date")}
                       disabled={(date) => {
-                        console.log(new Date());
-                        return !(date > new Date());
+                        console.log(
+                          moment(date).format("YYYY-MM-DD"),
+                          listingsQuery.data.data.unavailableDates
+                        );
+                        if (date < moment().subtract(1, "day").toDate())
+                          return true;
+                        listingsQuery.data.data.unavailableDates.includes(
+                          moment(date).format("YYYY-MM-DD").toString()
+                        )
+                          ? true //ekxin ma hunxa? awhh awhh
+                          : false;
+                        return false;
                       }}
                       onSelect={(value) => {
                         reserveForm.setValue("date", value!);
