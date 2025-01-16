@@ -25,12 +25,15 @@ const Page: FC<{
     userId: string;
   }>;
 }> = ({ params }) => {
+  const rparams = React.use(params);
   const reserveForm = useForm({
     defaultValues: {
       date: new Date(),
+      reserverId: rparams.userId,
+      listingId: rparams.listingsId,
     },
   });
-  const rparams = React.use(params);
+
   // Initialize the form with default values
   const form = useForm({
     defaultValues: {
@@ -65,6 +68,7 @@ const Page: FC<{
     },
   });
 
+  // const
   // Mutation to submit the review
   const submitReview = useMutation({
     mutationFn: async () => {
@@ -83,6 +87,30 @@ const Page: FC<{
     },
   });
 
+  //Mutation for reservation
+  const submitReservation = useMutation({
+    mutationFn: async () => {
+      const reservationValue = reserveForm.getValues();
+
+      // / yo resewrvationValue vanne ma k k aauxa?
+      const response = await axios.post(
+        "http://localhost:3333/reserve",
+        reservationValue
+      );
+      console.log(response.data);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Reservation submitted successfully!");
+      reserveForm.reset();
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
+    },
+  });
+  const onSubmitReservation = () => {
+    submitReservation.mutate();
+  };
   // Form submit handler
   const onSubmit = (data: {
     rating: number;
@@ -132,17 +160,17 @@ const Page: FC<{
                     Create a reservation
                   </DialogTitle>
                 </DialogHeader>
-                <form
-                  onSubmit={reserveForm.handleSubmit(() => {
-                    console.log(reserveForm.getValues());
-                  })}
-                >
+                <form onSubmit={reserveForm.handleSubmit(onSubmitReservation)}>
                   <div className="flex justify-center items-center h-[350px]">
                     <Calendar
                       mode="single"
                       className="rounded-md border shadow "
                       {...reserveForm.register("date")}
                       selected={reserveForm.watch("date")}
+                      disabled={(date) => {
+                        console.log(new Date());
+                        return !(date > new Date());
+                      }}
                       onSelect={(value) => {
                         reserveForm.setValue("date", value!);
                       }}
