@@ -2,6 +2,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
 import { FC } from "react";
 import { Button } from "./ui/button";
 import {
@@ -38,16 +39,20 @@ const Header: FC<{
     return <div>Loading...</div>;
   }
   return (
-    <div className="text-white bg-gray-800">
+    <div className="bg-gray-800 text-white">
       <div className="flex flex-col gap-6">
         <div>
           <div className="flex justify-between m-3">
-            <div className="text-2xl font-semibold">Parkify</div>
-            <div className="flex justify-between gap-10 text-xl">
+            <div className="text-2xl font-bold">
+              Par<span className="text-violet-500">ki</span>fy
+            </div>
+            <div className="flex justify-between gap-10 text-xl ">
               <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
               <div className="lg:p-2 hidden md:p1 md:flex">Places</div>
               <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
-              <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
+              <Link href={`yourListings`}>
+                <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
+              </Link>
               <Sheet>
                 <SheetTrigger asChild>
                   <img
