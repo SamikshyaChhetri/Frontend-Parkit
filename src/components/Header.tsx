@@ -49,7 +49,9 @@ const Header: FC<{
             <div className="flex justify-between gap-10 text-xl ">
               <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
               <div className="lg:p-2 hidden md:p1 md:flex">Places</div>
-              <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
+              <Link href={`reservations`}>
+                <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
+              </Link>
               <Link href={`yourListings`}>
                 <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
               </Link>
