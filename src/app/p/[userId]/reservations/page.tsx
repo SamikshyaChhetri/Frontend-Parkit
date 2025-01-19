@@ -33,20 +33,23 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
       <div className="flex justify-center text-2xl text-white py-7">
         Your Reservations
       </div>
-      {userReservations.isSuccess &&
-        userReservations.data?.data.map((item, index) => {
-          return (
-            <ListingCard
-              key={index}
-              city={item.listing.city} // fix these
-              country={item.listing.country}
-              photo={item.listing.photo}
-              price={item.listing.price}
-              date={item.date}
-              type="reservation"
-            ></ListingCard>
-          );
-        })}
+      {userReservations.isSuccess && (
+        <div className="flex flex-wrap sm:flex-1 w-full gap-4   ">
+          {userReservations.data?.data.map((item, index) => {
+            return (
+              <ListingCard
+                key={index}
+                city={item.listing.city} // fix these
+                country={item.listing.country}
+                photo={item.listing.photo}
+                price={item.listing.price}
+                date={item.date}
+                type="reservation"
+              ></ListingCard>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
