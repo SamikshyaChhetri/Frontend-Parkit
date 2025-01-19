@@ -21,22 +21,29 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
     },
   });
   userListings.isSuccess && console.log(userListings.data);
+
+  if (userListings.isLoading) return <div>Loading...</div>;
+
   return (
     <div className="bg-gray-800 h-screen px-5">
       <div className="flex justify-center text-2xl text-white py-7">
         Your Listings
       </div>
-      {userListings.data?.data.map((item, index) => {
-        return (
-          <ListingCard
-            key={index}
-            city={item.city}
-            country={item.country}
-            photo={item.photo}
-            price={item.price}
-          ></ListingCard>
-        );
-      })}
+
+      {userListings.isSuccess &&
+        userListings.data?.data.map((item, index) => {
+          return (
+            <ListingCard
+              key={index}
+              city={item.city}
+              country={item.country}
+              photo={item.photo}
+              price={item.price}
+              type="listing"
+              date="string"
+            ></ListingCard>
+          );
+        })}
     </div>
   );
 };
