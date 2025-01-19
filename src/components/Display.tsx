@@ -33,6 +33,8 @@ const Display: FC<{
                 city={item.city}
                 country={item.country}
                 price={item.price}
+                type="listing"
+                date="string"
               ></ListingCard>
             </div>
           );
