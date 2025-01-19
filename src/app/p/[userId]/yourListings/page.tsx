@@ -39,8 +39,6 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
               country={item.country}
               photo={item.photo}
               price={item.price}
-              type="listing"
-              date="string"
             ></ListingCard>
           );
         })}
