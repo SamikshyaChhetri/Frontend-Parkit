@@ -30,18 +30,21 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
         Your Listings
       </div>
 
-      {userListings.isSuccess &&
-        userListings.data?.data.map((item, index) => {
-          return (
-            <ListingCard
-              key={index}
-              city={item.city}
-              country={item.country}
-              photo={item.photo}
-              price={item.price}
-            ></ListingCard>
-          );
-        })}
+      {userListings.isSuccess && (
+        <div className="flex flex-wrap sm:flex-1 w-full gap-6 ">
+          {userListings.data?.data.map((item, index) => {
+            return (
+              <ListingCard
+                key={index}
+                city={item.city}
+                country={item.country}
+                photo={item.photo}
+                price={item.price}
+              ></ListingCard>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
