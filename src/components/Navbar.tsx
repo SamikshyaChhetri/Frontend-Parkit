@@ -45,11 +45,12 @@ const Navbar = () => {
               Say goodbye to parking hassles and enjoy a seamless, stress-free
               experience—anytime, anywhere.
             </div>
-
-            <Searchbox
-              iconImage="line-md:search"
-              placeHolder="Search a place"
-            ></Searchbox>
+            <Link href={"/login"}>
+              <Searchbox
+                iconImage="line-md:search"
+                placeHolder="Search a place"
+              ></Searchbox>
+            </Link>
           </div>
           <div>
             <img src="./park.png" alt="parking" />
@@ -76,9 +77,11 @@ const Navbar = () => {
             <h2 className="flex justify-center">Start earning</h2>
           </div>
         </div>
-        <Button className="bg-purple-500 px-10 hover:bg-purple-600">
-          Become a host
-        </Button>
+        <Link href={"/login"}>
+          <Button className="bg-purple-500 px-10 hover:bg-purple-600">
+            Become a host
+          </Button>
+        </Link>
       </div>
       <Seperator></Seperator>
 
