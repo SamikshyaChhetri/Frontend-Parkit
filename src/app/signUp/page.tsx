@@ -180,7 +180,12 @@ const Page = () => {
                   </div>
                   <div className="text-sm">Forgot password?</div>
                 </div>
-                <Button>Submit</Button>
+                <Button disabled={submitDataMutation.isPending}>
+                  {submitDataMutation.isPending && (
+                    <Icon icon="svg-spinners:270-ring" width="24" height="24" />
+                  )}
+                  Submit
+                </Button>{" "}
               </div>
             </CardContent>
           </form>
