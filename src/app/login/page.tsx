@@ -123,7 +123,7 @@ const Page = () => {
                   {submitDataMutation.isPending && (
                     <Icon icon="svg-spinners:270-ring" width="24" height="24" />
                   )}
-                  Submit
+                  Login
                 </Button>
               </div>
             </CardContent>
