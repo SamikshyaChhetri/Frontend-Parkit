@@ -47,7 +47,9 @@ const Header: FC<{
               Par<span className="text-violet-500">ki</span>fy
             </div>
             <div className="flex justify-between gap-10 text-xl ">
-              <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
+              <Link href={`dashboard`}>
+                <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
+              </Link>
               <div className="lg:p-2 hidden md:p1 md:flex">Places</div>
               <Link href={`reservations`}>
                 <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
