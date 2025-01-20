@@ -27,7 +27,7 @@ export function MarqueeDemo() {
               className="h-80 w-64 rounded-3xl bg-pu"
             />
             <div className="flex justify-center items-center ">
-              <div className="text-center font-bold bg-gray-500 rounded-lg w-[100%]  text-white p-2 mt-2 ">
+              <div className="text-center font-bold bg-purple-500 rounded-lg w-[100%]  text-white p-2 mt-2 ">
                 Van parking
               </div>
             </div>
@@ -36,7 +36,7 @@ export function MarqueeDemo() {
           <div>
             <img src="./car1.avif" alt="" className="h-80 w-64 rounded-3xl" />
             <div className="flex justify-center items-center ">
-              <div className="text-center font-bold bg-gray-500 rounded-lg w-[100%] text-white p-2 mt-2  ">
+              <div className="text-center font-bold bg-purple-500 rounded-lg w-[100%] text-white p-2 mt-2  ">
                 Car parking
               </div>
             </div>
@@ -44,7 +44,7 @@ export function MarqueeDemo() {
           <div>
             <img src="./bike.jpg" alt="" className="h-80 w-64 rounded-3xl" />
             <div className="flex justify-center items-center ">
-              <div className="text-center font-bold bg-gray-500 rounded-lg w-[100%] text-white p-2 mt-2 ">
+              <div className="text-center font-bold bg-purple-500 rounded-lg w-[100%] text-white p-2 mt-2 ">
                 Two wheeler parking
               </div>
             </div>
