@@ -101,8 +101,8 @@ const Page: FC<{
     },
   });
   return (
-    <div className="flex justify-center items-center  h-screen  ">
-      <Card className="md:w-[40%] sm:w-[70%] w-[100%] flex flex-col gap- ">
+    <div className="flex justify-center items-center  h-[92vh] bg-gray-800 ">
+      <Card className="md:w-[40%] sm:w-[70%] w-[100%] flex flex-col ">
         <form onSubmit={form.handleSubmit(onsubmit)}>
           <CardHeader className="flex justify-center items-center">
             <CardTitle className="text-xl">Create Listing</CardTitle>
