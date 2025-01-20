@@ -82,7 +82,7 @@ const Navbar = () => {
       </div>
       <Seperator></Seperator>
 
-      <div className="flex justify-center text-4xl font-bold pt-10">
+      <div className="flex justify-center text-4xl font-bold pb-20 pt-10">
         Features we <span className="text-purple-500"> &nbsp; Offer</span>
       </div>
       <div className="flex justify-between mx-10">
