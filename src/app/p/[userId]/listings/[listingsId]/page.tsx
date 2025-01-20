@@ -17,11 +17,11 @@ import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import moment from "moment";
-import React, { FC, Usable } from "react";
+import React, { FC, Promise } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 const Page: FC<{
-  params: Usable<{
+  params: Promise<{
     listingsId: string;
     userId: string;
   }>;

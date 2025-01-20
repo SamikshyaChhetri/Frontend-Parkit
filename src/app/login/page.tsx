@@ -38,7 +38,7 @@ const Page = () => {
     },
     resolver: zodResolver(createSchema),
   });
-  const onsubmit = (data: { email: string; password: string }) => {
+  const onsubmit = () => {
     submitDataMutation.mutate();
   };
   const submitDataMutation = useMutation({
@@ -126,7 +126,7 @@ const Page = () => {
             </CardContent>
           </form>
           <div className="flex justify-center items-center pb-6">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href={"/signUp"}>
               <Button variant={"link"}>Register</Button>
             </Link>

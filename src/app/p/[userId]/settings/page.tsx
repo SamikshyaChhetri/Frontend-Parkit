@@ -1,11 +1,11 @@
 "use client";
-import React, { FC, Usable } from "react";
+import React, { FC, Promise } from "react";
 
-const page: FC<{
-  params: Usable<{ userId: string }>;
+const Page: FC<{
+  params: Promise<{ userId: string }>;
 }> = ({ params }) => {
   const resolvedParams = React.use(params);
 
   return <div>{/* <Header></Header> */}</div>;
 };
-export default page;
+export default Page;

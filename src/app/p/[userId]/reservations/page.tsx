@@ -2,9 +2,9 @@
 import ListingCard from "@/components/ListingCard";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
-import React, { FC, Usable } from "react";
+import React, { FC, Promise } from "react";
 
-const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
+const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);
   const userReservations = useQuery({
     queryKey: ["userReservations"],
@@ -54,4 +54,4 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

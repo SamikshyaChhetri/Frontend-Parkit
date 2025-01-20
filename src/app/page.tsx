@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { MarqueeDemo } from "@/components/MarqueeDemo";
 import Navbar from "@/components/Navbar";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <Navbar></Navbar>
@@ -13,4 +13,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

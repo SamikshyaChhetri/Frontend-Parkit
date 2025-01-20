@@ -3,8 +3,8 @@ import Display from "@/components/Display";
 import Search from "@/components/Search";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { FC, Usable } from "react";
-const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
+import React, { FC } from "react";
+const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);
   const listingQuery = useQuery({
     queryKey: ["allListings"],
@@ -30,4 +30,4 @@ const page: FC<{ params: Usable<{ userId: string }> }> = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

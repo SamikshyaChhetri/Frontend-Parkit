@@ -27,7 +27,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FC, Usable } from "react";
+import React, { FC, Promise } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -45,8 +45,8 @@ const createSchema = z.object({
   // .nonempty({ message: "You must upload at least one file" }),
 });
 
-const page: FC<{
-  params: Usable<{ userId: string }>;
+const Page: FC<{
+  params: Promise<{ userId: string }>;
 }> = ({ params }) => {
   const router = useRouter();
   const rparams = React.use(params);
@@ -231,4 +231,4 @@ const page: FC<{
     </div>
   );
 };
-export default page;
+export default Page;
