@@ -13,6 +13,7 @@ import axios, { AxiosError } from "axios";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
@@ -64,7 +65,7 @@ const Page = () => {
   const submitDataMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
-      const response = await axios.post("${BACKEND_URL}/auth/register", value);
+      const response = await axios.post(`${BACKEND_URL}/auth/register`, value);
 
       return response.data;
     },
