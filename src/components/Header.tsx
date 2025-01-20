@@ -1,4 +1,5 @@
 "use client";
+import { BACKEND_URL } from "@/lib/env";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -30,7 +31,7 @@ const Header: FC<{
     refetchOnWindowFocus: true,
     queryFn: async () => {
       const response = await axios.get(
-        `http://localhost:3333/users/getSingleuser/${userId}`
+        `${BACKEND_URL}/users/getSingleuser/${userId}`
       );
       return response.data;
     },

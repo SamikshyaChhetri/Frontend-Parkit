@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { BACKEND_URL } from "@/lib/env";
 import { capitalize } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import StarIcon from "@mui/icons-material/Star";
@@ -51,9 +52,7 @@ const Page: FC<{
   const listingsQuery = useQuery({
     queryKey: ["singleListingQuery", listingsId],
     queryFn: async () => {
-      const response = await axios.get(
-        `http://localhost:3333/listing/${listingsId}`
-      );
+      const response = await axios.get(`${BACKEND_URL}/listing/${listingsId}`);
       return response.data;
     },
   });
@@ -63,7 +62,7 @@ const Page: FC<{
     queryKey: ["reviewsOfListing"],
     queryFn: async () => {
       const response = await axios.get(
-        `http://localhost:3333/review/listing/${listingsId}`
+        `${BACKEND_URL}/review/listing/${listingsId}`
       );
       return response.data;
     },
@@ -74,7 +73,7 @@ const Page: FC<{
   const submitReview = useMutation({
     mutationFn: async () => {
       const values = form.getValues();
-      const response = await axios.post("http://localhost:3333/review", values);
+      const response = await axios.post("${BACKEND_URL}/review", values);
       return response.data;
     },
     onSuccess: () => {
@@ -95,7 +94,7 @@ const Page: FC<{
 
       // / yo resewrvationValue vanne ma k k aauxa?
       const response = await axios.post(
-        "http://localhost:3333/reserve",
+        "${BACKEND_URL}/reserve",
         reservationValue
       );
       console.log(response.data);

@@ -1,6 +1,7 @@
 "use client";
 import Display from "@/components/Display";
 import Search from "@/components/Search";
+import { BACKEND_URL } from "@/lib/env";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { FC } from "react";
@@ -9,7 +10,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const listingQuery = useQuery({
     queryKey: ["allListings"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:3333/listing");
+      const response = await axios.get(`${BACKEND_URL}/listing`);
       return response.data;
     },
   });

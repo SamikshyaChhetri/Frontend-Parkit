@@ -64,10 +64,7 @@ const Page = () => {
   const submitDataMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
-      const response = await axios.post(
-        "http://localhost:3333/auth/register",
-        value
-      );
+      const response = await axios.post("${BACKEND_URL}/auth/register", value);
 
       return response.data;
     },

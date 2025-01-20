@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
@@ -87,10 +88,7 @@ const Page: FC<{
       formData.append("photo", value.photo[0]);
       formData.append("ownerId", rparams.userId);
 
-      const response = await axios.post(
-        `http://localhost:3333/listing`,
-        formData
-      );
+      const response = await axios.post(`${BACKEND_URL}/listing`, formData);
 
       return response.data;
     },

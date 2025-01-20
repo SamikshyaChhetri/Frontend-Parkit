@@ -1,5 +1,6 @@
 "use client";
 import ListingCard from "@/components/ListingCard";
+import { BACKEND_URL } from "@/lib/env";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import React, { FC } from "react";
@@ -13,9 +14,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       const response: AxiosResponse<{
         message: string;
         data: { city: string; country: string; photo: string; price: string }[];
-      }> = await axios.get(
-        `http://localhost:3333/listing/user/${rparams.userId}`
-      );
+      }> = await axios.get(`${BACKEND_URL}/listing/user/${rparams.userId}`);
       // console.log(response.data);
       return response.data;
     },
