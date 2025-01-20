@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 const Search = () => {
   return (
     <div>
-      <div className="flex justify-center ">
+      <div className="flex justify-center py-6">
         <div className="flex gap-3 sm:w-[70%] md:[50%]">
           <Input
             type="search"
