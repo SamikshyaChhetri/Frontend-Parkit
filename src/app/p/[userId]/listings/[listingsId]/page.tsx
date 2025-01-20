@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -187,7 +188,7 @@ const Page: FC<{
                     />
                   </div>
                   <div className="flex justify-between">
-                    <div className="inline justify-start">
+                    <DialogClose asChild className="inline justify-start">
                       <Button
                         className="w-fit"
                         type="button"
@@ -195,7 +196,7 @@ const Page: FC<{
                       >
                         Cancel
                       </Button>
-                    </div>
+                    </DialogClose>
                     <div className="flex justify-end">
                       <Button className="w-fit">Reserve</Button>
                     </div>
