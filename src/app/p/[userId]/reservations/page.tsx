@@ -2,7 +2,7 @@
 import ListingCard from "@/components/ListingCard";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
-import React, { FC, Promise } from "react";
+import React, { FC } from "react";
 
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);

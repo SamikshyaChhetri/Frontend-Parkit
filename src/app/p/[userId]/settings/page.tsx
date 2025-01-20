@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, Promise } from "react";
+import React, { FC } from "react";
 
 const Page: FC<{
   params: Promise<{ userId: string }>;

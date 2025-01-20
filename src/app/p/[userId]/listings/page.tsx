@@ -27,7 +27,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FC, Promise } from "react";
+import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";

@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
-import React, { FC, Promise, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 
-const layout: FC<{
+const Layout: FC<{
   children: ReactNode;
   params: Promise<{ userId: string }>;
 }> = ({ children, params }) => {
@@ -15,4 +15,4 @@ const layout: FC<{
   );
 };
 
-export default layout;
+export default Layout;
