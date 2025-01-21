@@ -16,16 +16,32 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-const sideBarItems = [
-  { menu: "Home", icon: "clarity:home-solid" },
-  { menu: "Places", icon: "tdesign:location-filled" },
-  { menu: "Reservation", icon: "mdi:file-document-box-tick-outline" },
-  { menu: "Your Listings", icon: "ion:list-sharp" },
-];
 
 const Header: FC<{
   userId: string;
 }> = ({ userId }) => {
+  const sideBarItems = [
+    {
+      menu: "Home",
+      icon: "clarity:home-solid",
+      link: `/p/${userId}/dashboard`,
+    },
+    {
+      menu: "Places",
+      icon: "tdesign:location-filled",
+      link: `/p/${userId}/places`,
+    },
+    {
+      menu: "Reservation",
+      icon: "mdi:file-document-box-tick-outline",
+      link: `/p/${userId}/reservations`,
+    },
+    {
+      menu: "Your Listings",
+      icon: "ion:list-sharp",
+      link: `/p/${userId}/yourListings`,
+    },
+  ];
   const userQuery = useQuery({
     queryKey: ["singleDataQuery"],
     refetchOnWindowFocus: true,
@@ -58,6 +74,7 @@ const Header: FC<{
               <Link href={`yourListings`}>
                 <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
               </Link>
+
               <Sheet>
                 <SheetTrigger asChild>
                   <img
@@ -86,12 +103,16 @@ const Header: FC<{
                     </div>
                     <div className="flex flex-col">
                       {sideBarItems.map((item) => (
-                        <div
-                          key={item.menu}
-                          className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
-                        >
-                          <Icon icon={item.icon} width="24" height="24" />
-                          <div>{item.menu}</div>
+                        <div key={item.menu}>
+                          <SheetClose asChild>
+                            <Link
+                              href={item.link}
+                              className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
+                            >
+                              <Icon icon={item.icon} width="24" height="24" />
+                              <div>{item.menu}</div>
+                            </Link>
+                          </SheetClose>
                         </div>
                       ))}
                     </div>
