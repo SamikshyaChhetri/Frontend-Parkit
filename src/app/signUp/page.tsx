@@ -10,7 +10,6 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BACKEND_URL } from "@/lib/env";
@@ -173,13 +172,7 @@ const Page = () => {
                     {form.formState.errors.phone?.message}
                   </label>
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex gap-1 items-center">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember">Remember me</Label>
-                  </div>
-                  <div className="text-sm">Forgot password?</div>
-                </div>
+
                 <Button disabled={submitDataMutation.isPending}>
                   {submitDataMutation.isPending && (
                     <Icon icon="svg-spinners:270-ring" width="24" height="24" />
