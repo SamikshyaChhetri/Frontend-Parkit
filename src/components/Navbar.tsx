@@ -21,7 +21,9 @@ const Navbar = () => {
             Par <span className="text-purple-500">ki</span>fy
           </div>
           <div className="flex justify-between gap-5 pr-5">
-            <div className="pt-8">Become a host</div>
+            <Link href={"/login"}>
+              <div className="pt-8">Become a host</div>
+            </Link>
             <Link href={"/signUp"}>
               <Button className="mt-6" variant={"outline"}>
                 Sign up
