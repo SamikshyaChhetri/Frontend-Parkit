@@ -1,8 +1,8 @@
 "use client";
 import ListingCard from "@/components/ListingCard";
-import { BACKEND_URL } from "@/lib/env";
+import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import React, { FC } from "react";
 
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
@@ -21,8 +21,11 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
           };
           date: string;
         }[];
-      }> = await axios.get(
-        `${BACKEND_URL}/reserve/userReservations/${rparams.userId}`
+      }> = await axiosInstance.get(
+        `/reserve/userReservations/${rparams.userId}`,
+        {
+          withCredentials: true,
+        }
       );
       // console.log(response.data);
       return response.data;

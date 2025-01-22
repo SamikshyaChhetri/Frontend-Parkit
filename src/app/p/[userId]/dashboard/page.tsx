@@ -1,16 +1,15 @@
 "use client";
 import Display from "@/components/Display";
 import Search from "@/components/Search";
-import { BACKEND_URL } from "@/lib/env";
+import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React, { FC } from "react";
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);
   const listingQuery = useQuery({
     queryKey: ["allListings"],
     queryFn: async () => {
-      const response = await axios.get(`${BACKEND_URL}/listing`);
+      const response = await axiosInstance.get("/listing");
       return response.data;
     },
   });

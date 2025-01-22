@@ -21,11 +21,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { BACKEND_URL } from "@/lib/env";
+import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC } from "react";
@@ -88,8 +87,7 @@ const Page: FC<{
       formData.append("photo", value.photo[0]);
       formData.append("ownerId", rparams.userId);
 
-      const response = await axios.post(`${BACKEND_URL}/listing`, formData);
-
+      const response = await axiosInstance.post(`/listing`, formData);
       return response.data;
     },
     onSuccess: (data: { message: string }) => {

@@ -9,14 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { BACKEND_URL } from "@/lib/env";
 import { capitalize } from "@/lib/utils";
+import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import moment from "moment";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -52,7 +52,7 @@ const Page: FC<{
   const listingsQuery = useQuery({
     queryKey: ["singleListingQuery", listingsId],
     queryFn: async () => {
-      const response = await axios.get(`${BACKEND_URL}/listing/${listingsId}`);
+      const response = await axiosInstance.get(`/listing/${listingsId}`);
       return response.data;
     },
   });
@@ -61,9 +61,7 @@ const Page: FC<{
   const reviewsOfListing = useQuery({
     queryKey: ["reviewsOfListing"],
     queryFn: async () => {
-      const response = await axios.get(
-        `${BACKEND_URL}/review/listing/${listingsId}`
-      );
+      const response = await axiosInstance.get(`/review/listing/${listingsId}`);
       return response.data;
     },
   });
@@ -73,7 +71,7 @@ const Page: FC<{
   const submitReview = useMutation({
     mutationFn: async () => {
       const values = form.getValues();
-      const response = await axios.post("${BACKEND_URL}/review", values);
+      const response = await axiosInstance.post("/review", values);
       return response.data;
     },
     onSuccess: () => {
@@ -92,11 +90,7 @@ const Page: FC<{
     mutationFn: async () => {
       const reservationValue = reserveForm.getValues();
 
-      // / yo resewrvationValue vanne ma k k aauxa?
-      const response = await axios.post(
-        "${BACKEND_URL}/reserve",
-        reservationValue
-      );
+      const response = await axiosInstance.post("/reserve", reservationValue);
       console.log(response.data);
       return response.data;
     },

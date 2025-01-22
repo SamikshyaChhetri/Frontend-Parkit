@@ -1,8 +1,7 @@
 "use client";
-import { BACKEND_URL } from "@/lib/env";
+import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Link from "next/link";
 import { FC } from "react";
 import { Button } from "./ui/button";
@@ -46,8 +45,8 @@ const Header: FC<{
     queryKey: ["singleDataQuery"],
     refetchOnWindowFocus: true,
     queryFn: async () => {
-      const response = await axios.get(
-        `${BACKEND_URL}/users/getSingleuser/${userId}`
+      const response = await axiosInstance.get(
+        `/users/getSingleuser/${userId}`
       );
       return response.data;
     },
