@@ -1,9 +1,12 @@
 "use client";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -19,6 +22,7 @@ import {
 const Header: FC<{
   userId: string;
 }> = ({ userId }) => {
+  const router = useRouter();
   const sideBarItems = [
     {
       menu: "Home",
@@ -41,6 +45,19 @@ const Header: FC<{
       link: `/p/${userId}/yourListings`,
     },
   ];
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosInstance.post(`/auth/logout`, { userId });
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Successfully logged out");
+      router.push(`/login`);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message);
+    },
+  });
   const userQuery = useQuery({
     queryKey: ["singleDataQuery"],
     refetchOnWindowFocus: true,
@@ -54,6 +71,10 @@ const Header: FC<{
   if (userQuery.isLoading) {
     return <div>Loading...</div>;
   }
+  if (userQuery.isError) {
+    return <div>Error fetching data</div>;
+  }
+
   return (
     <div className="bg-gray-800 text-white">
       <div className="flex flex-col gap-6">
@@ -123,6 +144,9 @@ const Header: FC<{
                         type="submit"
                         variant="outline"
                         className="text-white bg-gray-800 w-full py-5"
+                        onClick={() => {
+                          logoutMutation.mutate();
+                        }}
                       >
                         Logout
                       </Button>
