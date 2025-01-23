@@ -1,5 +1,6 @@
 "use client";
 import ListingCard from "@/components/ListingCard";
+import NoData from "@/components/NoData";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
@@ -34,11 +35,13 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
 
   return (
     <div className="bg-gray-800 h-screen px-5">
-      <div className="flex justify-center text-2xl text-white py-7">
-        Your Reservations
+      <div className="flex pl-14 text-2xl font-bold text-white py-7">
+        My Re<span className="text-violet-500">ser</span>vations
       </div>
+
       {userReservations.isSuccess && (
         <div className="flex flex-wrap sm:flex-1 w-full gap-4   ">
+          {userReservations.data.data.length == 0 && <NoData></NoData>}
           {userReservations.data?.data.map((item, index) => {
             return (
               <ListingCard
