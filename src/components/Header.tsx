@@ -1,11 +1,12 @@
 "use client";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Tab, Tabs } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import {
@@ -28,21 +29,20 @@ const Header: FC<{
       menu: "Home",
       icon: "clarity:home-solid",
       link: `/p/${userId}/dashboard`,
+      value: 1,
     },
-    {
-      menu: "Places",
-      icon: "tdesign:location-filled",
-      link: `/p/${userId}/places`,
-    },
+
     {
       menu: "Reservation",
       icon: "mdi:file-document-box-tick-outline",
       link: `/p/${userId}/reservations`,
+      value: 2,
     },
     {
-      menu: "Your Listings",
+      menu: "My Listings",
       icon: "ion:list-sharp",
       link: `/p/${userId}/yourListings`,
+      value: 3,
     },
   ];
   const logoutMutation = useMutation({
@@ -68,13 +68,13 @@ const Header: FC<{
       return response.data;
     },
   });
+  const [tabValue, setTabValue] = useState(1);
   if (userQuery.isLoading) {
     return <div>Loading...</div>;
   }
   if (userQuery.isError) {
     return <div>Error fetching data</div>;
   }
-
   return (
     <div className="bg-gray-800 text-white">
       <div className="flex flex-col gap-6">
@@ -83,18 +83,67 @@ const Header: FC<{
             <div className="text-2xl font-bold">
               Par<span className="text-violet-500">ki</span>fy
             </div>
-            <div className="flex justify-between gap-10 text-xl ">
-              <Link href={`dashboard`}>
-                <div className="lg:p-2 hidden md:p1 md:flex">Home</div>
-              </Link>
-              <div className="lg:p-2 hidden md:p1 md:flex">Places</div>
-              <Link href={`reservations`}>
-                <div className="lg:p-2 hidden md:p1 md:flex">Reservation</div>
-              </Link>
-              <Link href={`yourListings`}>
-                <div className="lg:p-2 hidden md:p1 md:flex">Your listings</div>
-              </Link>
 
+            <div className="flex justify-between gap-10 text-xl tracking-wide ">
+              <Tabs
+                value={tabValue}
+                sx={{
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "#8b5cf6",
+                  },
+
+                  fontFamily: "inherit",
+                  // marginTop: "10rem",
+
+                  "& .MuiTabs-flexContainer": {
+                    gap: 3,
+                    "@media (max-width: 600px)": {
+                      gap: 0, // Adjust gap for mobile
+                    },
+                  },
+                }}
+              >
+                {" "}
+                <Tab
+                  label="Home"
+                  sx={{
+                    color: "white",
+                    fontWeight: "700",
+                    "&.Mui-selected": { color: "#8b5cf6" },
+                  }}
+                  value={1}
+                  onClick={() => {
+                    router.push("dashboard");
+                    setTabValue(1);
+                  }}
+                ></Tab>
+                <Tab
+                  label="Reservations"
+                  sx={{
+                    color: "white",
+                    fontWeight: "700",
+                    "&.Mui-selected": { color: "#8b5cf6" },
+                  }}
+                  value={2}
+                  onClick={() => {
+                    router.push("reservations");
+                    setTabValue(2);
+                  }}
+                ></Tab>
+                <Tab
+                  label="My Listings"
+                  sx={{
+                    color: "white",
+                    fontWeight: "700",
+                    "&.Mui-selected": { color: "#8b5cf6" },
+                  }}
+                  value={3}
+                  onClick={() => {
+                    router.push("yourListings");
+                    setTabValue(3);
+                  }}
+                ></Tab>
+              </Tabs>
               <Sheet>
                 <SheetTrigger asChild>
                   <img
@@ -123,7 +172,12 @@ const Header: FC<{
                     </div>
                     <div className="flex flex-col">
                       {sideBarItems.map((item) => (
-                        <div key={item.menu}>
+                        <div
+                          key={item.menu}
+                          onClick={() => {
+                            setTabValue(item.value);
+                          }}
+                        >
                           <SheetClose asChild>
                             <Link
                               href={item.link}
