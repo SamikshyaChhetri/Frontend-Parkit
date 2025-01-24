@@ -91,6 +91,9 @@ const Header: FC<{
                   "& .MuiTabs-indicator": {
                     backgroundColor: "#8b5cf6",
                   },
+                  "@media (max-width: 600px)": {
+                    display: "none",
+                  },
 
                   fontFamily: "inherit",
                   // marginTop: "10rem",
@@ -102,8 +105,8 @@ const Header: FC<{
                     },
                   },
                 }}
+                className="hidden"
               >
-                {" "}
                 <Tab
                   label="Home"
                   sx={{
@@ -144,6 +147,7 @@ const Header: FC<{
                   }}
                 ></Tab>
               </Tabs>
+
               <Sheet>
                 <SheetTrigger asChild>
                   <img
