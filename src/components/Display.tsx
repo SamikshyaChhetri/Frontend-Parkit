@@ -18,8 +18,8 @@ const Display: FC<{
 }> = ({ listingQueryData, userId }) => {
   const router = useRouter();
   return (
-    <div className="sm:px-5 bg-gray-800 sm:h-screen sm:pb-5  ">
-      <div className="grid sm:grid-cols-3  flex-wrap sm:flex-1 w-full gap-4 lg:grid-cols-5  ">
+    <div className="sm:px-5 bg-gray-800 sm:h-screen pb-5  ">
+      <div className="grid sm:grid-cols-2 flex-wrap sm:flex-1 md:grid-cols-2 w-full gap-10 lg:grid-cols-3 xl:grid-cols-4  ">
         {listingQueryData.map((item, index) => {
           return (
             <div

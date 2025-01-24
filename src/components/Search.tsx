@@ -7,10 +7,10 @@ const Search = () => {
   return (
     <div>
       <div className="flex justify-center py-6">
-        <div className="flex gap-3 sm:w-[70%] md:[50%]">
+        <div className="flex gap-3 w-full px-5">
           <Input
             type="search"
-            className="text-white"
+            className="text-white w-full"
             placeholder="Search for place..."
           />
           <Link href={`listings`}>

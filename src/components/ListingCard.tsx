@@ -15,11 +15,7 @@ const ListingCard: FC<{
       <Card className="bg-transparent cursor-pointer hover:shadow-md hover:scale-[1.07] ease-in-out transition-all border-none">
         <CardContent className="text-white flex flex-col h-fit p-0 ">
           <div>
-            <img
-              src={photo}
-              className="h-52 w-full rounded-xl md:w-72 "
-              alt=""
-            />
+            <img src={photo} className="h-52 w-full rounded-xl  " alt="" />
           </div>
           <div className="p-2">
             <div className="text-white">

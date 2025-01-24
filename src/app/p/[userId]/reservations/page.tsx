@@ -34,29 +34,31 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   });
 
   return (
-    <div className="bg-gray-800 h-screen px-5">
-      <div className="flex pl-14 text-2xl font-bold text-white py-7">
-        My Re<span className="text-violet-500">ser</span>vations
-      </div>
-
-      {userReservations.isSuccess && (
-        <div className="flex flex-wrap sm:flex-1 w-full gap-4   ">
-          {userReservations.data.data.length == 0 && <NoData></NoData>}
-          {userReservations.data?.data.map((item, index) => {
-            return (
-              <ListingCard
-                key={index}
-                city={item.listing.city} // fix these
-                country={item.listing.country}
-                photo={item.listing.photo}
-                price={item.listing.price}
-                date={item.date}
-                type="reservation"
-              ></ListingCard>
-            );
-          })}
+    <div className="bg-gray-800 h-screen  flex justify-center">
+      <div className="w-full px-10 sm:px-0 md:w-[80%]">
+        <div className="flex text-2xl font-bold text-white py-10">
+          My Re<span className="text-violet-500">ser</span>vations
         </div>
-      )}
+
+        {userReservations.isSuccess && (
+          <div className="grid sm:grid-cols-2 flex-wrap sm:flex-1 md:grid-cols-2 w-full gap-10 lg:grid-cols-3 xl:grid-cols-4  ">
+            {userReservations.data.data.length == 0 && <NoData></NoData>}
+            {userReservations.data?.data.map((item, index) => {
+              return (
+                <ListingCard
+                  key={index}
+                  city={item.listing.city} // fix these
+                  country={item.listing.country}
+                  photo={item.listing.photo}
+                  price={item.listing.price}
+                  date={item.date}
+                  type="reservation"
+                ></ListingCard>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
