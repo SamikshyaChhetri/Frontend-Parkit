@@ -10,8 +10,6 @@ const ProvidersWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: true,
-        refetchOnMount: true,
         retry(failureCount, error) {
           if (error instanceof AxiosError) {
             if (error.status == 401) {
