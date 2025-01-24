@@ -246,12 +246,24 @@ const Page: FC<{
           <div className="flex-1">
             <div className="font-semibold text-white">Reviews</div>
             <div className="   flex flex-col gap-2 w-full">
+              {reviewsOfListing.data.data.length == 0 && (
+                <div className="text-gray-500">
+                  No reviews yet
+                  <Icon
+                    icon="ic:outline-rate-review"
+                    width="24"
+                    height="24"
+                    className="inline mx-2"
+                  />
+                </div>
+              )}
               {reviewsOfListing.isSuccess &&
                 reviewsOfListing.data.data.slice(0, 3).map((review: any) => (
                   <div
                     key={review.id}
                     className="flex justify-between bg-gray-200 rounded-lg mt-2 items-center"
                   >
+                    {/* {userR.data.data.length == 0 && <NoData></NoData>} */}
                     <div className="flex justify-between items-center gap-2 p-2">
                       <img
                         src={review.reviewer.avatar}
