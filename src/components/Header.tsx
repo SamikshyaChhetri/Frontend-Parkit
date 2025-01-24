@@ -113,7 +113,7 @@ const Header: FC<{
                   }}
                   value={1}
                   onClick={() => {
-                    router.push("dashboard");
+                    router.push(`/p/${userId}/dashboard`);
                     setTabValue(1);
                   }}
                 ></Tab>
@@ -126,7 +126,7 @@ const Header: FC<{
                   }}
                   value={2}
                   onClick={() => {
-                    router.push("reservations");
+                    router.push(`/p/${userId}/reservations`);
                     setTabValue(2);
                   }}
                 ></Tab>
@@ -139,7 +139,7 @@ const Header: FC<{
                   }}
                   value={3}
                   onClick={() => {
-                    router.push("yourListings");
+                    router.push(`/p/${userId}/yourListings`);
                     setTabValue(3);
                   }}
                 ></Tab>
