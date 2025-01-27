@@ -42,7 +42,6 @@ const createSchema = z.object({
   city: z.string().min(1, "City cannot be empty"),
   country: z.string().min(1, "Country cannot be empty"),
   photo: z.object({}),
-  // .nonempty({ message: "You must upload at least one file" }),
 });
 
 const Page: FC<{
