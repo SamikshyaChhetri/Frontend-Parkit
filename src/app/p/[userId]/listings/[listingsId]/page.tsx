@@ -191,7 +191,16 @@ const Page: FC<{
                       </Button>
                     </DialogClose>
                     <div className="flex justify-end">
-                      <Button className="w-fit">Reserve</Button>
+                      <Button className="w-fit">
+                        Reserve{" "}
+                        {submitReservation.isPending && (
+                          <Icon
+                            icon="svg-spinners:270-ring"
+                            width="24"
+                            height="24"
+                          />
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </form>
