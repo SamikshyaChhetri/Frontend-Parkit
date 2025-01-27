@@ -314,7 +314,7 @@ const page: FC<{
                           </div>
                         </div>
                         <div className="flex gap-1 items-center">
-                          {review.rating}{" "}
+                          {review.rating}
                           <Icon icon="noto:star" width="20" height="20" />
                         </div>
                       </div>
