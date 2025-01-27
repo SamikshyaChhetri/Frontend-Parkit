@@ -206,7 +206,14 @@ const Header: FC<{
                           logoutMutation.mutate();
                         }}
                       >
-                        Logout
+                        Logout{" "}
+                        {logoutMutation.isPending && (
+                          <Icon
+                            icon="svg-spinners:270-ring"
+                            width="24"
+                            height="24"
+                          />
+                        )}
                       </Button>
                     </SheetClose>
                   </SheetFooter>
