@@ -4,9 +4,12 @@ import NoData from "@/components/NoData";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Link from "next/link";
 import React, { FC } from "react";
 
-const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
+const Page: FC<{ params: Promise<{ userId: string; listingsId: string }> }> = ({
+  params,
+}) => {
   const rparams = React.use(params);
 
   const userListings = useQuery({
@@ -14,7 +17,13 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     queryFn: async () => {
       const response: AxiosResponse<{
         message: string;
-        data: { city: string; country: string; photo: string; price: string }[];
+        data: {
+          city: string;
+          country: string;
+          photo: string;
+          price: string;
+          id: string;
+        }[];
       }> = await axiosInstance.get(`/listing/user/${rparams.userId}`);
       // console.log(response.data);
       return response.data;
@@ -36,14 +45,18 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             {userListings.data.data.length == 0 && <NoData></NoData>}
             {userListings.data?.data.map((item, index) => {
               return (
-                <ListingCard
+                <Link
                   key={index}
-                  city={item.city}
-                  country={item.country}
-                  photo={item.photo}
-                  price={item.price}
-                  type="listing"
-                ></ListingCard>
+                  href={`/p/${rparams.userId}/yourListings/update/${item.id}`}
+                >
+                  <ListingCard
+                    city={item.city}
+                    country={item.country}
+                    photo={item.photo}
+                    price={item.price}
+                    type="listing"
+                  ></ListingCard>
+                </Link>
               );
             })}
           </div>

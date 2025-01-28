@@ -95,7 +95,7 @@ const page: FC<{
     form.setValue("country", listingDetailQuery.data.data.country);
   }, [listingDetailQuery.data]);
   return (
-    <div className=" bg-gray-800">
+    <div className=" bg-gray-800 min-h-screen">
       <div className="flex flex-col  justify-center items-center ">
         <div className="flex flex-row pt-8 w-[75%]  ">
           <div className="flex flex-col gap-5 text-white">
@@ -284,7 +284,6 @@ const page: FC<{
             </div>
           </div>
           <div className="w-[48%] flex flex-col gap-2">
-            {" "}
             <div className="font-bold text-white">Reviews</div>
             <div className="flex flex-col gap-2">
               {listingDetailQuery.isSuccess &&

@@ -1,5 +1,6 @@
 import { capitalize } from "@/lib/utils";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Card, CardContent, CardDescription } from "./ui/card";
 const ListingCard: FC<{
@@ -10,6 +11,8 @@ const ListingCard: FC<{
   type?: "listing" | "reservation";
   date?: string;
 }> = ({ photo, city, country, price, type, date }) => {
+  const router = useRouter();
+
   return (
     <div>
       <Card className="bg-transparent cursor-pointer hover:shadow-md hover:scale-[1.07] ease-in-out transition-all border-none">
