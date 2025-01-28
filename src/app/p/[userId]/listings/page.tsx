@@ -1,4 +1,5 @@
 "use client";
+import RequiredLabel from "@/components/RequiredLabel";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
 } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -109,12 +109,9 @@ const Page: FC<{
             {/* <form> */}
             <div className="md:gap-5 grid md:grid-cols-2  sm:grid-cols-1 sm:gap-5 gap-5 ">
               <div className="sm:flex sm:flex-col gap-1 relative md:col-span-2 sm:col-span-1">
-                <Label
-                  htmlFor="description"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Description
-                </Label>
+                </RequiredLabel>
                 <Textarea
                   id="description"
                   className="border  rounded-md p-2"
@@ -123,12 +120,9 @@ const Page: FC<{
                 />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="type"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Type
-                </Label>
+                </RequiredLabel>
                 <Select onValueChange={(value) => form.setValue("type", value)}>
                   <SelectTrigger>
                     <SelectValue />
@@ -145,66 +139,45 @@ const Page: FC<{
                 </Select>
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="price"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Price
-                </Label>
+                </RequiredLabel>
                 <Input type="number" {...form.register("price")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="vehicles"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Number of Vehicles
-                </Label>
+                </RequiredLabel>
                 <Input type="number" {...form.register("noOfVehicle")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="city"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   City
-                </Label>
+                </RequiredLabel>
                 <Input {...form.register("city")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="street"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Street
-                </Label>
+                </RequiredLabel>
                 <Input {...form.register("street")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="country"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Country
-                </Label>
+                </RequiredLabel>
                 <Input {...form.register("country")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="zipcode"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Zip Code
-                </Label>
+                </RequiredLabel>
                 <Input {...form.register("zipcode")} />
               </div>
               <div className="flex flex-col gap-1 relative">
-                <Label
-                  htmlFor="image"
-                  className="absolute -top-2 left-3 bg-white px-2 text-gray-600"
-                >
+                <RequiredLabel className="absolute -top-2 left-3 bg-white px-2 text-gray-600">
                   Upload Image
-                </Label>
+                </RequiredLabel>
                 <Input {...form.register("photo")} type="file" />
               </div>
             </div>
