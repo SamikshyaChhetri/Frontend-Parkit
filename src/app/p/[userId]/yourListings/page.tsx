@@ -1,6 +1,7 @@
 "use client";
 import ListingCard from "@/components/ListingCard";
 import NoData from "@/components/NoData";
+import SkeletonView from "@/components/SkeletonView";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
@@ -31,15 +32,13 @@ const Page: FC<{ params: Promise<{ userId: string; listingsId: string }> }> = ({
   });
   userListings.isSuccess && console.log(userListings.data);
 
-  if (userListings.isLoading) return <div>Loading...</div>;
-
   return (
     <div className="bg-gray-800 min-h-screen flex justify-center">
       <div className="w-full px-10 sm:px-0 md:w-[80%]">
         <div className="flex  text-2xl font-bold text-white py-10">
           My Lis<span className="text-violet-500">tin</span>gs
         </div>
-
+        {userListings.isLoading && <SkeletonView></SkeletonView>}
         {userListings.isSuccess && (
           <div className="grid sm:grid-cols-2 flex-wrap sm:flex-1 md:grid-cols-2 w-full gap-10 lg:grid-cols-3 xl:grid-cols-4  ">
             {userListings.data.data.length == 0 && <NoData></NoData>}

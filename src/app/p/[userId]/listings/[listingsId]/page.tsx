@@ -116,14 +116,22 @@ const Page: FC<{
   };
 
   // Render loading or error state
-  if (
-    listingsQuery.isLoading ||
-    listingsQuery.isFetching ||
-    listingsQuery.isError
-  ) {
-    return <div>Loading...</div>;
+  if (listingsQuery.isError) {
+    return <div>Error on Fetching data</div>;
   }
 
+  if (listingsQuery.isLoading) {
+    return (
+      <div className="bg-gray-800 flex justify-center items-center h-screen">
+        <Icon
+          icon="svg-spinners:blocks-shuffle-3"
+          width="200"
+          height="200"
+          className="text-white"
+        />
+      </div>
+    );
+  }
   const listing = listingsQuery.data.data;
 
   return (

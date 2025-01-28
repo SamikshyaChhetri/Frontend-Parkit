@@ -1,6 +1,7 @@
 "use client";
 import ListingCard from "@/components/ListingCard";
 import NoData from "@/components/NoData";
+import SkeletonView from "@/components/SkeletonView";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
@@ -43,7 +44,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
         <div className="flex text-2xl font-bold text-white py-10">
           My Re<span className="text-violet-500">ser</span>vations
         </div>
-
+        {userReservations.isLoading && <SkeletonView></SkeletonView>}
         {userReservations.isSuccess && (
           <div className="grid sm:grid-cols-2 flex-wrap sm:flex-1 md:grid-cols-2 w-full gap-10 lg:grid-cols-3 xl:grid-cols-4  ">
             {userReservations.data.data.length == 0 && <NoData></NoData>}

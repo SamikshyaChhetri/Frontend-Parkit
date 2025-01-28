@@ -1,6 +1,7 @@
 "use client";
 import Display from "@/components/Display";
 import Search from "@/components/Search";
+import SkeletonView from "@/components/SkeletonView";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
@@ -18,14 +19,12 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     <div className="bg-gray-800 min-h-screen flex flex-col items-center gap-8 ">
       <div className="w-full px-10 sm:px-0 md:w-[80%] flex flex-col justify-center gap-10">
         <Search></Search>
-
-        {listingQuery.isSuccess ? (
+        {listingQuery.isLoading && <SkeletonView></SkeletonView>}
+        {listingQuery.isSuccess && (
           <Display
             listingQueryData={listingQuery.data.data}
             userId={rparams.userId}
           ></Display>
-        ) : (
-          "Fetching Listings"
         )}
       </div>
     </div>

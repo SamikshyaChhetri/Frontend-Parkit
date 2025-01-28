@@ -72,6 +72,7 @@ const page: FC<{
       toast.success(data.message);
     },
   });
+
   const onsubmit = () => {
     submitUpdatedListing.mutate();
   };
@@ -98,6 +99,19 @@ const page: FC<{
     form.setValue("city", listingDetailQuery.data.data.city);
     form.setValue("country", listingDetailQuery.data.data.country);
   }, [listingDetailQuery.data]);
+
+  if (listingDetailQuery.isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-800">
+        <Icon
+          icon="svg-spinners:blocks-shuffle-3"
+          width="200"
+          height="200"
+          className="text-white"
+        />
+      </div>
+    );
+  }
   return (
     <div className=" bg-gray-800 min-h-screen">
       <div className="flex flex-col  justify-center items-center ">

@@ -69,9 +69,7 @@ const Header: FC<{
     },
   });
   const [tabValue, setTabValue] = useState(1);
-  if (userQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
+
   if (userQuery.isError) {
     return <div>Error fetching data</div>;
   }
@@ -150,74 +148,83 @@ const Header: FC<{
 
               <Sheet>
                 <SheetTrigger asChild>
-                  <img
-                    src={userQuery.data.data.avatar}
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full cursor-pointer"
-                  />
+                  <div>
+                    {userQuery.isLoading && (
+                      <div className="w-10 h-10 rounded-full bg-gray-400"></div>
+                    )}
+                    {userQuery.isSuccess && (
+                      <img
+                        src={userQuery.data.data.avatar}
+                        alt="avatar"
+                        className="w-10 h-10 rounded-full cursor-pointer"
+                      />
+                    )}
+                  </div>
                 </SheetTrigger>
-                <SheetContent className="flex flex-col justify-between  rounded-lg m-2 bg-gray-800 text-white ">
-                  <div className="flex flex-col gap-8">
-                    <div className="flex flex-col gap-10">
-                      <SheetHeader className="flex gap-3 flex-row items-center">
-                        <img
-                          className=" w-14 rounded-full"
-                          src={userQuery.data.data.avatar}
-                        ></img>
-                        <div>
-                          <SheetTitle className="text-white">
-                            {userQuery.data.data.name}
-                          </SheetTitle>
-                          <SheetDescription>
-                            {userQuery.data.data.email}
-                          </SheetDescription>
-                        </div>
-                      </SheetHeader>
+                {userQuery.isSuccess && (
+                  <SheetContent className="flex flex-col justify-between  rounded-lg m-2 bg-gray-800 text-white ">
+                    <div className="flex flex-col gap-8">
+                      <div className="flex flex-col gap-10">
+                        <SheetHeader className="flex gap-3 flex-row items-center">
+                          <img
+                            className=" w-14 rounded-full"
+                            src={userQuery.data.data.avatar}
+                          ></img>
+                          <div>
+                            <SheetTitle className="text-white">
+                              {userQuery.data.data.name}
+                            </SheetTitle>
+                            <SheetDescription>
+                              {userQuery.data.data.email}
+                            </SheetDescription>
+                          </div>
+                        </SheetHeader>
+                      </div>
+                      <div className="flex flex-col">
+                        {sideBarItems.map((item) => (
+                          <div
+                            key={item.menu}
+                            onClick={() => {
+                              setTabValue(item.value);
+                            }}
+                          >
+                            <SheetClose asChild>
+                              <Link
+                                href={item.link}
+                                className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
+                              >
+                                <Icon icon={item.icon} width="24" height="24" />
+                                <div>{item.menu}</div>
+                              </Link>
+                            </SheetClose>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      {sideBarItems.map((item) => (
-                        <div
-                          key={item.menu}
+
+                    <SheetFooter>
+                      <SheetClose asChild>
+                        <Button
+                          type="submit"
+                          variant="outline"
+                          className="text-white bg-gray-800 w-full py-5"
                           onClick={() => {
-                            setTabValue(item.value);
+                            logoutMutation.mutate();
                           }}
                         >
-                          <SheetClose asChild>
-                            <Link
-                              href={item.link}
-                              className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
-                            >
-                              <Icon icon={item.icon} width="24" height="24" />
-                              <div>{item.menu}</div>
-                            </Link>
-                          </SheetClose>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <SheetFooter>
-                    <SheetClose asChild>
-                      <Button
-                        type="submit"
-                        variant="outline"
-                        className="text-white bg-gray-800 w-full py-5"
-                        onClick={() => {
-                          logoutMutation.mutate();
-                        }}
-                      >
-                        Logout{" "}
-                        {logoutMutation.isPending && (
-                          <Icon
-                            icon="svg-spinners:270-ring"
-                            width="24"
-                            height="24"
-                          />
-                        )}
-                      </Button>
-                    </SheetClose>
-                  </SheetFooter>
-                </SheetContent>
+                          Logout{" "}
+                          {logoutMutation.isPending && (
+                            <Icon
+                              icon="svg-spinners:270-ring"
+                              width="24"
+                              height="24"
+                            />
+                          )}
+                        </Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                )}
               </Sheet>
             </div>
           </div>
