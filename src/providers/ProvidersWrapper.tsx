@@ -1,4 +1,5 @@
 "use client";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -36,11 +37,13 @@ const ProvidersWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   });
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Toaster richColors />
+    <>
+      <QueryClientProvider client={queryClient}>
+        <Toaster richColors />
 
-      {children}
-    </QueryClientProvider>
+        {children}
+      </QueryClientProvider>
+    </>
   );
 };
 export default ProvidersWrapper;
