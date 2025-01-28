@@ -4,6 +4,8 @@ import NoData from "@/components/NoData";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
@@ -19,6 +21,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             country: string;
             photo: string;
             price: string;
+            id: string;
           };
           date: string;
         }[];
@@ -32,6 +35,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       return response.data;
     },
   });
+  const router = useRouter();
 
   return (
     <div className="bg-gray-800 h-screen  flex justify-center">
@@ -45,15 +49,19 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             {userReservations.data.data.length == 0 && <NoData></NoData>}
             {userReservations.data?.data.map((item, index) => {
               return (
-                <ListingCard
+                <Link
+                  href={`/p/${rparams.userId}/listings/${item.listing.id}`}
                   key={index}
-                  city={item.listing.city} // fix these
-                  country={item.listing.country}
-                  photo={item.listing.photo}
-                  price={item.listing.price}
-                  date={item.date}
-                  type="reservation"
-                ></ListingCard>
+                >
+                  <ListingCard
+                    city={item.listing.city} // fix these
+                    country={item.listing.country}
+                    photo={item.listing.photo}
+                    price={item.listing.price}
+                    date={item.date}
+                    type="reservation"
+                  ></ListingCard>
+                </Link>
               );
             })}
           </div>
