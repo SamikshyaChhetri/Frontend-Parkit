@@ -128,7 +128,7 @@ const page: FC<{
                       rows={4}
                       {...form.register("description")}
                     />
-                    <Label>
+                    <Label className="text-red-500">
                       {form.formState.errors["description"]?.message}
                     </Label>
                   </div>
@@ -166,7 +166,9 @@ const page: FC<{
                       Price
                     </Label>
                     <Input {...form.register("price")} className="text-white" />
-                    <Label>{form.formState.errors["price"]?.message}</Label>
+                    <Label className="text-red-500">
+                      {form.formState.errors["price"]?.message}
+                    </Label>
                   </div>
                   <div className="flex flex-col gap-1 relative">
                     <Label
@@ -191,7 +193,9 @@ const page: FC<{
                       City
                     </Label>
                     <Input {...form.register("city")} className="text-white" />
-                    <Label>{form.formState.errors["city"]?.message}</Label>
+                    <Label className="text-red-500">
+                      {form.formState.errors["city"]?.message}
+                    </Label>
                   </div>
                   <div className="flex flex-col gap-1 relative">
                     <Label
@@ -204,7 +208,9 @@ const page: FC<{
                       {...form.register("street")}
                       className="text-white"
                     />
-                    <Label>{form.formState.errors["street"]?.message}</Label>
+                    <Label className="text-red-500">
+                      {form.formState.errors["street"]?.message}
+                    </Label>
                   </div>
                   <div className="flex flex-col gap-1 relative">
                     <Label
@@ -217,7 +223,9 @@ const page: FC<{
                       {...form.register("country")}
                       className="text-white"
                     />
-                    <Label>{form.formState.errors["country"]?.message}</Label>
+                    <Label className="text-red-500">
+                      {form.formState.errors["country"]?.message}
+                    </Label>
                   </div>
                   <div className="flex flex-col gap-1 relative">
                     <Label
@@ -230,7 +238,9 @@ const page: FC<{
                       {...form.register("zipcode")}
                       className="text-white"
                     />
-                    <Label>{form.formState.errors["zipcode"]?.message}</Label>
+                    <Label className="text-red-500">
+                      {form.formState.errors["zipcode"]?.message}
+                    </Label>
                   </div>
                 </div>
               </CardContent>
