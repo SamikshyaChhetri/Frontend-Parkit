@@ -3,6 +3,13 @@
 import RequiredLabel from "@/components/RequiredLabel";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -20,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { FC, use, useEffect } from "react";
+import { FC, use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -58,7 +65,8 @@ const page: FC<{
     },
     resolver: zodResolver(createSchema),
   });
-
+  const [dialogOpen, setdialogOpen] = useState(false);
+  const [photo, setPhoto] = useState(null);
   const submitUpdatedListing = useMutation({
     mutationFn: async () => {
       const data = form.getValues();
@@ -76,6 +84,24 @@ const page: FC<{
   const onsubmit = () => {
     submitUpdatedListing.mutate();
   };
+
+  const updatePhoto = useMutation({
+    mutationFn: async () => {
+      // const newPhoto = photoInputRef.current?.value[0];
+      // console.log(photoInputRef.current);
+      if (!photo) {
+        return toast.error("Please select a photo");
+      }
+      const formData = new FormData();
+      formData.append("photo", photo);
+
+      const response = await axiosInstance.patch(
+        `/listing/${rparams.listingsId}/photo`,
+        formData
+      );
+      return response.data;
+    },
+  });
   const rparams = use(params);
   const listingDetailQuery = useQuery({
     queryKey: ["listingDetailQuery"],
@@ -125,8 +151,42 @@ const page: FC<{
                 className="h-[50%]    rounded-lg flex"
               />
             )}
-
-            <Button>Change Image</Button>
+            <Dialog
+              open={dialogOpen}
+              onOpenChange={() => {
+                setdialogOpen(false);
+              }}
+            >
+              <DialogContent>
+                <DialogTitle>Update Photo</DialogTitle>
+                <DialogDescription>
+                  <Input
+                    type="file"
+                    accept=".jpg, .jpeg, .png"
+                    onChange={(e) => {
+                      setPhoto(e.target.value);
+                    }}
+                  />
+                </DialogDescription>
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      updatePhoto.mutate();
+                    }}
+                  >
+                    Update
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            <Button
+              onClick={() => {
+                setdialogOpen(true);
+              }}
+            >
+              Change Image
+            </Button>
           </div>
           <div className="md:w-[80%] sm:w-[70%] w-[100%] flex flex-col  ">
             <form onSubmit={form.handleSubmit(onsubmit)}>
@@ -228,10 +288,7 @@ const page: FC<{
                     </Label>
                   </div>
                   <div className="flex flex-col gap-1 relative">
-                    <RequiredLabel
-                      // htmlFor="zipcode"
-                      className="absolute -top-2 left-3 bg-gray-800 px-2 text-white font-bold"
-                    >
+                    <RequiredLabel className="absolute -top-2 left-3 bg-gray-800 px-2 text-white font-bold">
                       Zip Code
                     </RequiredLabel>
                     <Input
