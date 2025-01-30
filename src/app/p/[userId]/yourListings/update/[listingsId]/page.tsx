@@ -65,6 +65,12 @@ const page: FC<{
     },
     resolver: zodResolver(createSchema),
   });
+
+  const photoForm = useForm({
+    defaultValues: {
+      photo: "",
+    },
+  });
   const [dialogOpen, setdialogOpen] = useState(false);
   const [photo, setPhoto] = useState(null);
   const submitUpdatedListing = useMutation({
@@ -85,23 +91,6 @@ const page: FC<{
     submitUpdatedListing.mutate();
   };
 
-  const updatePhoto = useMutation({
-    mutationFn: async () => {
-      // const newPhoto = photoInputRef.current?.value[0];
-      // console.log(photoInputRef.current);
-      if (!photo) {
-        return toast.error("Please select a photo");
-      }
-      const formData = new FormData();
-      formData.append("photo", photo);
-
-      const response = await axiosInstance.patch(
-        `/listing/${rparams.listingsId}/photo`,
-        formData
-      );
-      return response.data;
-    },
-  });
   const rparams = use(params);
   const listingDetailQuery = useQuery({
     queryKey: ["listingDetailQuery"],
@@ -126,6 +115,28 @@ const page: FC<{
     form.setValue("country", listingDetailQuery.data.data.country);
   }, [listingDetailQuery.data]);
 
+  const updatePhotoMutation = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData();
+      formData.append("photo", photoForm.getValues("photo")[0]);
+
+      const response = await axiosInstance.patch(
+        `/listing/${rparams.listingsId}/photo`,
+        formData
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Photo updated successfully");
+      setdialogOpen(false);
+      listingDetailQuery.refetch();
+    },
+    onError: () => {
+      toast.error("Error on updating photo");
+      setdialogOpen(false);
+    },
+  });
+
   if (listingDetailQuery.isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-800">
@@ -138,6 +149,7 @@ const page: FC<{
       </div>
     );
   }
+
   return (
     <div className=" bg-gray-800 min-h-screen">
       <div className="flex flex-col  justify-center items-center ">
@@ -157,28 +169,40 @@ const page: FC<{
                 setdialogOpen(false);
               }}
             >
-              <DialogContent>
-                <DialogTitle>Update Photo</DialogTitle>
-                <DialogDescription>
-                  <Input
-                    type="file"
-                    accept=".jpg, .jpeg, .png"
-                    onChange={(e) => {
-                      setPhoto(e.target.value);
-                    }}
-                  />
-                </DialogDescription>
-                <DialogFooter>
-                  <Button
-                    type="submit"
-                    onClick={() => {
-                      updatePhoto.mutate();
-                    }}
-                  >
-                    Update
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
+              <form
+                onSubmit={photoForm.handleSubmit(() => {
+                  updatePhotoMutation.mutate();
+                })}
+              >
+                <DialogContent>
+                  <DialogTitle>Update Photo</DialogTitle>
+                  <DialogDescription>
+                    <Input
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...photoForm.register("photo")}
+                    />
+                  </DialogDescription>
+                  <DialogFooter>
+                    <Button
+                      type="submit"
+                      disabled={updatePhotoMutation.isPending}
+                      onClick={() => {
+                        updatePhotoMutation.mutate();
+                      }}
+                    >
+                      {updatePhotoMutation.isPending && (
+                        <Icon
+                          icon="svg-spinners:270-ring"
+                          width="24"
+                          height="24"
+                        />
+                      )}
+                      Update
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </form>
             </Dialog>
             <Button
               onClick={() => {
