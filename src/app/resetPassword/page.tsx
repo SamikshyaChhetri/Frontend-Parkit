@@ -1,4 +1,5 @@
 "use client";
+import RequiredLabel from "@/components/RequiredLabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,6 +12,9 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 
 const page = () => {
+  const [isOpen, setOpen] = useState(false);
+  const [isOpenConfirm, setOpenConfirm] = useState(false);
+
   const [step, setStep] = useState(2);
   return (
     <div className="flex justify-center items-center">
@@ -71,6 +75,37 @@ const page = () => {
               </InputOTPGroup>
             </InputOTP>
           </div>
+          <div className="w-full flex flex-col gap-2 relative">
+            <RequiredLabel>Enter new password</RequiredLabel>
+            <Input type={isOpen ? "text" : "password"}></Input>
+            <Icon
+              icon={isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"}
+              className="absolute top-[30px] right-2 cursor-pointer"
+              width="20"
+              height="20"
+              onClick={() => {
+                setOpen(isOpen ? false : true);
+              }}
+            />
+          </div>
+          <div className="w-full flex flex-col gap-2 relative">
+            <RequiredLabel>Confirm new password</RequiredLabel>
+            <Input type={isOpenConfirm ? "text" : "password"}></Input>
+            <Icon
+              icon={
+                isOpenConfirm
+                  ? "heroicons-solid:eye"
+                  : "heroicons-solid:eye-off"
+              }
+              className="absolute top-[30px] right-2 cursor-pointer"
+              width="20"
+              height="20"
+              onClick={() => {
+                setOpenConfirm(isOpenConfirm ? false : true);
+              }}
+            />
+          </div>
+          <Button className="w-full">Reset</Button>
         </div>
       )}
     </div>

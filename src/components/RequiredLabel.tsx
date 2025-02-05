@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Label } from "./ui/label";
 
-const RequiredLabel: FC<{ children: string; className: string }> = ({
+const RequiredLabel: FC<{ children: string; className?: string }> = ({
   children,
   className,
 }) => {
