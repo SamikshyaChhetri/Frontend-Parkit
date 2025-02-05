@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,9 +22,10 @@ const ResetSchema = z.object({
   email: z.string().email("Please enter valid email ID"),
 });
 const page = () => {
+  const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirm, setOpenConfirm] = useState(false);
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const form = useForm({
     defaultValues: {
       email: "",
@@ -39,9 +41,18 @@ const page = () => {
     },
   });
   const onsubmit = () => {
-    resetPwMutation.mutate();
+    if (step == 1) {
+      emailMutation.mutate();
+    }
+    if (step == 2) {
+      if (form2.getValues("password") == form2.getValues("confirmPassword")) {
+        resetPwMutation.mutate();
+      } else {
+        toast.error("Password doesnot match");
+      }
+    }
   };
-  const resetPwMutation = useMutation({
+  const emailMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
       const response = await axios.post(`${BACKEND_URL}/auth/reset`, value);
@@ -50,6 +61,24 @@ const page = () => {
     onSuccess: (data: { message: string }) => {
       toast.success(data.message);
       setStep(2);
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      toast.error(err.response?.data.message);
+    },
+  });
+
+  const resetPwMutation = useMutation({
+    mutationFn: async () => {
+      const value = form2.getValues();
+      const response = await axios.post(`${BACKEND_URL}/auth/reset`, {
+        ...value,
+        email: form.getValues("email"),
+      });
+      return response.data;
+    },
+    onSuccess: (data: { message: string }) => {
+      toast.success(data.message);
+      router.push("/login");
     },
     onError: (err: AxiosError<{ message: string }>) => {
       toast.error(err.response?.data.message);
@@ -84,8 +113,8 @@ const page = () => {
             <label className="text-red-500 text-sm">
               {form.formState.errors.email?.message}
             </label>
-            <Button disabled={resetPwMutation.isPending}>
-              {resetPwMutation.isPending && (
+            <Button disabled={emailMutation.isPending}>
+              {emailMutation.isPending && (
                 <Icon icon="svg-spinners:180-ring" width="24" height="24" />
               )}
               Send Request
@@ -174,7 +203,12 @@ const page = () => {
                 }}
               />
             </div>
-            <Button className="w-full">Reset</Button>
+            <Button disabled={resetPwMutation.isPending} className="w-full">
+              {resetPwMutation.isPending && (
+                <Icon icon="svg-spinners:180-ring" width="24" height="24" />
+              )}
+              Reset
+            </Button>{" "}
           </form>
         </div>
       )}
