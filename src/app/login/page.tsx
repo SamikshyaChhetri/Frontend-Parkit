@@ -121,7 +121,7 @@ const Page = () => {
                 </div>
                 <Button disabled={submitDataMutation.isPending}>
                   {submitDataMutation.isPending && (
-                    <Icon icon="svg-spinners:270-ring" width="24" height="24" />
+                    <Icon icon="svg-spinners:180-ring" width="24" height="24" />
                   )}
                   Login
                 </Button>
