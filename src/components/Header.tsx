@@ -215,7 +215,7 @@ const Header: FC<{
                           Logout{" "}
                           {logoutMutation.isPending && (
                             <Icon
-                              icon="svg-spinners:270-ring"
+                              icon="svg-spinners:180-ring"
                               width="24"
                               height="24"
                             />

@@ -206,7 +206,7 @@ const Page: FC<{
                         Reserve
                         {submitReservation.isPending && (
                           <Icon
-                            icon="svg-spinners:270-ring"
+                            icon="svg-spinners:180-ring"
                             width="24"
                             height="24"
                           />
@@ -359,7 +359,7 @@ const Page: FC<{
               >
                 Submit{" "}
                 {submitReview.isPending && (
-                  <Icon icon="svg-spinners:270-ring" width="24" height="24" />
+                  <Icon icon="svg-spinners:180-ring" width="24" height="24" />
                 )}
               </Button>
             </div>

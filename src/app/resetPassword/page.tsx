@@ -12,19 +12,31 @@ import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 const ResetSchema = z.object({
   email: z.string().email("Please enter valid email ID"),
 });
 const page = () => {
+  const [isOpen, setOpen] = useState(false);
+  const [isOpenConfirm, setOpenConfirm] = useState(false);
+  const [step, setStep] = useState(2);
   const form = useForm({
     defaultValues: {
       email: "",
     },
     resolver: zodResolver(ResetSchema),
+  });
+
+  const form2 = useForm({
+    defaultValues: {
+      otp: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
   const onsubmit = () => {
     resetPwMutation.mutate();
@@ -35,12 +47,14 @@ const page = () => {
       const response = await axios.post(`${BACKEND_URL}/auth/reset`, value);
       return response.data;
     },
+    onSuccess: (data: { message: string }) => {
+      toast.success(data.message);
+      setStep(2);
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      toast.error(err.response?.data.message);
+    },
   });
-
-  const [isOpen, setOpen] = useState(false);
-  const [isOpenConfirm, setOpenConfirm] = useState(false);
-
-  const [step, setStep] = useState(1);
   return (
     <div className="flex justify-center items-center">
       {step == 1 && (
@@ -67,7 +81,15 @@ const page = () => {
             className="flex flex-col gap-2"
           >
             <Input placeholder="Email" {...form.register("email")}></Input>
-            <Button>Send Request</Button>
+            <label className="text-red-500 text-sm">
+              {form.formState.errors.email?.message}
+            </label>
+            <Button disabled={resetPwMutation.isPending}>
+              {resetPwMutation.isPending && (
+                <Icon icon="svg-spinners:180-ring" width="24" height="24" />
+              )}
+              Send Request
+            </Button>
           </form>
           <div className="flex flex-row justify-center">
             <Icon
@@ -90,52 +112,70 @@ const page = () => {
             />
           </div>
           <div>Please enter the OTP we sent to your email </div>
-          <div>
-            <InputOTP maxLength={6}>
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-              </InputOTPGroup>
-              <InputOTPSeparator />
-              <InputOTPGroup>
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-          <div className="w-full flex flex-col gap-2 relative">
-            <RequiredLabel>Enter new password</RequiredLabel>
-            <Input type={isOpen ? "text" : "password"}></Input>
-            <Icon
-              icon={isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"}
-              className="absolute top-[30px] right-2 cursor-pointer"
-              width="20"
-              height="20"
-              onClick={() => {
-                setOpen(isOpen ? false : true);
-              }}
-            />
-          </div>
-          <div className="w-full flex flex-col gap-2 relative">
-            <RequiredLabel>Confirm new password</RequiredLabel>
-            <Input type={isOpenConfirm ? "text" : "password"}></Input>
-            <Icon
-              icon={
-                isOpenConfirm
-                  ? "heroicons-solid:eye"
-                  : "heroicons-solid:eye-off"
-              }
-              className="absolute top-[30px] right-2 cursor-pointer"
-              width="20"
-              height="20"
-              onClick={() => {
-                setOpenConfirm(isOpenConfirm ? false : true);
-              }}
-            />
-          </div>
-          <Button className="w-full">Reset</Button>
+          <form
+            className="flex flex-col gap-3 w-full"
+            onSubmit={form2.handleSubmit(onsubmit)}
+          >
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={6}
+                onChange={(value) => {
+                  form2.setValue("otp", value);
+                }}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <div className="w-full flex flex-col gap-2 relative">
+              <RequiredLabel>Enter new password</RequiredLabel>
+              <Input
+                type={isOpen ? "text" : "password"}
+                {...form2.register("password")}
+              ></Input>
+              <Icon
+                icon={
+                  isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
+                }
+                className="absolute top-[30px] right-2 cursor-pointer"
+                width="20"
+                height="20"
+                onClick={() => {
+                  setOpen(isOpen ? false : true);
+                }}
+              />
+            </div>
+            <div className="w-full flex flex-col gap-2 relative">
+              <RequiredLabel>Confirm new password</RequiredLabel>
+              <Input
+                type={isOpenConfirm ? "text" : "password"}
+                {...form2.register("confirmPassword")}
+              ></Input>
+              <Icon
+                icon={
+                  isOpenConfirm
+                    ? "heroicons-solid:eye"
+                    : "heroicons-solid:eye-off"
+                }
+                className="absolute top-[30px] right-2 cursor-pointer"
+                width="20"
+                height="20"
+                onClick={() => {
+                  setOpenConfirm(isOpenConfirm ? false : true);
+                }}
+              />
+            </div>
+            <Button className="w-full">Reset</Button>
+          </form>
         </div>
       )}
     </div>

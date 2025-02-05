@@ -192,7 +192,7 @@ const page: FC<{
                     >
                       {updatePhotoMutation.isPending && (
                         <Icon
-                          icon="svg-spinners:270-ring"
+                          icon="svg-spinners:180-ring"
                           width="24"
                           height="24"
                         />
@@ -328,7 +328,7 @@ const page: FC<{
                 <Button disabled={submitUpdatedListing.isPending}>
                   Update
                   {submitUpdatedListing.isPending && (
-                    <Icon icon="svg-spinners:270-ring" width="24" height="24" />
+                    <Icon icon="svg-spinners:180-ring" width="24" height="24" />
                   )}
                 </Button>
               </CardFooter>
