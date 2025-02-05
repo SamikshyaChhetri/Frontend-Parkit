@@ -117,7 +117,9 @@ const Page = () => {
                     <Checkbox id="remember" />
                     <Label htmlFor="remember">Remember me</Label>
                   </div>
-                  <div className="text-sm">Forgot password?</div>
+                  <Link href={"/resetPassword"} className="text-sm">
+                    Forgot password?
+                  </Link>
                 </div>
                 <Button disabled={submitDataMutation.isPending}>
                   {submitDataMutation.isPending && (

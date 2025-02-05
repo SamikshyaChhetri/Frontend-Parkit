@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -120,14 +121,14 @@ const page = () => {
               Send Request
             </Button>
           </form>
-          <div className="flex flex-row justify-center">
+          <Link href={"/login"} className="flex flex-row justify-center">
             <Icon
               icon="iconamoon:arrow-left-2-duotone"
               width="24"
               height="24"
             />
             Return to sign in
-          </div>
+          </Link>
         </div>
       )}
       {step == 2 && (
