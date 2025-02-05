@@ -8,14 +8,39 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { BACKEND_URL } from "@/lib/env";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
-
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+const ResetSchema = z.object({
+  email: z.string().email("Please enter valid email ID"),
+});
 const page = () => {
+  const form = useForm({
+    defaultValues: {
+      email: "",
+    },
+    resolver: zodResolver(ResetSchema),
+  });
+  const onsubmit = () => {
+    resetPwMutation.mutate();
+  };
+  const resetPwMutation = useMutation({
+    mutationFn: async () => {
+      const value = form.getValues();
+      const response = await axios.post(`${BACKEND_URL}/auth/reset`, value);
+      return response.data;
+    },
+  });
+
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirm, setOpenConfirm] = useState(false);
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   return (
     <div className="flex justify-center items-center">
       {step == 1 && (
@@ -37,8 +62,13 @@ const page = () => {
               will email you a link to reset your password.
             </div>
           </div>
-          <Input placeholder="Email"></Input>
-          <Button>Send Request</Button>
+          <form
+            onSubmit={form.handleSubmit(onsubmit)}
+            className="flex flex-col gap-2"
+          >
+            <Input placeholder="Email" {...form.register("email")}></Input>
+            <Button>Send Request</Button>
+          </form>
           <div className="flex flex-row justify-center">
             <Icon
               icon="iconamoon:arrow-left-2-duotone"
