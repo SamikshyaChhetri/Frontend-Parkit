@@ -240,7 +240,10 @@ const page: FC<{
                     </RequiredLabel>
                     <Select
                       value={form.watch("type")}
-                      onValueChange={(value) => form.setValue("type", value)}
+                      onValueChange={(value) => {
+                        if (!value) return;
+                        form.setValue("type", value);
+                      }}
                     >
                       <SelectTrigger className="text-white">
                         <SelectValue />
