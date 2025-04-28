@@ -106,6 +106,7 @@ const page: FC<{
     if (!listingDetailQuery.isSuccess) return;
     form.setValue("description", listingDetailQuery.data.data.description);
     form.setValue("type", listingDetailQuery.data.data.type);
+    console.log(listingDetailQuery.data.data.type);
     form.setValue("noOfVehicle", listingDetailQuery.data.data.noOfVehicle);
     form.setValue("street", listingDetailQuery.data.data.street);
     form.setValue("zipcode", listingDetailQuery.data.data.zipcode);
