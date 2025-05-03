@@ -71,6 +71,7 @@ const page: FC<{
     },
   });
   const [dialogOpen, setdialogOpen] = useState(false);
+  const [listingToDelete, setListingToDelete] = useState(false);
   const [photo, setPhoto] = useState(null);
   const submitUpdatedListing = useMutation({
     mutationFn: async () => {
@@ -329,7 +330,42 @@ const page: FC<{
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between pr-0">
-                <Button variant={"destructive"}>Delete</Button>
+                <Button
+                  variant={"destructive"}
+                  type="button"
+                  onClick={() => {
+                    setListingToDelete(true);
+                  }}
+                >
+                  Delete
+                </Button>
+                <Dialog open={listingToDelete}>
+                  <DialogContent className="bg-slate-800 border-none">
+                    <DialogTitle className="flex items-center justify-center ">
+                      <Icon
+                        icon="uiw:warning"
+                        className="text-destructive"
+                        width="50"
+                        height="50"
+                      />
+                    </DialogTitle>
+                    <DialogDescription className="text-center">
+                      Are you sure you want to delete this listing
+                    </DialogDescription>
+                    <DialogFooter className="flex justify-between">
+                      <Button
+                        variant={"secondary"}
+                        className="!shadow-none"
+                        onClick={() => {
+                          setListingToDelete(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button variant={"destructive"}>Delete</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
 
                 <Button disabled={submitUpdatedListing.isPending}>
                   Update
