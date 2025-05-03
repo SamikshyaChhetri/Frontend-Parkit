@@ -328,7 +328,9 @@ const page: FC<{
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-end">
+              <CardFooter className="flex justify-between pr-0">
+                <Button variant={"destructive"}>Delete</Button>
+
                 <Button disabled={submitUpdatedListing.isPending}>
                   Update
                   {submitUpdatedListing.isPending && (
