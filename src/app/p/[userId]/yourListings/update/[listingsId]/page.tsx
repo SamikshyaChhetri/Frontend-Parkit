@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { FC, use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -91,6 +92,23 @@ const page: FC<{
     submitUpdatedListing.mutate();
   };
 
+  const router = useRouter();
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosInstance.delete(
+        `/listing/${rparams.listingsId}`
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Listing deleted successfully");
+      setListingToDelete(false);
+      router.push(`/p/${rparams.userId}/yourListings`);
+    },
+    onError: () => {
+      toast.error("Failed to delete");
+    },
+  });
   const rparams = use(params);
   const listingDetailQuery = useQuery({
     queryKey: ["listingDetailQuery"],
@@ -339,7 +357,12 @@ const page: FC<{
                 >
                   Delete
                 </Button>
-                <Dialog open={listingToDelete}>
+                <Dialog
+                  open={listingToDelete}
+                  onOpenChange={() => {
+                    setListingToDelete(false);
+                  }}
+                >
                   <DialogContent className="bg-slate-800 border-none">
                     <DialogTitle className="flex items-center justify-center ">
                       <Icon
@@ -362,7 +385,23 @@ const page: FC<{
                       >
                         Cancel
                       </Button>
-                      <Button variant={"destructive"}>Delete</Button>
+
+                      <Button
+                        disabled={deleteMutation.isPending}
+                        variant={"destructive"}
+                        onClick={() => {
+                          deleteMutation.mutate();
+                        }}
+                      >
+                        Delete
+                        {deleteMutation.isPending && (
+                          <Icon
+                            icon="svg-spinners:180-ring"
+                            width="24"
+                            height="24"
+                          />
+                        )}
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
