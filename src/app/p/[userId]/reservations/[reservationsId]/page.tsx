@@ -32,6 +32,7 @@ const Page: FC<{
         data: {
           date: string;
           listing: {
+            id: string;
             photo: string;
             description: string;
             type: string;
@@ -66,6 +67,17 @@ const Page: FC<{
       router.push(`/p/${rparams.userId}/reservations`);
     },
   });
+  if (reservationsQuery.isLoading)
+    return (
+      <div className="bg-gray-800 flex justify-center items-center h-screen">
+        <Icon
+          icon="svg-spinners:blocks-shuffle-3"
+          width="200"
+          height="200"
+          className="text-white"
+        />
+      </div>
+    );
   return (
     <div className="bg-slate-800 min-h-screen text-white flex justify-center items-center">
       <div className=" p-10 rounded-2xl shadow-xl flex flex-col gap-8 w-[90%] max-w-5xl">
@@ -81,6 +93,7 @@ const Page: FC<{
               onClick={() => {
                 deleteMutation.mutate();
               }}
+              disabled={deleteMutation.isPending}
             >
               {deleteMutation.isPending && (
                 <Icon
@@ -110,7 +123,7 @@ const Page: FC<{
               </p>
               <Link
                 className="border border-gray-400 px-2 py-1 w-fit flex justify-center items-center gap-1"
-                href={`/p/${rparams.userId}/listings/${rparams.listingsId}`}
+                href={`/p/${rparams.userId}/listings/${reservationsQuery.data?.data.listing.id}`}
               >
                 View listing{" "}
                 <SquareArrowOutUpRight size={20}></SquareArrowOutUpRight>
