@@ -18,7 +18,7 @@ import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import moment from "moment";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 const Page: FC<{
@@ -35,6 +35,7 @@ const Page: FC<{
       listingId: rparams.listingsId,
     },
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   // Initialize the form with default values
   const form = useForm({
@@ -97,6 +98,7 @@ const Page: FC<{
     onSuccess: () => {
       toast.success("Reservation submitted successfully!");
       reserveForm.reset();
+      setIsOpen(false);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message);
@@ -152,7 +154,7 @@ const Page: FC<{
             {capitalize(listing.street)}, {capitalize(listing.city)}
           </div>
           <div className="flex flex-col gap-2">
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
                 <Button>Reserve</Button>
               </DialogTrigger>
