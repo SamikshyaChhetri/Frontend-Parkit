@@ -91,7 +91,7 @@ const Navbar = () => {
         Features we <span className="text-purple-500"> &nbsp; Offer</span>
       </div>
       <div className="flex justify-between mx-14">
-        <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2">
           <Features
             title="Search by Location"
             description="Quickly find parking spaces near landmarks, addresses, or cities"
@@ -124,9 +124,7 @@ const Navbar = () => {
             }
             color="bg-gray-300"
           ></Features>
-        </div>
 
-        <div>
           <Features
             title="Easy Listing Management"
             description="Add and manage parking spaces with details like location, price, and availability."
