@@ -54,7 +54,7 @@ const Navbar = () => {
               ></Searchbox>
             </Link>
           </div>
-          <div>
+          <div className="hidden md:block">
             <img src="./park.png" alt="parking" />
           </div>
         </div>
