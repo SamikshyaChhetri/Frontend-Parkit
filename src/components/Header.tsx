@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Tab, Tabs } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { BookMarked, House, List } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
@@ -27,20 +28,20 @@ const Header: FC<{
   const sideBarItems = [
     {
       menu: "Home",
-      icon: "clarity:home-solid",
+      icon: <House></House>,
       link: `/p/${userId}/dashboard`,
       value: 1,
     },
 
     {
       menu: "Reservation",
-      icon: "mdi:file-document-box-tick-outline",
+      icon: <BookMarked></BookMarked>,
       link: `/p/${userId}/reservations`,
       value: 2,
     },
     {
       menu: "My Listings",
-      icon: "ion:list-sharp",
+      icon: <List></List>,
       link: `/p/${userId}/yourListings`,
       value: 3,
     },
@@ -81,7 +82,6 @@ const Header: FC<{
             <div className="text-2xl font-bold">
               Par<span className="text-violet-500">ki</span>fy
             </div>
-
             <div className="flex justify-between gap-10 text-xl tracking-wide ">
               <Tabs
                 value={tabValue}
@@ -193,7 +193,8 @@ const Header: FC<{
                                 href={item.link}
                                 className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
                               >
-                                <Icon icon={item.icon} width="24" height="24" />
+                                {/* <Icon icon={item.icon} width="24" height="24" /> */}
+                                {item.icon}
                                 <div>{item.menu}</div>
                               </Link>
                             </SheetClose>
