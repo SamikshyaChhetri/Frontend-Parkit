@@ -10,11 +10,21 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
+import { CountryDropdown } from "@/components/country";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  Earth,
+  Lock,
+  Mail,
+  MapPin,
+  MapPinHouse,
+  Phone,
+  User2,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -37,8 +47,12 @@ const createSchema = z.object({
     .min(10, "Phone number must be atleast of 10 characters")
     .max(15, "Phone number cannot exceed 15 characters"),
   address: z.string().min(1, "Address cannot be empty"),
+  country: z.string().min(1, "Country is required"),
+  zipcode: z.string().min(1, "Zipcode is required"),
+  gender: z.string().min(1, "Gender is required"),
 });
 const Page = () => {
+  const [selectedCountry, setSelectedCountry] = useState("");
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const form = useForm({
@@ -48,6 +62,9 @@ const Page = () => {
       password: "",
       phone: "",
       address: "",
+      country: "",
+      zipcode: "",
+      gender: "",
     },
     resolver: zodResolver(createSchema),
   });
@@ -80,7 +97,7 @@ const Page = () => {
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
       <div className="flex justify-center h-screen items-center">
-        <Card className="w-[500px] flex flex-col bg-gradient-to-r from-purple-200 to-white">
+        <Card className="w-1/2 flex flex-col bg-gradient-to-r  from-purple-200 to-white">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
               <CardTitle className="flex justify-center text-xl font-bold text-purple-600">
@@ -91,11 +108,11 @@ const Page = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-1 px-6">
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="username" className="flex gap-1 items-center">
                     Username
-                    <Icon icon="lucide:user-round" width="20" height="20" />
+                    <User2 size={20}></User2>
                   </Label>
                   <Input
                     placeholder="Enter your username"
@@ -108,7 +125,7 @@ const Page = () => {
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="email" className="flex gap-1 items-center">
                     Email
-                    <Icon icon="iconamoon:email" width="20" height="20" />
+                    <Mail size={20}></Mail>
                   </Label>
                   <Input
                     placeholder="Enter your email"
@@ -120,7 +137,8 @@ const Page = () => {
                 </div>
                 <div className="flex flex-col gap-1 relative">
                   <Label htmlFor="password" className="flex gap-1 items-center">
-                    Password <Icon icon="bx:lock" width="20" height="20" />
+                    Password
+                    <Lock size={20}></Lock>
                   </Label>
                   <Input
                     placeholder="Enter your password"
@@ -145,11 +163,7 @@ const Page = () => {
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="address" className="flex gap-1 items-center">
                     Address
-                    <Icon
-                      icon="mdi:address-marker-outline"
-                      width="24"
-                      height="24"
-                    />
+                    <MapPin size={20}></MapPin>
                   </Label>
                   <Input
                     placeholder="Enter your address"
@@ -162,7 +176,7 @@ const Page = () => {
                 <div className="flex flex-col gap-1 relative">
                   <Label htmlFor="phone" className="flex gap-1 items-center">
                     Phone
-                    <Icon icon="tabler:phone" width="24" height="24" />
+                    <Phone size={20}></Phone>
                   </Label>
                   <Input
                     placeholder="Enter your phone number"
@@ -172,8 +186,54 @@ const Page = () => {
                     {form.formState.errors.phone?.message}
                   </label>
                 </div>
-
-                <Button disabled={submitDataMutation.isPending}>
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="country" className="flex gap-1 items-center">
+                    Username
+                    <Icon icon="lucide:user-round" width="20" height="20" />
+                  </Label>
+                  <Input
+                    placeholder="Enter your username"
+                    {...form.register("country")}
+                  />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.username?.message}
+                  </label>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="zipcode" className="flex gap-1 items-center">
+                    Zipcode
+                    <MapPinHouse size={20}></MapPinHouse>
+                  </Label>
+                  <Input
+                    placeholder="Enter zipcode"
+                    {...form.register("zipcode")}
+                  />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.username?.message}
+                  </label>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="country" className="flex gap-1 items-center">
+                    Country
+                    <Earth size={20}></Earth>
+                  </Label>
+                  <CountryDropdown
+                    placeholder="Select country"
+                    defaultValue=""
+                    value={selectedCountry}
+                    onChange={(value) => {
+                      form.setValue("country", value.name);
+                      setSelectedCountry(value);
+                    }}
+                  />
+                  <label className="text-red-500 text-sm">
+                    {form.formState.errors.username?.message}
+                  </label>
+                </div>
+                <Button
+                  disabled={submitDataMutation.isPending}
+                  className="w-full col-span-2"
+                >
                   {submitDataMutation.isPending && (
                     <Icon icon="svg-spinners:180-ring" width="24" height="24" />
                   )}
