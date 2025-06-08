@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Tab, Tabs } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { BookMarked, House, List } from "lucide-react";
+import { BookMarked, House, List, Settings } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
@@ -44,6 +44,12 @@ const Header: FC<{
       icon: <List></List>,
       link: `/p/${userId}/yourListings`,
       value: 3,
+    },
+    {
+      menu: "Settings",
+      icon: <Settings></Settings>,
+      link: `/p/${userId}/settings`,
+      value: 4,
     },
   ];
   const logoutMutation = useMutation({

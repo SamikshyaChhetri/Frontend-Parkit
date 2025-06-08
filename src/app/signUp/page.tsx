@@ -10,7 +10,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-import { CountryDropdown } from "@/components/country";
+import { Country, CountryDropdown } from "@/components/country";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BACKEND_URL } from "@/lib/env";
@@ -52,7 +52,7 @@ const createSchema = z.object({
   gender: z.string().min(1, "Gender is required"),
 });
 const Page = () => {
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<Country>(null);
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const form = useForm({
