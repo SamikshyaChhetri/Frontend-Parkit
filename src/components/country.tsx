@@ -84,11 +84,10 @@ const CountryDropdownComponent = (
       // Reset selected country if defaultValue is undefined or null
       setSelectedCountry(undefined);
     }
-  }, [defaultValue, options]);
+  }, [defaultValue]);
 
   const handleSelect = useCallback(
     (country: Country) => {
-      console.log("🌍 CountryDropdown value: ", country);
       setSelectedCountry(country);
       onChange?.(country);
       setOpen(false);
@@ -116,7 +115,7 @@ const CountryDropdownComponent = (
                 countryCode={selectedCountry.alpha2.toLowerCase()}
                 height={20}
               />
-            </div>
+            </div>{" "}
             {slim === false && (
               <span className="overflow-hidden text-ellipsis whitespace-nowrap">
                 {selectedCountry.name}

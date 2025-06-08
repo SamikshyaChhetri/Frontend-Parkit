@@ -10,9 +10,10 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-import { Country, CountryDropdown } from "@/components/country";
+import { CountryDropdown } from "@/components/country";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -22,6 +23,7 @@ import {
   Mail,
   MapPin,
   MapPinHouse,
+  PersonStanding,
   Phone,
   User2,
 } from "lucide-react";
@@ -52,7 +54,6 @@ const createSchema = z.object({
   gender: z.string().min(1, "Gender is required"),
 });
 const Page = () => {
-  const [selectedCountry, setSelectedCountry] = useState<Country>(null);
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const form = useForm({
@@ -188,13 +189,24 @@ const Page = () => {
                 </div>
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="country" className="flex gap-1 items-center">
-                    Username
-                    <Icon icon="lucide:user-round" width="20" height="20" />
+                    Gender
+                    <PersonStanding size={20}></PersonStanding>
                   </Label>
-                  <Input
-                    placeholder="Enter your username"
-                    {...form.register("country")}
-                  />
+                  <RadioGroup>
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="male" id="male" />
+                      <Label htmlFor="male">Male</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="female" id="female" />
+                      <Label htmlFor="female">Female</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="other" id="other" />
+                      <Label htmlFor="other">Other</Label>
+                    </div>
+                  </RadioGroup>
+
                   <label className="text-red-500 text-sm">
                     {form.formState.errors.username?.message}
                   </label>
@@ -219,11 +231,10 @@ const Page = () => {
                   </Label>
                   <CountryDropdown
                     placeholder="Select country"
-                    defaultValue=""
-                    value={selectedCountry}
+                    defaultValue="NPL"
                     onChange={(value) => {
+                      console.log(value);
                       form.setValue("country", value.name);
-                      setSelectedCountry(value);
                     }}
                   />
                   <label className="text-red-500 text-sm">
