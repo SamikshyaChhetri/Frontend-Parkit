@@ -1,5 +1,9 @@
+"use client";
+import { CountryDropdown } from "@/components/country";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { HardDriveDownload, Images, PencilRuler } from "lucide-react";
 
 const page = () => {
   return (
@@ -20,8 +24,18 @@ const page = () => {
               alt="userImage"
               className="w-[300px] h-[300px] rounded-full mt-3"
             />
+            <Button className="mt-3">
+              {" "}
+              <Images size={20}></Images> Change Avatar
+            </Button>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
+            <div className="col-span-2 flex justify-end">
+              <Button>
+                {" "}
+                <PencilRuler size={20}></PencilRuler> Edit
+              </Button>
+            </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="username">Username</Label>
               <Input type="text" id="username" placeholder="username" />
@@ -49,7 +63,19 @@ const page = () => {
             </div>
             <div className="flex flex-col col-span-2 gap-1">
               <Label htmlFor="country">Country</Label>
-              <Input type="text" id="country" placeholder="Country" />
+              <CountryDropdown
+                placeholder="Select country"
+                defaultValue="NPL"
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+            </div>
+            <div className="col-span-2 flex justify-end">
+              <Button>
+                {" "}
+                <HardDriveDownload size={20}></HardDriveDownload> Save Changes
+              </Button>
             </div>
           </div>
         </div>
