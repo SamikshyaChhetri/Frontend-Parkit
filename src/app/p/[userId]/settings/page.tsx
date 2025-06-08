@@ -3,8 +3,8 @@ import { Label } from "@/components/ui/label";
 
 const page = () => {
   return (
-    <div className="my-11 mx-20">
-      <div className="flex flex-col gap-10">
+    <div className="bg-gray-800 h-screen">
+      <div className="flex flex-col gap-10 py-11 px-20 bg-gray-800 text-white ">
         <div>
           <div className="text-2xl font-bold">Profile</div>
           <div className="text-gray-500">
@@ -12,42 +12,42 @@ const page = () => {
           </div>
         </div>
         <div className="flex gap-5 ">
-          <div className="flex justify-center items-center flex-col border w-[30%] border-gray-500 p-10 rounded-sm">
-            <div>Samiksya Baniya</div>
-            <div>samikshya@gmail.com</div>
+          <div className="flex justify-center items-center flex-col border w-[30%] border-gray-500 p-10 rounded-md">
+            <div className="text-xl font-bold">Samiksya Baniya</div>
+            <div className="text-gray-500 text-sm">samikshya@gmail.com</div>
             <img
               src="/bike.jpg"
               alt="userImage"
-              className="w-[300px] h-[300px] rounded-full"
+              className="w-[300px] h-[300px] rounded-full mt-3"
             />
           </div>
-          <div className="grid grid-cols-2 gap-7 w-[70%] border border-gray-500 p-10 rounded-sm">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
             <div className="flex flex-col gap-1">
               <Label htmlFor="username">Username</Label>
               <Input type="text" id="username" placeholder="username" />
             </div>
-            <div>
+            <div className="flex flex-col gap-1">
               <Label htmlFor="email">Email</Label>
               <Input type="email" id="email" placeholder="Email" />
             </div>
 
-            <div>
+            <div className="flex flex-col gap-1">
               <Label htmlFor="address">Address</Label>
               <Input type="text" id="address" placeholder="Address" />
             </div>
-            <div>
+            <div className="flex flex-col gap-1">
               <Label htmlFor="phone">Phone</Label>
               <Input type="number" id="phone" placeholder="Phone" />
             </div>
-            <div>
+            <div className="flex flex-col gap-1">
               <Label htmlFor="gender">Gender</Label>
               <Input type="text" id="gender" placeholder="Gender" />
             </div>
-            <div>
+            <div className="flex flex-col gap-1">
               <Label htmlFor="zipcode">Zipcode</Label>
               <Input type="text" id="zipcode" placeholder="Zipcode" />
             </div>
-            <div>
+            <div className="flex flex-col col-span-2 gap-1">
               <Label htmlFor="country">Country</Label>
               <Input type="text" id="country" placeholder="Country" />
             </div>
