@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ban, HardDriveDownload, Images, PencilRuler } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
@@ -59,7 +60,11 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const updateMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
-      const response = await axiosInstance.post();
+      const response = await axiosInstance.patch(
+        `/settings/update/${rparams.userId}`,
+        value
+      );
+      return response.data;
     },
   });
 
@@ -76,6 +81,18 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     form.setValue("zipcode", userQuery.data.data.zipcode);
   }, [userQuery.data]);
   const [isDisabled, setDisable] = useState(true);
+  if (userQuery.isLoading) {
+    return (
+      <div className="bg-gray-800 flex justify-center items-center h-screen">
+        <Icon
+          icon="svg-spinners:blocks-shuffle-3"
+          width="200"
+          height="200"
+          className="text-white"
+        />
+      </div>
+    );
+  }
   return (
     <div className="bg-gray-800 h-screen">
       <div className="flex flex-col gap-10 py-11 px-20 bg-gray-800 text-white ">
@@ -99,7 +116,12 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               Change Avatar
             </Button>
           </div>
-          <form className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
+          <form
+            className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md"
+            onSubmit={form.handleSubmit(() => {
+              updateMutation.mutate();
+            })}
+          >
             <div className="col-span-2 flex justify-end">
               <Button type="button" onClick={() => setDisable(!isDisabled)}>
                 {isDisabled ? (
@@ -132,7 +154,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="email"
                 placeholder="Email"
                 {...form.register("email")}
-                disabled={isDisabled}
+                disabled
               />
             </div>
 

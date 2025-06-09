@@ -150,6 +150,19 @@ const Header: FC<{
                     setTabValue(3);
                   }}
                 ></Tab>
+                <Tab
+                  label="settings"
+                  sx={{
+                    color: "white",
+                    fontWeight: "700",
+                    "&.Mui-selected": { color: "#8b5cf6" },
+                  }}
+                  value={4}
+                  onClick={() => {
+                    router.push(`/p/${userId}/settings`);
+                    setTabValue(3);
+                  }}
+                ></Tab>
               </Tabs>
 
               <Sheet>
