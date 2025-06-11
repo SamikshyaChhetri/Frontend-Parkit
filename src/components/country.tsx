@@ -127,7 +127,7 @@ const CountryDropdownComponent = (
               />
             </div>{" "}
             {slim === false && (
-              <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-white">
                 {selectedCountry.name}
               </span>
             )}
@@ -141,7 +141,7 @@ const CountryDropdownComponent = (
             )}
           </span>
         )}
-        <ChevronDown size={16} />
+        <ChevronDown size={16} className="text-white" />
       </PopoverTrigger>
       <PopoverContent
         collisionPadding={10}
@@ -170,7 +170,7 @@ const CountryDropdownComponent = (
                           height={20}
                         />
                       </div>
-                      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+                      <span className="overflow-hidden text-ellipsis whitespace-nowrap ">
                         {option.name}
                       </span>
                     </div>
