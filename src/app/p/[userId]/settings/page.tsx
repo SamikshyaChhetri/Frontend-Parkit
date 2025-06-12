@@ -3,9 +3,71 @@ import { CountryDropdown } from "@/components/country";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { axiosInstance } from "@/providers/AxiosInstance";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { HardDriveDownload, Images, PencilRuler } from "lucide-react";
+import React, { FC, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const page = () => {
+const schema = z.object({
+  name: z.string().min(1, "Name is required").max(50, "Name is too long"),
+  email: z.string().email(),
+  address: z
+    .string()
+    .min(1, "Address is required")
+    .max(50, "Address is too long"),
+  phone: z
+    .string()
+    .min(1, "Phone number is required")
+    .max(50, "Phone number is too long"),
+  gender: z.string().min(1, "Gender is required").max(10, "Gender is too long"),
+  zipcode: z
+    .string()
+    .min(1, "Zipcode is required")
+    .max(20, "Zipcode is too long"),
+  country: z
+    .string()
+    .min(1, "Country is required")
+    .max(30, "Country name is too long"),
+});
+const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      address: "",
+      phone: "",
+      gender: "",
+      zipcode: "",
+      country: "",
+    },
+  });
+  const rparams = React.use(params);
+  const userQuery = useQuery({
+    queryKey: ["singleUser"],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        "/users/getSingleUser/" + rparams.userId
+      );
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    if (!userQuery.isSuccess) {
+      return;
+    }
+    form.setValue("name", userQuery.data.data.name);
+    form.setValue("email", userQuery.data.data.email);
+    form.setValue("address", userQuery.data.data.address);
+    form.setValue("phone", userQuery.data.data.phone);
+    form.setValue("country", userQuery.data.data.country);
+    form.setValue("gender", userQuery.data.data.gender);
+    form.setValue("zipcode", userQuery.data.data.zipcode);
+  }, [userQuery.data]);
   return (
     <div className="bg-gray-800 h-screen">
       <div className="flex flex-col gap-10 py-11 px-20 bg-gray-800 text-white ">
@@ -29,7 +91,7 @@ const page = () => {
               <Images size={20}></Images> Change Avatar
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
+          <form className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
             <div className="col-span-2 flex justify-end">
               <Button>
                 {" "}
@@ -37,29 +99,59 @@ const page = () => {
               </Button>
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="username">Username</Label>
-              <Input type="text" id="username" placeholder="username" />
+              <Label htmlFor="username">Name</Label>
+              <Input
+                type="text"
+                id="username"
+                placeholder="username"
+                {...form.register("name")}
+              />
             </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" placeholder="Email" />
+              <Input
+                type="email"
+                id="email"
+                placeholder="Email"
+                {...form.register("email")}
+              />
             </div>
 
             <div className="flex flex-col gap-1">
               <Label htmlFor="address">Address</Label>
-              <Input type="text" id="address" placeholder="Address" />
+              <Input
+                type="text"
+                id="address"
+                placeholder="Address"
+                {...form.register("address")}
+              />
             </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="phone">Phone</Label>
-              <Input type="number" id="phone" placeholder="Phone" />
+              <Input
+                type="number"
+                id="phone"
+                placeholder="Phone"
+                {...form.register("phone")}
+              />
             </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="gender">Gender</Label>
-              <Input type="text" id="gender" placeholder="Gender" />
+              <Input
+                type="text"
+                id="gender"
+                placeholder="Gender"
+                {...form.register("gender")}
+              />
             </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="zipcode">Zipcode</Label>
-              <Input type="text" id="zipcode" placeholder="Zipcode" />
+              <Input
+                type="text"
+                id="zipcode"
+                placeholder="Zipcode"
+                {...form.register("zipcode")}
+              />
             </div>
             <div className="flex flex-col col-span-2 gap-1">
               <Label htmlFor="country">Country</Label>
@@ -68,16 +160,17 @@ const page = () => {
                 defaultValue="NPL"
                 onChange={(value) => {
                   console.log(value);
+                  form.setValue("country", value.name);
                 }}
+                value={form.watch("country")}
               />
             </div>
             <div className="col-span-2 flex justify-end">
               <Button>
-                {" "}
                 <HardDriveDownload size={20}></HardDriveDownload> Save Changes
               </Button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
