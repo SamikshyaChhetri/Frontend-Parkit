@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { HardDriveDownload, Images, PencilRuler } from "lucide-react";
+import { Ban, HardDriveDownload, Images, PencilRuler } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -87,16 +87,24 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               alt="userImage"
               className="w-[300px] h-[300px] rounded-full mt-3"
             />
-            <Button className="mt-3">
-              {" "}
+            <Button className="mt-3" disabled={isDisabled}>
               <Images size={20}></Images> Change Avatar
             </Button>
           </div>
           <form className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
             <div className="col-span-2 flex justify-end">
-              <Button>
-                {" "}
-                <PencilRuler size={20}></PencilRuler> Edit
+              <Button type="button" onClick={() => setDisable(!isDisabled)}>
+                {isDisabled ? (
+                  <>
+                    <PencilRuler size={20} />
+                    Edit
+                  </>
+                ) : (
+                  <>
+                    <Ban size={20} />
+                    Cancel
+                  </>
+                )}
               </Button>
             </div>
             <div className="flex flex-col gap-1">
@@ -165,6 +173,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               <CountryDropdown
                 placeholder="Select country"
                 defaultValue="NPL"
+                disabled={isDisabled}
                 onChange={(value) => {
                   console.log(value);
                   form.setValue("country", value.name);
@@ -173,7 +182,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               />
             </div>
             <div className="col-span-2 flex justify-end">
-              <Button>
+              <Button disabled={isDisabled}>
                 <HardDriveDownload size={20}></HardDriveDownload> Save Changes
               </Button>
             </div>
