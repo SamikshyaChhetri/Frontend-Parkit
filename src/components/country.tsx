@@ -47,6 +47,7 @@ interface CountryDropdownProps {
   disabled?: boolean;
   placeholder?: string;
   slim?: boolean;
+  value?: string;
 }
 
 const CountryDropdownComponent = (
@@ -60,6 +61,7 @@ const CountryDropdownComponent = (
     disabled = false,
     placeholder = "Select a country",
     slim = false,
+    value,
     ...props
   }: CountryDropdownProps,
   ref: React.ForwardedRef<HTMLButtonElement>
@@ -68,6 +70,14 @@ const CountryDropdownComponent = (
   const [selectedCountry, setSelectedCountry] = useState<Country | undefined>(
     undefined
   );
+
+  useEffect(() => {
+    if (!value) return;
+    const selectedCountry = options.find((item) => {
+      return item.name === value;
+    });
+    setSelectedCountry(selectedCountry);
+  }, [value]);
 
   useEffect(() => {
     if (defaultValue) {
