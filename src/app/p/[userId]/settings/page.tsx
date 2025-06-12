@@ -7,7 +7,7 @@ import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { HardDriveDownload, Images, PencilRuler } from "lucide-react";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -68,6 +68,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     form.setValue("gender", userQuery.data.data.gender);
     form.setValue("zipcode", userQuery.data.data.zipcode);
   }, [userQuery.data]);
+  const [isDisabled, setDisable] = useState(true);
   return (
     <div className="bg-gray-800 h-screen">
       <div className="flex flex-col gap-10 py-11 px-20 bg-gray-800 text-white ">
@@ -105,6 +106,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="username"
                 placeholder="username"
                 {...form.register("name")}
+                disabled={isDisabled}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -114,6 +116,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="email"
                 placeholder="Email"
                 {...form.register("email")}
+                disabled={isDisabled}
               />
             </div>
 
@@ -124,6 +127,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="address"
                 placeholder="Address"
                 {...form.register("address")}
+                disabled={isDisabled}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -133,6 +137,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="phone"
                 placeholder="Phone"
                 {...form.register("phone")}
+                disabled={isDisabled}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -142,6 +147,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="gender"
                 placeholder="Gender"
                 {...form.register("gender")}
+                disabled={isDisabled}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -151,6 +157,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 id="zipcode"
                 placeholder="Zipcode"
                 {...form.register("zipcode")}
+                disabled={isDisabled}
               />
             </div>
             <div className="flex flex-col col-span-2 gap-1">
