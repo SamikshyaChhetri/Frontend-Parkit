@@ -187,12 +187,12 @@ const Page = () => {
                     {form.formState.errors.phone?.message}
                   </label>
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-3">
                   <Label htmlFor="country" className="flex gap-1 items-center">
                     Gender
                     <PersonStanding size={20}></PersonStanding>
                   </Label>
-                  <RadioGroup>
+                  <RadioGroup className="flex flex-row justify-between">
                     <div className="flex items-center gap-3">
                       <RadioGroupItem value="male" id="male" />
                       <Label htmlFor="male">Male</Label>
