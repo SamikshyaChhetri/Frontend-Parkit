@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ban, HardDriveDownload, Images, PencilRuler } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -56,6 +56,13 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: async () => {
+      const value = form.getValues();
+      const response = await axiosInstance.post();
+    },
+  });
+
   useEffect(() => {
     if (!userQuery.isSuccess) {
       return;
@@ -88,7 +95,8 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               className="w-[300px] h-[300px] rounded-full mt-3"
             />
             <Button className="mt-3" disabled={isDisabled}>
-              <Images size={20}></Images> Change Avatar
+              <Images size={20} />
+              Change Avatar
             </Button>
           </div>
           <form className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md">
