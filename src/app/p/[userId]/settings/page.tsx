@@ -5,21 +5,37 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  FileUpload,
+  FileUploadDropzone,
+  FileUploadItem,
+  FileUploadItemDelete,
+  FileUploadItemMetadata,
+  FileUploadItemPreview,
+  FileUploadList,
+  FileUploadTrigger,
+} from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Ban, HardDriveDownload, Images, PencilRuler } from "lucide-react";
+import {
+  Ban,
+  HardDriveDownload,
+  Images,
+  PencilRuler,
+  Upload,
+  X,
+} from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const schema = z.object({
@@ -44,6 +60,16 @@ const schema = z.object({
     .max(30, "Country name is too long"),
 });
 const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
+  const [files, setFiles] = React.useState<File[]>([]);
+
+  const onFileReject = React.useCallback((file: File, message: string) => {
+    toast(message, {
+      description: `"${
+        file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name
+      }" has been rejected`,
+    });
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -103,6 +129,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       </div>
     );
   }
+
   return (
     <div className="bg-gray-800 h-screen">
       <div className="flex flex-col gap-10 py-11 px-20 bg-gray-800 text-white ">
@@ -129,20 +156,70 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Edit avatar</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when
-                    you&apos;re done.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4">
-                  <div>Upload image</div>
-                  <input type="file" />
-                </div>
+                <DialogTitle></DialogTitle>
+                <FileUpload
+                  maxFiles={2}
+                  maxSize={5 * 1024 * 1024}
+                  className="w-full max-w-md"
+                  value={files}
+                  onValueChange={setFiles}
+                  onFileReject={onFileReject}
+                  accept="image/*"
+                >
+                  {files.length <= 0 && (
+                    <FileUploadDropzone>
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <div className="flex items-center justify-center rounded-full border p-2.5">
+                          <Upload className="size-6 text-muted-foreground" />
+                        </div>
+                        <p className="font-medium text-sm">
+                          Drag & drop files here
+                        </p>
+                        <p className="text-muted-foreground text-xs">
+                          Or click to browse (max 2 files, up to 5MB each)
+                        </p>
+                      </div>
+                      <FileUploadTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="mt-2 w-fit"
+                        >
+                          Browse files
+                        </Button>
+                      </FileUploadTrigger>
+                    </FileUploadDropzone>
+                  )}
+
+                  <FileUploadList>
+                    {files.map((file, index) => (
+                      <FileUploadItem key={index} value={file}>
+                        <FileUploadItemPreview />
+                        <FileUploadItemMetadata />
+                        <FileUploadItemDelete asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="size-7"
+                          >
+                            <X />
+                          </Button>
+                        </FileUploadItemDelete>
+                      </FileUploadItem>
+                    ))}
+                  </FileUploadList>
+                </FileUpload>
+
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setFiles([]);
+                      }}
+                    >
+                      Cancel
+                    </Button>
                   </DialogClose>
                   <Button type="submit">Save changes</Button>
                 </DialogFooter>
