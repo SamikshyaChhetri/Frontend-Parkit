@@ -1,6 +1,16 @@
 "use client";
 import { CountryDropdown } from "@/components/country";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/providers/AxiosInstance";
@@ -111,10 +121,33 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               alt="userImage"
               className="w-[300px] h-[300px] rounded-full mt-3"
             />
-            <Button className="mt-3" disabled={isDisabled}>
-              <Images size={20} />
-              Change Avatar
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="mt-3" disabled={isDisabled}>
+                  <Images size={20} />
+                  Change Avatar
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Edit avatar</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when
+                    you&apos;re done.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div>Upload image</div>
+                  <input type="file" />
+                </div>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button type="submit">Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
           <form
             className="grid grid-cols-2 gap-x-4 gap-y-5 h-fit w-[70%] border border-gray-500 p-10 rounded-md"
