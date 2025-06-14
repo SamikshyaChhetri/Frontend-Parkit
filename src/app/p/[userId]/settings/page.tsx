@@ -69,7 +69,6 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       }" has been rejected`,
     });
   }, []);
-
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -104,6 +103,25 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     },
   });
 
+  const updateImageMutation = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData();
+      formData.append("avatar", files[0]);
+      const response = await axiosInstance.patch(
+        "/settings/updateImage",
+        formData
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Avatar updated successfully");
+      setDialogOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to update avatar");
+    },
+  });
+
   useEffect(() => {
     if (!userQuery.isSuccess) {
       return;
@@ -117,6 +135,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     form.setValue("zipcode", userQuery.data.data.zipcode);
   }, [userQuery.data]);
   const [isDisabled, setDisable] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
   if (userQuery.isLoading) {
     return (
       <div className="bg-gray-800 flex justify-center items-center h-screen">
@@ -144,13 +163,19 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             <div className="text-xl font-bold">Samiksya Baniya</div>
             <div className="text-gray-500 text-sm">samikshya@gmail.com</div>
             <img
-              src="/bike.jpg"
+              src={userQuery.data.data.avatar}
               alt="userImage"
               className="w-[300px] h-[300px] rounded-full mt-3"
             />
-            <Dialog>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="mt-3" disabled={isDisabled}>
+                <Button
+                  className="mt-3"
+                  disabled={isDisabled}
+                  onClick={() => {
+                    setDialogOpen(true);
+                  }}
+                >
                   <Images size={20} />
                   Change Avatar
                 </Button>
@@ -216,12 +241,24 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                       variant="outline"
                       onClick={() => {
                         setFiles([]);
+                        setDialogOpen(false);
                       }}
                     >
                       Cancel
                     </Button>
                   </DialogClose>
-                  <Button type="submit">Save changes</Button>
+                  <Button
+                    disabled={updateImageMutation.isPending}
+                    type="submit"
+                    onClick={() => {
+                      if (files.length === 0) {
+                        return toast.error("Please select a image");
+                      }
+                      updateImageMutation.mutate();
+                    }}
+                  >
+                    Save changes
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

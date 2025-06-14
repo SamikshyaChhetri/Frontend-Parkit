@@ -192,7 +192,10 @@ const Page = () => {
                     Gender
                     <PersonStanding size={20}></PersonStanding>
                   </Label>
-                  <RadioGroup className="flex flex-row justify-between">
+                  <RadioGroup
+                    className="flex flex-row justify-between"
+                    {...form.register("gender")}
+                  >
                     <div className="flex items-center gap-3">
                       <RadioGroupItem value="male" id="male" />
                       <Label htmlFor="male">Male</Label>
@@ -208,7 +211,7 @@ const Page = () => {
                   </RadioGroup>
 
                   <label className="text-red-500 text-sm">
-                    {form.formState.errors.username?.message}
+                    {form.formState.errors.gender?.message}
                   </label>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -221,7 +224,7 @@ const Page = () => {
                     {...form.register("zipcode")}
                   />
                   <label className="text-red-500 text-sm">
-                    {form.formState.errors.username?.message}
+                    {form.formState.errors.zipcode?.message}
                   </label>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -238,10 +241,13 @@ const Page = () => {
                     }}
                   />
                   <label className="text-red-500 text-sm">
-                    {form.formState.errors.username?.message}
+                    {form.formState.errors.country?.message}
                   </label>
                 </div>
                 <Button
+                  onClick={() => {
+                    console.log(form.formState.errors);
+                  }}
                   disabled={submitDataMutation.isPending}
                   className="w-full col-span-2"
                 >
