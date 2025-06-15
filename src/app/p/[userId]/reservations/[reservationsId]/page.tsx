@@ -1,18 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { StarIcon } from "lucide-react";
+import Link from "next/link";
 import React, { FC } from "react";
+import { useForm } from "react-hook-form";
 
 const Page: FC<{
   params: Promise<{
     reservationsId: string;
     userId: string;
+    listingsId: string;
   }>;
 }> = ({ params }) => {
+  const form = useForm({
+    defaultValues: {
+      comment: "",
+    },
+  });
   const rparams = React.use(params);
   const reservationsQuery = useQuery({
     queryKey: ["reservationQuery"],
@@ -69,6 +76,11 @@ const Page: FC<{
               <p className="text-gray-300">
                 {reservationsQuery.data?.data.listing.description}
               </p>
+              <Link
+                href={`/p/${rparams.userId}/listings/${rparams.listingsId}`}
+              >
+                View listing
+              </Link>
             </div>
 
             <div className="flex gap-4 text-sm text-gray-400">
@@ -107,17 +119,6 @@ const Page: FC<{
                   {reservationsQuery.data?.data.listing.owner.email}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold">Add a Review</h3>
-            <Textarea
-              placeholder="Write your feedback..."
-              className="w-full h-28 border border-gray-600 bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
-            />
-            <div className="flex justify-end items-end">
-              <Button>Submit</Button>
             </div>
           </div>
         </div>
