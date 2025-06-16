@@ -25,6 +25,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             id: string;
           };
           date: string;
+          id: string;
         }[];
       }> = await axiosInstance.get(
         `/reserve/userReservations/${rparams.userId}`,
@@ -51,11 +52,11 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             {userReservations.data?.data.map((item, index) => {
               return (
                 <Link
-                  href={`/p/${rparams.userId}/listings/${item.listing.id}`}
+                  href={`/p/${rparams.userId}/reservations/${item.id}`}
                   key={index}
                 >
                   <ListingCard
-                    city={item.listing.city} // fix these
+                    city={item.listing.city}
                     country={item.listing.country}
                     photo={item.listing.photo}
                     price={item.listing.price}
