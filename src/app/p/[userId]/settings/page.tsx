@@ -160,8 +160,10 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
         </div>
         <div className="flex gap-5 ">
           <div className="flex justify-center items-center flex-col border w-[30%] border-gray-500 p-10 rounded-md">
-            <div className="text-xl font-bold">Samiksya Baniya</div>
-            <div className="text-gray-500 text-sm">samikshya@gmail.com</div>
+            <div className="text-xl font-bold">{userQuery.data.data.name}</div>
+            <div className="text-gray-500 text-sm">
+              {userQuery.data.data.email}
+            </div>
             <img
               src={userQuery.data.data.avatar}
               alt="userImage"
