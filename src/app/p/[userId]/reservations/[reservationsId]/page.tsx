@@ -1,12 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { axiosInstance } from "@/providers/AxiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { StarIcon } from "lucide-react";
+import { SquareArrowOutUpRight, StarIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const Page: FC<{
   params: Promise<{
@@ -47,6 +50,22 @@ const Page: FC<{
       return response.data;
     },
   });
+  const router = useRouter();
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosInstance.delete(
+        `/reserve/${rparams.reservationsId}`
+      );
+      return response.data;
+    },
+    onError: () => {
+      toast.error("Failed to delete");
+    },
+    onSuccess: () => {
+      toast.success("Successfully deleted reservation");
+      router.push(`/p/${rparams.userId}/reservations`);
+    },
+  });
   return (
     <div className="bg-slate-800 min-h-screen text-white flex justify-center items-center">
       <div className=" p-10 rounded-2xl shadow-xl flex flex-col gap-8 w-[90%] max-w-5xl">
@@ -57,7 +76,20 @@ const Page: FC<{
               alt="Bike"
               className="w-full rounded-xl shadow-md object-cover"
             />
-            <Button className="bg-red-700 hover:bg-red-600 transition-all duration-200">
+            <Button
+              className="bg-red-700 hover:bg-red-600 transition-all duration-200"
+              onClick={() => {
+                deleteMutation.mutate();
+              }}
+            >
+              {deleteMutation.isPending && (
+                <Icon
+                  icon="svg-spinners:180-ring"
+                  width="24"
+                  height="24"
+                  className="mr-2"
+                />
+              )}
               Cancel Reservation
             </Button>
           </div>
@@ -67,7 +99,7 @@ const Page: FC<{
               ✅ Reserved for your selected date
             </div>
 
-            <div className="space-y-2">
+            <div className="flex flex-col gap-3 ">
               <h2 className="text-xl font-semibold">
                 {reservationsQuery.data?.data.listing.street},
                 {reservationsQuery.data?.data.listing.city} &nbsp;{" "}
@@ -77,9 +109,11 @@ const Page: FC<{
                 {reservationsQuery.data?.data.listing.description}
               </p>
               <Link
+                className="border border-gray-400 px-2 py-1 w-fit flex justify-center items-center gap-1"
                 href={`/p/${rparams.userId}/listings/${rparams.listingsId}`}
               >
-                View listing
+                View listing{" "}
+                <SquareArrowOutUpRight size={20}></SquareArrowOutUpRight>
               </Link>
             </div>
 
