@@ -55,20 +55,22 @@ const Page: FC<{
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold">Gongabu Buspark</h2>
+              <h2 className="text-xl font-semibold">
+                {reservationsQuery.data?.data.listing.street},
+                {reservationsQuery.data?.data.listing.city} &nbsp;{" "}
+                {/* {reservationsQuery.data?.data.listing.country} */}
+              </h2>
               <p className="text-gray-300">
-                Looking for a secure spot to park your scooter? Our online
-                parking system offers hassle-free booking with real-time
-                availability.
+                {reservationsQuery.data?.data.listing.description}
               </p>
             </div>
 
             <div className="flex gap-4 text-sm text-gray-400">
               <div className="px-3 py-1 rounded-full bg-slate-700">
-                2-wheeler
+                {reservationsQuery.data?.data.listing.type}
               </div>
               <div className="px-3 py-1 rounded-full bg-slate-700">
-                ★ 3 Stars
+                {reservationsQuery.data?.data.listing.rating}
               </div>
             </div>
           </div>
