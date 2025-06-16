@@ -1,14 +1,46 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { axiosInstance } from "@/providers/AxiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import React, { FC } from "react";
 
-const Page = () => {
+const Page: FC<{
+  params: Promise<{
+    reservationsId: string;
+    userId: string;
+  }>;
+}> = ({ params }) => {
+  const rparams = React.use(params);
+  const reservationsQuery = useQuery({
+    queryKey: ["reservationQuery"],
+    queryFn: async () => {
+      const response: AxiosResponse<{
+        message: string;
+        data: {
+          date: string;
+          listing: {
+            photo: string;
+            description: string;
+            type: string;
+            rating: string;
+            street: string;
+            city: string;
+            country: string;
+          };
+        };
+      }> = await axiosInstance.get(`/reserve/${rparams.reservationsId}`);
+      return response.data;
+    },
+  });
   return (
     <div className="bg-slate-800 min-h-screen text-white flex justify-center items-center">
       <div className=" p-10 rounded-2xl shadow-xl flex flex-col gap-8 w-[90%] max-w-5xl">
         <div className="flex flex-col md:flex-row gap-10">
           <div className="flex flex-col gap-6 md:w-1/2">
             <img
-              src="/bike.jpg"
+              src={reservationsQuery.data?.data.listing.photo}
               alt="Bike"
               className="w-full rounded-xl shadow-md object-cover"
             />
