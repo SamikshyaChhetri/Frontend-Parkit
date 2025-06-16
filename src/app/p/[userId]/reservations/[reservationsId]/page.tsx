@@ -29,6 +29,11 @@ const Page: FC<{
             street: string;
             city: string;
             country: string;
+            owner: {
+              name: string;
+              email: string;
+              avatar: string;
+            };
           };
         };
       }> = await axiosInstance.get(`/reserve/${rparams.reservationsId}`);
@@ -90,24 +95,30 @@ const Page: FC<{
             <h3 className="text-lg font-semibold">Owner's Details</h3>
             <div className="flex items-center gap-4 bg-slate-700 p-4 rounded-lg shadow-sm">
               <img
-                src="/bike.jpg"
+                src={reservationsQuery.data?.data.listing.owner.avatar}
                 alt="Owner"
                 className="w-16 h-16 rounded-full object-cover border-2 border-white"
               />
               <div>
-                <div className="font-bold">Samikshya Chhetri</div>
-                <div className="text-sm text-gray-400">samikshya@gmail.com</div>
+                <div className="font-bold">
+                  {reservationsQuery.data?.data.listing.owner.name}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {reservationsQuery.data?.data.listing.owner.email}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 justify-end items-end">
+          <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">Add a Review</h3>
             <Textarea
               placeholder="Write your feedback..."
               className="w-full h-28 border border-gray-600 bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
             />
-            <Button>Submit</Button>
+            <div className="flex justify-end items-end">
+              <Button>Submit</Button>
+            </div>
           </div>
         </div>
       </div>
