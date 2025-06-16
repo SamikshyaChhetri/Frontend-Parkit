@@ -37,7 +37,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.468.0",
     "moment": "^2.30.1",
-    "motion": "^11.18.0",
+    "motion": "^11.18.2",
     "next": "^15.1.0",
     "next-nprogress-bar": "^2.4.3",
     "react": "^19.0.0",
