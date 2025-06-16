@@ -16,7 +16,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BACKEND_URL } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
+import { motion } from "framer-motion";
 import {
   Earth,
   Lock,
@@ -35,24 +36,16 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const createSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters long")
-    .max(30, "Username must not exceed 30 characters"),
-  email: z.string().email("Please enter valid email ID"),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters long")
-    .max(20, "Password must not exceed 20 characters"),
-  phone: z
-    .string()
-    .min(10, "Phone number must be atleast of 10 characters")
-    .max(15, "Phone number cannot exceed 15 characters"),
-  address: z.string().min(1, "Address cannot be empty"),
-  country: z.string().min(1, "Country is required"),
-  zipcode: z.string().min(1, "Zipcode is required"),
-  gender: z.string().min(1, "Gender is required"),
+  username: z.string().min(3).max(30),
+  email: z.string().email(),
+  password: z.string().min(6).max(20),
+  phone: z.string().min(10).max(15),
+  address: z.string().min(1),
+  country: z.string().min(1),
+  zipcode: z.string().min(1),
+  gender: z.string().min(1),
 });
+
 const Page = () => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
@@ -70,20 +63,14 @@ const Page = () => {
     resolver: zodResolver(createSchema),
   });
 
-  const onsubmit = (data: {
-    username: string;
-    email: string;
-    password: string;
-    phone: string;
-    address: string;
-  }) => {
+  const onsubmit = () => {
     submitDataMutation.mutate();
   };
+
   const submitDataMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
       const response = await axios.post(`${BACKEND_URL}/auth/register`, value);
-
       return response.data;
     },
     onSuccess: (data) => {
@@ -95,179 +82,188 @@ const Page = () => {
       toast.error(err.response?.data.message);
     },
   });
-  return (
-    <div className="bg-gradient-to-r from-purple-700 via-purple-400 to-purple-200 ">
-      <div className="flex justify-center h-screen items-center">
-        <Card className="w-1/2 flex flex-col bg-gradient-to-r  from-purple-200 to-white">
-          <form onSubmit={form.handleSubmit(onsubmit)}>
-            <CardHeader>
-              <CardTitle className="flex justify-center text-xl font-bold text-purple-600">
-                Sign up here
-              </CardTitle>
-              <CardDescription className="flex justify-center">
-                Sign up to create your account and unlock exclusive features!
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-1 px-6">
-              <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="username" className="flex gap-1 items-center">
-                    Username
-                    <User2 size={20}></User2>
-                  </Label>
-                  <Input
-                    placeholder="Enter your username"
-                    {...form.register("username")}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.username?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="email" className="flex gap-1 items-center">
-                    Email
-                    <Mail size={20}></Mail>
-                  </Label>
-                  <Input
-                    placeholder="Enter your email"
-                    {...form.register("email")}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.email?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-1 relative">
-                  <Label htmlFor="password" className="flex gap-1 items-center">
-                    Password
-                    <Lock size={20}></Lock>
-                  </Label>
-                  <Input
-                    placeholder="Enter your password"
-                    {...form.register("password")}
-                    type={isOpen ? "text" : "password"}
-                  />
-                  <Icon
-                    icon={
-                      isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
-                    }
-                    className="absolute top-[32px] right-2 cursor-pointer"
-                    width="20"
-                    height="20"
-                    onClick={() => {
-                      setOpen(isOpen ? false : true);
-                    }}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.password?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="address" className="flex gap-1 items-center">
-                    Address
-                    <MapPin size={20}></MapPin>
-                  </Label>
-                  <Input
-                    placeholder="Enter your address"
-                    {...form.register("address")}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.address?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-1 relative">
-                  <Label htmlFor="phone" className="flex gap-1 items-center">
-                    Phone
-                    <Phone size={20}></Phone>
-                  </Label>
-                  <Input
-                    placeholder="Enter your phone number"
-                    {...form.register("phone")}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.phone?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Label htmlFor="country" className="flex gap-1 items-center">
-                    Gender
-                    <PersonStanding size={20}></PersonStanding>
-                  </Label>
-                  <RadioGroup
-                    className="flex flex-row justify-between"
-                    {...form.register("gender")}
-                  >
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="male" id="male" />
-                      <Label htmlFor="male">Male</Label>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="female" id="female" />
-                      <Label htmlFor="female">Female</Label>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="other" id="other" />
-                      <Label htmlFor="other">Other</Label>
-                    </div>
-                  </RadioGroup>
 
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.gender?.message}
-                  </label>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="zipcode" className="flex gap-1 items-center">
-                    Zipcode
-                    <MapPinHouse size={20}></MapPinHouse>
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.05 },
+    }),
+  };
+
+  return (
+    <div className="bg-slate-800 min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-4xl bg-slate-900 text-white shadow-lg rounded-2xl">
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <CardHeader>
+            <CardTitle className="text-center text-2xl text-purple-400 font-bold">
+              Sign up here
+            </CardTitle>
+            <CardDescription className="text-center text-slate-400">
+              Sign up to create your account and unlock exclusive features!
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-6 pb-6">
+            <div className="grid grid-cols-2 gap-5">
+              {[
+                {
+                  id: "username",
+                  icon: <User2 size={20} />,
+                  placeholder: "Enter your username",
+                },
+                {
+                  id: "email",
+                  icon: <Mail size={20} />,
+                  placeholder: "Enter your email",
+                },
+                {
+                  id: "password",
+                  icon: <Lock size={20} />,
+                  placeholder: "Enter your password",
+                  type: isOpen ? "text" : "password",
+                  isPassword: true,
+                },
+                {
+                  id: "address",
+                  icon: <MapPin size={20} />,
+                  placeholder: "Enter your address",
+                },
+                {
+                  id: "phone",
+                  icon: <Phone size={20} />,
+                  placeholder: "Enter your phone number",
+                },
+                {
+                  id: "zipcode",
+                  icon: <MapPinHouse size={20} />,
+                  placeholder: "Enter your zipcode",
+                },
+              ].map((field, i) => (
+                <motion.div
+                  key={field.id}
+                  variants={fadeIn}
+                  initial="hidden"
+                  animate="visible"
+                  custom={i}
+                  className="flex flex-col gap-1 relative"
+                >
+                  <Label
+                    htmlFor={field.id}
+                    className="flex gap-1 items-center text-white"
+                  >
+                    {field.id.charAt(0).toUpperCase() + field.id.slice(1)}
+                    {field.icon}
                   </Label>
                   <Input
-                    placeholder="Enter zipcode"
-                    {...form.register("zipcode")}
+                    type={field.type || "text"}
+                    placeholder={field.placeholder}
+                    {...form.register(field.id as any)}
+                    className="bg-slate-800 border border-slate-700 text-white"
                   />
+                  {field.isPassword && (
+                    <Icon
+                      icon={
+                        isOpen
+                          ? "heroicons-solid:eye"
+                          : "heroicons-solid:eye-off"
+                      }
+                      className="absolute top-[34px] right-2 cursor-pointer text-slate-300"
+                      width="20"
+                      height="20"
+                      onClick={() => setOpen(!isOpen)}
+                    />
+                  )}
                   <label className="text-red-500 text-sm">
-                    {form.formState.errors.zipcode?.message}
+                    {form.formState.errors?.[field.id]?.message as string}
                   </label>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="country" className="flex gap-1 items-center">
-                    Country
-                    <Earth size={20}></Earth>
-                  </Label>
-                  <CountryDropdown
-                    placeholder="Select country"
-                    defaultValue="NPL"
-                    onChange={(value) => {
-                      console.log(value);
-                      form.setValue("country", value.name);
-                    }}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.country?.message}
-                  </label>
-                </div>
+                </motion.div>
+              ))}
+
+              <motion.div
+                variants={fadeIn}
+                initial="hidden"
+                animate="visible"
+                custom={6}
+                className="flex flex-col gap-2"
+              >
+                <Label className="flex gap-1 items-center text-white">
+                  Gender <PersonStanding size={20} />
+                </Label>
+                <RadioGroup className="flex gap-4" {...form.register("gender")}>
+                  {["male", "female", "other"].map((g) => (
+                    <div className="flex items-center gap-2" key={g}>
+                      <RadioGroupItem value={g} id={g} />
+                      <Label htmlFor={g} className="capitalize text-white">
+                        {g}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+                <label className="text-red-500 text-sm">
+                  {form.formState.errors.gender?.message}
+                </label>
+              </motion.div>
+
+              <motion.div
+                variants={fadeIn}
+                initial="hidden"
+                animate="visible"
+                custom={7}
+                className="flex flex-col gap-2"
+              >
+                <Label className="flex gap-1 items-center text-white">
+                  Country <Earth size={20} />
+                </Label>
+                <CountryDropdown
+                  placeholder="Select country"
+                  defaultValue="NPL"
+                  onChange={(value) =>
+                    form.setValue("country", value.name || "")
+                  }
+                />
+                <label className="text-red-500 text-sm">
+                  {form.formState.errors.country?.message}
+                </label>
+              </motion.div>
+
+              <motion.div
+                variants={fadeIn}
+                initial="hidden"
+                animate="visible"
+                custom={8}
+                className="col-span-2"
+              >
                 <Button
-                  onClick={() => {
-                    console.log(form.formState.errors);
-                  }}
+                  type="submit"
                   disabled={submitDataMutation.isPending}
-                  className="w-full col-span-2"
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                 >
                   {submitDataMutation.isPending && (
-                    <Icon icon="svg-spinners:180-ring" width="24" height="24" />
+                    <Icon
+                      icon="svg-spinners:180-ring"
+                      width="20"
+                      height="20"
+                      className="mr-2"
+                    />
                   )}
                   Register
                 </Button>
-              </div>
-            </CardContent>
-          </form>
-          <div className="flex justify-center items-center pb-1">
-            Already have an account?
-            <Link href={"/login"}>
-              <Button variant={"link"}>Login</Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
+              </motion.div>
+            </div>
+          </CardContent>
+        </form>
+        <div className="flex justify-center items-center pb-4 text-white">
+          Already have an account?
+          <Link href={"/login"}>
+            <Button variant="link" className="text-purple-400">
+              Login
+            </Button>
+          </Link>
+        </div>
+      </Card>
     </div>
   );
 };
+
 export default Page;
