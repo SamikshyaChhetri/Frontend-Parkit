@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { StarIcon } from "lucide-react";
 import React, { FC } from "react";
 
 const Page: FC<{
@@ -69,8 +70,16 @@ const Page: FC<{
               <div className="px-3 py-1 rounded-full bg-slate-700">
                 {reservationsQuery.data?.data.listing.type}
               </div>
-              <div className="px-3 py-1 rounded-full bg-slate-700">
+              <div className="px-3 py-1 rounded-full bg-slate-700 flex flex-row items-center gap-1">
                 {reservationsQuery.data?.data.listing.rating}
+                <StarIcon
+                  style={{
+                    stroke: "white", // color for the border
+                    strokeWidth: 1, // thickness of the border
+                    fill: "gold", // fill color for the star
+                    width: "15px",
+                  }}
+                />
               </div>
             </div>
           </div>
