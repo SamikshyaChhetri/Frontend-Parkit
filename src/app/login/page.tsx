@@ -71,7 +71,7 @@ const Page = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Card className="w-[450px] bg-slate-900 text-white shadow-2xl rounded-2xl border border-slate-700">
+        <Card className=" md:w-[450] sm:h-full bg-slate-900 text-white shadow-2xl rounded-2xl border border-slate-700">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
               <CardTitle className="flex justify-center text-2xl font-bold text-purple-400">

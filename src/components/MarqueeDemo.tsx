@@ -17,9 +17,9 @@ const reviews = [
 
 export function MarqueeDemo() {
   return (
-    <div className="flex flex-col gap-10 mt-[50px] mb-[50px]">
-      <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
-        <Marquee pauseOnHover className="[--duration:20s]">
+    <div className="flex flex-col gap-10 mt-[50px] mb-[50px] bg-slate-800 text-white">
+      <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background bg-slate-800 md:shadow-xl">
+        <Marquee pauseOnHover className="[--duration:20s] bg-slate-800">
           <div>
             <img
               src="./van.jpeg"

@@ -6,8 +6,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { BookMarked, House, List, Settings } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import {
@@ -25,6 +25,12 @@ const Header: FC<{
   userId: string;
 }> = ({ userId }) => {
   const router = useRouter();
+  const [isClient, setClient] = useState(false);
+  const [tabValue, setTabValue] = useState(1);
+  useEffect(() => {
+    setClient(true);
+  }, []);
+
   const sideBarItems = [
     {
       menu: "Home",
@@ -75,11 +81,32 @@ const Header: FC<{
       return response.data;
     },
   });
-  const [tabValue, setTabValue] = useState(1);
 
+  const isCurrentpage = () => {
+    const splittedName = usePathname().split("/");
+    const lastName = splittedName.length - 1;
+    const name = splittedName[3];
+    switch (name) {
+      case "dashboard":
+        return 1;
+      case "reservations":
+        return 2;
+      case "yourListings":
+        return 3;
+      case "settings":
+        return 4;
+      default:
+        return 1;
+    }
+  };
+
+  if (!isClient) {
+    return null;
+  }
   if (userQuery.isError) {
     return <div>Error fetching data</div>;
   }
+
   return (
     <div className="bg-gray-800 text-white">
       <div className="flex flex-col gap-6">
@@ -90,7 +117,7 @@ const Header: FC<{
             </div>
             <div className="flex justify-between gap-10 text-xl tracking-wide ">
               <Tabs
-                value={tabValue}
+                value={isCurrentpage()}
                 sx={{
                   "& .MuiTabs-indicator": {
                     backgroundColor: "#8b5cf6",
@@ -160,7 +187,7 @@ const Header: FC<{
                   value={4}
                   onClick={() => {
                     router.push(`/p/${userId}/settings`);
-                    setTabValue(3);
+                    setTabValue(4);
                   }}
                 ></Tab>
               </Tabs>
