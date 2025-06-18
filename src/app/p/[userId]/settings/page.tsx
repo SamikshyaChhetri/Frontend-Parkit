@@ -95,11 +95,14 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const updateMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
-      const response = await axiosInstance.patch(
-        `/settings/update/${rparams.userId}`,
-        value
-      );
+      const response = await axiosInstance.patch(`/settings/update`, value);
       return response.data;
+    },
+    onSuccess: () => {
+      toast.success("User details successfully updated");
+    },
+    onError: () => {
+      toast.error("Failed to update details");
     },
   });
 
