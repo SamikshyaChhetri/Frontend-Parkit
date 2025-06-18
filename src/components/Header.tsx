@@ -27,6 +27,24 @@ const Header: FC<{
   const router = useRouter();
   const [isClient, setClient] = useState(false);
   const [tabValue, setTabValue] = useState(1);
+  const pathName = usePathname();
+  const isCurrentpage = () => {
+    const splittedName = pathName.split("/");
+    const lastName = splittedName.length - 1;
+    const name = splittedName[3];
+    switch (name) {
+      case "dashboard":
+        return 1;
+      case "reservations":
+        return 2;
+      case "yourListings":
+        return 3;
+      case "settings":
+        return 4;
+      default:
+        return 1;
+    }
+  };
   useEffect(() => {
     setClient(true);
   }, []);
@@ -81,24 +99,6 @@ const Header: FC<{
       return response.data;
     },
   });
-
-  const isCurrentpage = () => {
-    const splittedName = usePathname().split("/");
-    const lastName = splittedName.length - 1;
-    const name = splittedName[3];
-    switch (name) {
-      case "dashboard":
-        return 1;
-      case "reservations":
-        return 2;
-      case "yourListings":
-        return 3;
-      case "settings":
-        return 4;
-      default:
-        return 1;
-    }
-  };
 
   if (!isClient) {
     return null;

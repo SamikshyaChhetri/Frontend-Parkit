@@ -10,16 +10,16 @@ const Navbar = () => {
   return (
     <div className="bg-slate-800 text-gray-100">
       {/* Navbar */}
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-[90vh]">
         <div className="flex justify-between pr-10 font-bold">
-          <div className="text-2xl pt-8 pl-5 flex items-center gap-2">
+          <div className="text-2xl pt-8 pl-5 flex items-center ">
             <Icon
               icon="fluent:vehicle-car-parking-16-filled"
               width="34"
               height="34"
               className="text-purple-500"
             />
-            Par&nbsp;<span className="text-purple-500">ki</span>fy
+            Par<span className="text-purple-500">ki</span>fy
           </div>
           <div className="flex gap-5 pr-5">
             <Link href="/signUp">
