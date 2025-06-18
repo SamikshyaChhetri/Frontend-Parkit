@@ -100,6 +100,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     },
     onSuccess: () => {
       toast.success("User details successfully updated");
+      setDisable(true);
     },
     onError: () => {
       toast.error("Failed to update details");
@@ -262,6 +263,14 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                       updateImageMutation.mutate();
                     }}
                   >
+                    {updateImageMutation.isPending && (
+                      <Icon
+                        icon="svg-spinners:180-ring"
+                        width="24"
+                        height="24"
+                        className="mr-2"
+                      />
+                    )}
                     Save changes
                   </Button>
                 </DialogFooter>
@@ -364,7 +373,15 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               />
             </div>
             <div className="col-span-2 flex justify-end">
-              <Button disabled={isDisabled}>
+              <Button disabled={isDisabled || updateMutation.isPending}>
+                {updateMutation.isPending && (
+                  <Icon
+                    icon="svg-spinners:180-ring"
+                    width="24"
+                    height="24"
+                    className="mr-2"
+                  />
+                )}
                 <HardDriveDownload size={20}></HardDriveDownload> Save Changes
               </Button>
             </div>
