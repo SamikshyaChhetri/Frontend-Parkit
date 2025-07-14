@@ -1,92 +1,156 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Features from "./Features";
 import Seperator from "./Seperator";
-import MarqueeDemo from "./ui/marquee";
+import { ModeToggle } from "./theme/ModeToggle";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
+  }),
+};
 
 const Navbar = () => {
   return (
-    <div className="bg-slate-800 text-gray-100">
-      {/* Navbar */}
+    <div className="bg-gray-200 dark:bg-slate-800 text-gray-100">
       <div className="flex flex-col h-[90vh]">
-        <div className="flex justify-between pr-10 font-bold">
-          <div className="text-2xl pt-8 pl-5 flex items-center ">
-            <Icon
-              icon="fluent:vehicle-car-parking-16-filled"
-              width="34"
-              height="34"
-              className="text-purple-500"
-            />
+        <motion.div
+          className="flex justify-between pr-10 font-bold"
+          initial="hidden"
+          animate="show"
+          variants={fadeUp}
+        >
+          <div className="text-2xl pt-8 pl-5 flex items-center text-slate-800 dark:text-white">
+            <motion.div variants={fadeUp}>
+              <Icon
+                icon="fluent:vehicle-car-parking-16-filled"
+                width="34"
+                height="34"
+                className="text-purple-500"
+              />
+            </motion.div>
             Par<span className="text-purple-500">ki</span>fy
           </div>
-          <div className="flex gap-5 pr-5">
-            <Link href="/signUp">
-              <Button className="mt-6 text-black" variant="outline">
-                Sign up
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-purple-600 mt-6 text-white hover:bg-purple-700">
-                Login
-              </Button>
-            </Link>
+          <div className="flex gap-5 items-end">
+            <div className="flex items-end">
+              <motion.div variants={fadeUp}>
+                <ModeToggle />
+              </motion.div>
+            </div>
+            <div className="flex gap-5 pr-5 border items-center ">
+              <Link href="/signUp">
+                <motion.div variants={fadeUp}>
+                  <Button
+                    className="mt-6 text-black dark:text-white"
+                    variant="outline"
+                  >
+                    Sign up
+                  </Button>
+                </motion.div>
+              </Link>
+              <Link href="/login">
+                <motion.div variants={fadeUp}>
+                  <Button className="bg-purple-600 mt-6 text-white hover:bg-purple-700">
+                    Login
+                  </Button>
+                </motion.div>
+              </Link>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Hero Section */}
-        <div className="flex flex-row gap-10 justify-center h-[80%] items-center ">
-          <div className="flex flex-col justify-center items-center text-center gap-6 px-6 md:px-0 max-w-xl">
-            <div className="text-4xl font-extrabold leading-snug">
+        <div className="flex flex-row gap-10 justify-center h-[80%] items-center">
+          <motion.div
+            className="flex flex-col justify-center items-center text-center gap-6 px-6 md:px-0 max-w-xl"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            <motion.div className="text-4xl text-black dark:text-white font-extrabold leading-snug">
               Find and Reserve <span className="text-purple-500">Parking</span>{" "}
               Instantly!
-            </div>
-            <div className="text-gray-400 text-lg">
+            </motion.div>
+            <motion.div className=" text-gray-600 dark:text-gray-400 text-lg ">
               Say goodbye to parking hassles and enjoy a seamless, stress-free
               experience—anytime, anywhere.
-            </div>
-          </div>
-          <div className="hidden md:block pr-10">
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            className="hidden md:block pr-10"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <img src="./map.png" alt="parking" width={600} />
-          </div>
+          </motion.div>
         </div>
       </div>
+
       <Seperator />
 
-      {/* Host Invitation */}
-      <div className="flex flex-col gap-10 items-center pt-20 w-full">
-        <div className="text-5xl font-bold text-white">
+      <motion.div
+        className="flex flex-col gap-10 items-center pt-20 w-full"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={fadeUp}
+      >
+        <motion.div className="text-5xl font-bold text-gray-800 dark:text-white">
           Have an unused space?
-        </div>
-        <div className="text-gray-400 text-xl font-semibold">
+        </motion.div>
+        <motion.div className="text-gray-400 text-xl font-semibold">
           Become a host in few steps
-        </div>
-        <div className="flex flex-wrap justify-center gap-20">
+        </motion.div>
+        <div className="flex flex-wrap justify-center gap-32">
           {[
-            { src: "/first.png", label: "List your space" },
-            { src: "/second.png", label: "Approve rental" },
+            { src: "/second.png", label: "List your space" },
+            { src: "/first.png", label: "Book the vacant spot" },
             { src: "/earn.png", label: "Start earning" },
           ].map(({ src, label }, i) => (
-            <div key={i} className="text-center">
-              <img src={src} alt={label} className="h-40 mx-auto" />
+            <motion.div
+              key={i}
+              className="text-center "
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={i}
+            >
+              <img src={src} alt={label} className="h-48 rounded-md mx-auto " />
               <h2 className="mt-4">{label}</h2>
-            </div>
+            </motion.div>
           ))}
         </div>
         <Link href="/login">
-          <Button className="bg-purple-600 px-10 hover:bg-purple-700 text-white">
-            Become a host
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Button className="bg-purple-600 px-10 hover:bg-purple-700 text-white">
+              Become a host
+            </Button>
+          </motion.div>
         </Link>
-      </div>
+      </motion.div>
 
       <Seperator />
 
-      {/* Features Section */}
-      <div className="flex justify-center text-4xl font-bold py-10 text-white">
+      <motion.div
+        className="flex justify-center text-4xl font-bold py-10 text-gray-800 dark:text-white"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={fadeUp}
+      >
         Features we <span className="text-purple-500">&nbsp; Offer</span>
-      </div>
+      </motion.div>
+
       <div className="flex justify-center px-6 lg:px-14">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[
@@ -161,23 +225,30 @@ const Navbar = () => {
               color: "bg-purple-600",
             },
           ].map((feat, i) => (
-            <Features
+            <motion.div
               key={i}
-              title={feat.title}
-              description={feat.description}
-              icon={<Icon icon={feat.icon} width="24" height="24" />}
-              color={feat.color}
-            />
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={i}
+            >
+              <Features
+                title={feat.title}
+                description={feat.description}
+                icon={<Icon icon={feat.icon} width="24" height="24" />}
+                color={feat.color}
+              />
+            </motion.div>
           ))}
         </div>
       </div>
 
       <Seperator />
 
-      {/* Testimonials or Marquee */}
-      <div>
+      {/* <div>
         <MarqueeDemo name="james" username="jamessss" />
-      </div>
+      </div> */}
     </div>
   );
 };

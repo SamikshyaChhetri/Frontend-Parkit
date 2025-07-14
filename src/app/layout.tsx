@@ -1,4 +1,5 @@
 import ProvidersWrapper from "@/providers/ProvidersWrapper";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -25,12 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* <ProgressBarProvider></ProgressBarProvider> */}
-        <ProvidersWrapper>{children}</ProvidersWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ProvidersWrapper>{children}</ProvidersWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );
