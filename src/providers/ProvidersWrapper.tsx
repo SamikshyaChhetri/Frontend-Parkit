@@ -13,24 +13,31 @@ const ProvidersWrapper: FC<{ children: ReactNode }> = ({ children }) => {
       queries: {
         retry(failureCount, error) {
           if (error instanceof AxiosError) {
-            if (error.status == 401) {
+            if (error.status === 401) {
+              toast.error("Unauthorized");
+              router.push("/login");
+              return false; // Don't retry 401 errors
+            }
+            if (error.status === 404) {
+              return false; // Don't retry 404 errors
+            }
+            console.log("Query error status:", error.status);
+          }
+          // Retry up to 2 times for other errors
+          return failureCount < 2;
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        gcTime: 1000 * 60 * 10, // 10 minutes
+      },
+      mutations: {
+        onError(error) {
+          if (error instanceof AxiosError) {
+            if (error.status === 401) {
               toast.error("Unauthorized");
               router.push("/login");
             }
-            console.log(error.status);
+            console.log("Mutation error status:", error.status);
           }
-          return false;
-        },
-      },
-      mutations: {
-        onSettled(failureCount, error) {
-          if (error instanceof AxiosError) {
-            if (error.status == 401) {
-              router.push("/login");
-            }
-            console.log(error.status);
-          }
-          return false;
         },
       },
     },

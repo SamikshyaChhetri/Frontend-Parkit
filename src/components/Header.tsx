@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { ModeToggle } from "./theme/ModeToggle";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -191,6 +192,9 @@ const Header: FC<{
                   }}
                 ></Tab>
               </Tabs>
+              <div className="flex items-center">
+                <ModeToggle />
+              </div>
 
               <Sheet>
                 <SheetTrigger asChild>

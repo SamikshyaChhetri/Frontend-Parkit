@@ -14,8 +14,10 @@ const Features: FC<{
         {icon}
       </div>
       <div className="flex flex-col ">
-        <div className="text-lg font-bold">{title}</div>
-        <div>{description}</div>
+        <div className="text-lg text-gray-800 dark:text-white font-bold">
+          {title}
+        </div>
+        <div className="text-muted-foreground">{description}</div>
       </div>
     </div>
   );

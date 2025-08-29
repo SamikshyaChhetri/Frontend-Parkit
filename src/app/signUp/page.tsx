@@ -1,5 +1,6 @@
 "use client";
 import { CountryDropdown } from "@/components/country";
+import { ModeToggle } from "@/components/theme/ModeToggle";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -93,20 +94,23 @@ const Page = () => {
   });
 
   return (
-    <div className="bg-zinc-900 min-h-screen flex justify-center items-center text-white">
+    <div className="bg-white dark:bg-zinc-900 min-h-screen flex justify-center items-center text-black dark:text-white">
+      <div className="flex justify-center items-center absolute top-5 right-5">
+        <ModeToggle />
+      </div>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full max-w-3xl"
       >
-        <Card className="bg-zinc-800 border border-zinc-700 shadow-2xl">
+        <Card className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-2xl">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
-              <CardTitle className="text-center text-purple-400 text-2xl font-bold">
+              <CardTitle className="text-center text-purple-600 dark:text-purple-400 text-2xl font-bold">
                 Sign up here
               </CardTitle>
-              <CardDescription className="text-center text-zinc-400">
+              <CardDescription className="text-center text-zinc-600 dark:text-zinc-400">
                 Sign up to create your account and unlock exclusive features!
               </CardDescription>
             </CardHeader>
@@ -122,12 +126,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="username"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Username <User2 size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter your username"
                     {...form.register("username")}
                   />
@@ -146,12 +150,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="email"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Email <Mail size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter your email"
                     {...form.register("email")}
                   />
@@ -170,12 +174,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="password"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Password <Lock size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter your password"
                     type={isOpen ? "text" : "password"}
                     {...form.register("password")}
@@ -184,7 +188,7 @@ const Page = () => {
                     icon={
                       isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
                     }
-                    className="absolute top-[32px] right-2 cursor-pointer text-zinc-400"
+                    className="absolute top-[32px] right-2 cursor-pointer text-zinc-600 dark:text-zinc-400"
                     width="20"
                     height="20"
                     onClick={() => setOpen(!isOpen)}
@@ -204,12 +208,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="address"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Address <MapPin size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter your address"
                     {...form.register("address")}
                   />
@@ -228,12 +232,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="phone"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Phone <Phone size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter your phone number"
                     {...form.register("phone")}
                   />
@@ -252,11 +256,11 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="gender"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Gender <PersonStanding size={20} />
                   </Label>
-                  <RadioGroup className="flex flex-row justify-between text-white">
+                  <RadioGroup className="flex flex-row justify-between text-black dark:text-white">
                     {["male", "female", "other"].map((g) => (
                       <div key={g} className="flex items-center gap-3">
                         <RadioGroupItem
@@ -287,12 +291,12 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="zipcode"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Zipcode <MapPinHouse size={20} />
                   </Label>
                   <Input
-                    className="bg-zinc-700 border-zinc-600 text-white placeholder:text-zinc-400"
+                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                     placeholder="Enter zipcode"
                     {...form.register("zipcode")}
                   />
@@ -311,7 +315,7 @@ const Page = () => {
                 >
                   <Label
                     htmlFor="country"
-                    className="flex gap-1 items-center text-zinc-300"
+                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
                   >
                     Country <Earth size={20} />
                   </Label>
@@ -335,7 +339,7 @@ const Page = () => {
                 >
                   <Button
                     disabled={submitDataMutation.isPending}
-                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                   >
                     {submitDataMutation.isPending && (
                       <Icon
@@ -350,10 +354,13 @@ const Page = () => {
               </div>
             </CardContent>
           </form>
-          <div className="flex justify-center items-center pb-4 text-zinc-400">
+          <div className="flex justify-center items-center pb-4 text-zinc-600 dark:text-zinc-400">
             Already have an account?
             <Link href={"/login"}>
-              <Button variant="link" className="text-purple-400">
+              <Button
+                variant="link"
+                className="text-purple-600 dark:text-purple-400"
+              >
                 Login
               </Button>
             </Link>

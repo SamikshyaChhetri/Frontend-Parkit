@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/theme/ModeToggle";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -65,19 +66,22 @@ const Page = () => {
   });
 
   return (
-    <div className="bg-slate-800 min-h-screen flex items-center justify-center">
+    <div className="bg-white dark:bg-slate-800 min-h-screen flex items-center justify-center">
+      <div className="flex justify-center items-center absolute top-5 right-5">
+        <ModeToggle />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Card className=" md:w-[450] sm:h-full bg-slate-900 text-white shadow-2xl rounded-2xl border border-slate-700">
+        <Card className="md:w-[450px] sm:h-full bg-white dark:bg-slate-900 text-black dark:text-white shadow-2xl rounded-2xl border border-slate-200 dark:border-slate-700">
           <form onSubmit={form.handleSubmit(onsubmit)}>
             <CardHeader>
-              <CardTitle className="flex justify-center text-2xl font-bold text-purple-400">
+              <CardTitle className="flex justify-center text-2xl font-bold text-purple-600 dark:text-purple-400">
                 Login Form
               </CardTitle>
-              <CardDescription className="flex justify-center text-slate-400">
+              <CardDescription className="flex justify-center text-slate-600 dark:text-slate-400">
                 Login to explore all the features and services we offer.
               </CardDescription>
             </CardHeader>
@@ -94,7 +98,7 @@ const Page = () => {
                     <Icon icon="iconamoon:email" width="20" height="20" />
                   </Label>
                   <Input
-                    className="bg-slate-800 border-slate-600 text-white"
+                    className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-black dark:text-white"
                     placeholder="Enter your email"
                     {...form.register("email")}
                   />
@@ -116,7 +120,7 @@ const Page = () => {
                   <Input
                     type={isOpen ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="bg-slate-800 border-slate-600 text-white"
+                    className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-black dark:text-white"
                     {...form.register("password")}
                   />
                   <p className="text-red-500 text-sm">
@@ -126,7 +130,7 @@ const Page = () => {
                     icon={
                       isOpen ? "heroicons-solid:eye" : "heroicons-solid:eye-off"
                     }
-                    className="absolute top-[34px] right-2 text-slate-400 hover:text-white cursor-pointer"
+                    className="absolute top-[34px] right-2 text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white cursor-pointer"
                     width="20"
                     height="20"
                     onClick={() => setOpen(!isOpen)}
@@ -136,13 +140,16 @@ const Page = () => {
                 <div className="flex justify-between items-center">
                   <div className="flex gap-2 items-center">
                     <Checkbox id="remember" />
-                    <Label htmlFor="remember" className="text-slate-300">
+                    <Label
+                      htmlFor="remember"
+                      className="text-slate-600 dark:text-slate-300"
+                    >
                       Remember me
                     </Label>
                   </div>
                   <Link
                     href="/resetPassword"
-                    className="text-sm text-purple-400 hover:underline"
+                    className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     Forgot password?
                   </Link>
@@ -150,7 +157,7 @@ const Page = () => {
 
                 <Button
                   disabled={submitDataMutation.isPending}
-                  className="bg-purple-600 hover:bg-purple-700 transition-colors"
+                  className="bg-purple-600 hover:bg-purple-700 text-white transition-colors"
                 >
                   {submitDataMutation.isPending && (
                     <Icon
@@ -165,10 +172,13 @@ const Page = () => {
               </div>
             </CardContent>
           </form>
-          <div className="flex justify-center items-center pb-6 text-slate-400">
+          <div className="flex justify-center items-center pb-6 text-slate-600 dark:text-slate-400">
             Don&apos;t have an account?
             <Link href="/signUp">
-              <Button variant="link" className="text-purple-400">
+              <Button
+                variant="link"
+                className="text-purple-600 dark:text-purple-400"
+              >
                 Register
               </Button>
             </Link>
