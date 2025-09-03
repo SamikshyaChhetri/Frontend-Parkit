@@ -1,9 +1,12 @@
 "use client";
+import { Card, CardContent } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "next-themes";
 import { useState } from "react";
 
-// Icons components
-const ChevronDownIcon = () => (
+// Enhanced Icons components
+const ChevronDownIcon = ({ className = "" }: { className?: string }) => (
   <svg
     width="20"
     height="20"
@@ -11,12 +14,50 @@ const ChevronDownIcon = () => (
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
   >
     <path d="M6 9l6 6 6-6" />
   </svg>
 );
 
-const ChevronUpIcon = () => (
+const ParkIcon = () => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-primary"
+  >
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <path d="M8 21l8-8-8-8" />
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-muted-foreground"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
+
+// Category Icons
+const GeneralIcon = () => (
   <svg
     width="20"
     height="20"
@@ -25,16 +66,79 @@ const ChevronUpIcon = () => (
     stroke="currentColor"
     strokeWidth="2"
   >
-    <path d="M18 15l-6-6-6 6" />
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <path d="M12 17h.01" />
   </svg>
 );
 
+const AccountIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const BookingIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+    <path d="M16 2v4M8 2v4M3 10h18" />
+  </svg>
+);
+
+const PaymentIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+    <path d="M1 10h22" />
+  </svg>
+);
+
+const HostingIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9,22 9,12 15,12 15,22" />
+  </svg>
+);
+
+// Enhanced animation variants
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   show: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
+    transition: {
+      delay: i * 0.05,
+      duration: 0.4,
+      ease: [0.25, 0.4, 0.55, 1.4],
+    },
   }),
 };
 
@@ -43,18 +147,36 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
     },
   },
 };
 
 const titleVariants = {
-  hidden: { opacity: 0, y: -30 },
+  hidden: { opacity: 0, y: -20 },
   show: {
     opacity: 1,
     y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const heroVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  show: {
+    opacity: 1,
+    scale: 1,
     transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
+
+const categoryVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 // FAQ data
@@ -140,7 +262,7 @@ const faqItems = [
   },
 ];
 
-// Accordion Component
+// Enhanced Accordion Component with theme support
 function FAQItem({
   question,
   answer,
@@ -154,85 +276,216 @@ function FAQItem({
 
   return (
     <motion.div
-      className="border-b  border-slate-700 bg-slate-800 rounded-lg mb-2 shadow-sm hover:shadow-lg hover:shadow-slate-900/50 transition-all duration-200"
       variants={fadeUp}
       custom={index}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      className="group"
     >
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-4 text-left flex justify-between items-center hover:bg-slate-700 transition-colors duration-200 rounded-lg"
-      >
-        <span className="text-slate-100 font-medium text-base pr-4">
-          {question}
-        </span>
-        <motion.span
-          className="text-slate-400 flex-shrink-0"
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+      <Card className="overflow-hidden border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 bg-card/80 backdrop-blur-sm">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full p-6 text-left flex justify-between items-start hover:bg-muted/30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 focus:ring-offset-background"
+          aria-expanded={isOpen}
+          aria-controls={`faq-answer-${index}`}
         >
-          <ChevronDownIcon />
-        </motion.span>
-      </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="content"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+          <span className="text-foreground font-semibold text-base leading-relaxed pr-4 group-hover:text-primary transition-colors duration-200">
+            {question}
+          </span>
+          <motion.span
+            className="text-muted-foreground flex-shrink-0 mt-0.5"
+            animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ overflow: "hidden" }}
           >
+            <ChevronDownIcon className="w-5 h-5" />
+          </motion.span>
+        </button>
+
+        <AnimatePresence>
+          {isOpen && (
             <motion.div
-              className="px-4 pb-4 text-slate-300 text-sm leading-relaxed"
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1, duration: 0.3 }}
+              key="content"
+              id={`faq-answer-${index}`}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+              style={{ overflow: "hidden" }}
             >
-              {answer}
+              <CardContent className="px-6 pb-6 pt-0">
+                <motion.div
+                  className="text-muted-foreground leading-relaxed border-l-2 border-primary/20 pl-4"
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                >
+                  {answer}
+                </motion.div>
+              </CardContent>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </Card>
     </motion.div>
   );
 }
 
 export default function FAQ() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { theme } = useTheme();
+
+  // Filter FAQ items based on search term
+  const filteredFAQs = faqItems.filter(
+    (item) =>
+      item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.answer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-slate-800 py-12">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Theme Toggle - Top Right */}
+        <div className="flex justify-end mb-8">
+          <ThemeToggle />
+        </div>
+
+        {/* Hero Section */}
         <motion.div
           className="text-center mb-12"
           initial="hidden"
           animate="show"
-          variants={titleVariants}
+          variants={heroVariants}
         >
-          <h1 className="text-4xl font-bold text-slate-100 mb-4">
+          <div className="flex justify-center mb-6">
+            <div className="p-3 bg-primary/10 rounded-full">
+              <ParkIcon />
+            </div>
+          </div>
+          <motion.h1
+            className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-transparent"
+            variants={titleVariants}
+          >
             Frequently Asked Questions
-          </h1>
-          <p className="text-slate-400 text-lg">
-            Find answers to common questions about Parkify
-          </p>
+          </motion.h1>
+          <motion.p
+            className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            Find answers to common questions about Parkify and get the help you
+            need
+          </motion.p>
         </motion.div>
 
+        {/* Enhanced Search Section */}
         <motion.div
-          className="space-y-3 w-full"
+          className="mb-12 space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          {/* Search Bar */}
+          <div className="relative max-w-lg mx-auto">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <SearchIcon />
+            </div>
+            <input
+              type="text"
+              placeholder="Search FAQs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-card/70 backdrop-blur-sm border border-border/60 rounded-xl focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all duration-200 text-foreground placeholder:text-muted-foreground shadow-sm hover:shadow-md"
+              aria-label="Search frequently asked questions"
+            />
+            {searchTerm && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Clear search"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </motion.button>
+            )}
+          </div>
+
+          {/* Search Results Count */}
+          {searchTerm && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center text-sm text-muted-foreground"
+            >
+              {filteredFAQs.length === 1
+                ? "1 result found"
+                : `${filteredFAQs.length} results found`}{" "}
+              for "{searchTerm}"
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* FAQ Items */}
+        <motion.div
+          className="space-y-4 w-full"
           initial="hidden"
           animate="show"
           variants={containerVariants}
         >
-          {faqItems.map((item, index) => (
-            <FAQItem
-              key={index}
-              question={item.question}
-              answer={item.answer}
-              index={index}
-            />
-          ))}
+          {filteredFAQs.length > 0 ? (
+            filteredFAQs.map((item, index) => (
+              <FAQItem
+                key={index}
+                question={item.question}
+                answer={item.answer}
+                index={index}
+              />
+            ))
+          ) : (
+            <motion.div
+              className="text-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="text-muted-foreground text-lg">
+                No FAQs match your search. Try different keywords.
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* Footer CTA */}
+        <motion.div
+          className="text-center mt-16 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <h3 className="text-xl font-semibold text-foreground mb-4">
+            Still have questions?
+          </h3>
+          <p className="text-muted-foreground mb-6">
+            Can't find what you're looking for? Our support team is here to
+            help.
+          </p>
+          <motion.button
+            className="parking-button text-sm px-6 py-3 rounded-xl"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Contact Support
+          </motion.button>
         </motion.div>
       </div>
     </div>

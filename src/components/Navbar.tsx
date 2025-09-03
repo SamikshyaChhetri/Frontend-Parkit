@@ -62,8 +62,8 @@ const Navbar = () => {
       <div className="flex flex-col h-[90vh] relative">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl"></div>
         </div>
 
         <motion.div
@@ -102,7 +102,7 @@ const Navbar = () => {
                 <ModeToggle />
               </motion.div>
             </div>
-            <div className="flex gap-5 pr-5 border items-center ">
+            <div className="flex gap-5 pr-5 border-none items-center">
               <Link href="/signUp">
                 <motion.div
                   variants={fadeUp}
@@ -110,7 +110,7 @@ const Navbar = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Button
-                    className="mt-6 text-black dark:text-white hover:shadow-lg transition-all duration-300"
+                    className="mt-6 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-lg transition-all duration-300"
                     variant="outline"
                   >
                     Sign up
@@ -123,7 +123,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button className="bg-purple-600 mt-6 text-white hover:bg-purple-700 hover:shadow-lg transition-all duration-300">
+                  <Button className="bg-purple-600 mt-6 text-white hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800 hover:shadow-lg transition-all duration-300">
                     Login
                   </Button>
                 </motion.div>
@@ -141,7 +141,7 @@ const Navbar = () => {
             variants={staggerContainer}
           >
             <motion.div
-              className="text-4xl text-black dark:text-white font-extrabold leading-snug"
+              className="text-4xl text-gray-900 dark:text-white font-extrabold leading-snug"
               variants={slideIn}
               whileHover={{ scale: 1.02 }}
             >
@@ -152,7 +152,7 @@ const Navbar = () => {
               Instantly!
             </motion.div>
             <motion.div
-              className="text-gray-600 dark:text-gray-400 text-lg"
+              className="text-gray-600 dark:text-gray-300 text-lg"
               variants={fadeUp}
             >
               Say goodbye to parking hassles and enjoy a seamless, stress-free
@@ -204,18 +204,18 @@ const Navbar = () => {
       >
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 right-20 w-64 h-64 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-10 right-20 w-64 h-64 bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 rounded-full blur-3xl"></div>
         </div>
 
         <motion.div
-          className="text-5xl font-bold text-gray-800 dark:text-white relative z-10"
+          className="text-5xl font-bold text-gray-900 dark:text-white relative z-10"
           variants={slideIn}
           whileHover={{ scale: 1.02 }}
         >
           Have an unused space?
         </motion.div>
         <motion.div
-          className="text-gray-400 text-xl font-semibold"
+          className="text-gray-600 dark:text-gray-300 text-xl font-semibold"
           variants={fadeUp}
         >
           Become a host in few steps
@@ -256,7 +256,7 @@ const Navbar = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
               </motion.div>
               <motion.h2
-                className="mt-4 text-gray-800 dark:text-white font-semibold"
+                className="mt-4 text-gray-900 dark:text-white font-semibold"
                 variants={fadeUp}
               >
                 {label}
@@ -280,7 +280,7 @@ const Navbar = () => {
       <Seperator />
 
       <motion.div
-        className="flex justify-center text-4xl font-bold py-10 text-gray-800 dark:text-white relative"
+        className="flex justify-center text-4xl font-bold py-10 text-gray-900 dark:text-white relative"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
@@ -293,7 +293,7 @@ const Navbar = () => {
           </span>
         </motion.div>
         {/* Background decorative element */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 rounded-full blur-2xl"></div>
       </motion.div>
 
       <div className="flex justify-center px-6 lg:px-14">

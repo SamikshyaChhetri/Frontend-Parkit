@@ -109,7 +109,7 @@ const Header: FC<{
   }
 
   return (
-    <div className="bg-gray-800 text-white">
+    <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700">
       <div className="flex flex-col gap-6">
         <div>
           <div className="flex justify-between m-3">
@@ -142,7 +142,7 @@ const Header: FC<{
                 <Tab
                   label="Home"
                   sx={{
-                    color: "white",
+                    color: "var(--foreground)",
                     fontWeight: "700",
                     "&.Mui-selected": { color: "#8b5cf6" },
                   }}
@@ -155,7 +155,7 @@ const Header: FC<{
                 <Tab
                   label="Reservations"
                   sx={{
-                    color: "white",
+                    color: "var(--foreground)",
                     fontWeight: "700",
                     "&.Mui-selected": { color: "#8b5cf6" },
                   }}
@@ -168,7 +168,7 @@ const Header: FC<{
                 <Tab
                   label="My Listings"
                   sx={{
-                    color: "white",
+                    color: "var(--foreground)",
                     fontWeight: "700",
                     "&.Mui-selected": { color: "#8b5cf6" },
                   }}
@@ -181,7 +181,7 @@ const Header: FC<{
                 <Tab
                   label="settings"
                   sx={{
-                    color: "white",
+                    color: "var(--foreground)",
                     fontWeight: "700",
                     "&.Mui-selected": { color: "#8b5cf6" },
                   }}
@@ -200,7 +200,7 @@ const Header: FC<{
                 <SheetTrigger asChild>
                   <div>
                     {userQuery.isLoading && (
-                      <div className="w-10 h-10 rounded-full bg-gray-400"></div>
+                      <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 animate-pulse"></div>
                     )}
                     {userQuery.isSuccess && (
                       <img
@@ -212,19 +212,19 @@ const Header: FC<{
                   </div>
                 </SheetTrigger>
                 {userQuery.isSuccess && (
-                  <SheetContent className="flex flex-col justify-between  rounded-lg m-2 bg-gray-800 text-white ">
+                  <SheetContent className="flex flex-col justify-between rounded-lg m-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700">
                     <div className="flex flex-col gap-8">
                       <div className="flex flex-col gap-10">
                         <SheetHeader className="flex gap-3 flex-row items-center">
                           <img
-                            className=" w-14 rounded-full"
+                            className="w-16 h-16 rounded-full"
                             src={userQuery.data.data.avatar}
                           ></img>
                           <div>
-                            <SheetTitle className="text-white">
+                            <SheetTitle className="text-gray-900 dark:text-white">
                               {userQuery.data.data.name}
                             </SheetTitle>
-                            <SheetDescription>
+                            <SheetDescription className="text-gray-600 dark:text-gray-400">
                               {userQuery.data.data.email}
                             </SheetDescription>
                           </div>
@@ -241,7 +241,7 @@ const Header: FC<{
                             <SheetClose asChild>
                               <Link
                                 href={item.link}
-                                className="flex gap-2 p-3 hover:bg-gray-500 rounded-lg cursor-pointer"
+                                className="flex gap-2 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-colors"
                               >
                                 {/* <Icon icon={item.icon} width="24" height="24" /> */}
                                 {item.icon}
@@ -258,7 +258,7 @@ const Header: FC<{
                         <Button
                           type="submit"
                           variant="outline"
-                          className="text-white bg-gray-800 w-full py-5"
+                          className="text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full py-5"
                           onClick={() => {
                             logoutMutation.mutate();
                           }}

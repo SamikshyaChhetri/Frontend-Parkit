@@ -127,13 +127,13 @@ const CountryDropdownComponent = (
               />
             </div>{" "}
             {slim === false && (
-              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-white">
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-foreground">
                 {selectedCountry.name}
               </span>
             )}
           </div>
         ) : (
-          <span>
+          <span className="text-muted-foreground">
             {slim === false ? (
               placeholder || setSelectedCountry.name
             ) : (
@@ -141,7 +141,7 @@ const CountryDropdownComponent = (
             )}
           </span>
         )}
-        <ChevronDown size={16} className="text-white" />
+        <ChevronDown size={16} className="text-muted-foreground" />
       </PopoverTrigger>
       <PopoverContent
         collisionPadding={10}

@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -17,7 +18,17 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Rating from "@mui/material/Rating";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  Calendar as CalendarIcon,
+  Car,
+  MapPin,
+  Star,
+  User,
+} from "lucide-react";
 import moment from "moment";
+import Link from "next/link";
 import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -119,255 +130,441 @@ const Page: FC<{
 
   // Render loading or error state
   if (listingsQuery.isError) {
-    return <div>Error on Fetching data</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex justify-center items-center">
+        <div className="text-center">
+          <div className="text-xl text-destructive">Error on Fetching data</div>
+          <Link href={`/p/${rparams.userId}/dashboard`}>
+            <Button className="mt-4">Back to Dashboard</Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   if (listingsQuery.isLoading) {
     return (
-      <div className="bg-gray-800 flex justify-center items-center h-screen">
-        <Icon
-          icon="svg-spinners:blocks-shuffle-3"
-          width="200"
-          height="200"
-          className="text-white"
-        />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex justify-center items-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <Icon
+            icon="svg-spinners:blocks-shuffle-3"
+            width="60"
+            height="60"
+            className="text-primary mx-auto mb-4"
+          />
+          <p className="text-muted-foreground">Loading listing details...</p>
+        </motion.div>
       </div>
     );
   }
+
   const listing = listingsQuery.data.data;
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+  };
+
   return (
-    <div className="p-6 bg-gray-800 min-h-screen">
-      {/* Listing Image */}
-      <div className="flex justify-center mt-5">
-        <img
-          src={listing.photo || ""}
-          alt="Listing"
-          className="w-[50%] max-w-4xl h-96 bg-gray-300 rounded-lg"
-        />
-      </div>
-      {/* Listing Details */}
-      <div className="max-w-4xl mx-auto mt-6 flex flex-col gap-4">
-        {/* Title and Price */}
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold text-white">
-            {capitalize(listing.street)}, {capitalize(listing.city)}
-          </div>
-          <div className="flex flex-col gap-2">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      {" "}
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Header */}
+        <motion.div className="mb-8" variants={itemVariants}>
+          <div className="flex items-center justify-between mb-6">
+            <Link href={`/p/${rparams.userId}/dashboard`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="hover:bg-primary/10 hover:border-primary/50 transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+              </Button>
+            </Link>
+
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button>Reserve</Button>
+                <Button className="bg-primary hover:bg-primary/90">
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  Reserve Now
+                </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                  <DialogTitle className="flex justify-center mt-5">
-                    Create a reservation
+                  <DialogTitle className="text-center text-xl font-bold">
+                    Create a Reservation
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={reserveForm.handleSubmit(onSubmitReservation)}>
-                  <div className="flex justify-center items-center h-[350px]">
+                  <div className="flex justify-center items-center py-6">
                     <Calendar
                       mode="single"
-                      className="rounded-md border shadow "
+                      className="rounded-md border shadow"
                       {...reserveForm.register("date")}
                       selected={reserveForm.watch("date")}
                       disabled={(date) => {
-                        console.log(
-                          moment(date).format("YYYY-MM-DD"),
-                          listingsQuery.data.data.unavailableDates
-                        );
                         if (date < moment().subtract(1, "day").toDate())
                           return true;
-                        listingsQuery.data.data.unavailableDates.includes(
+                        return listingsQuery.data.data.unavailableDates.includes(
                           moment(date).format("YYYY-MM-DD").toString()
-                        )
-                          ? true //ekxin ma hunxa? awhh awhh
-                          : false;
-                        return false;
+                        );
                       }}
                       onSelect={(value) => {
                         reserveForm.setValue("date", value!);
                       }}
                     />
                   </div>
-                  <div className="flex justify-between">
-                    <DialogClose asChild className="inline justify-start">
+                  <div className="flex justify-between gap-4">
+                    <DialogClose asChild>
                       <Button
-                        className="w-fit"
                         type="button"
-                        variant="destructive"
+                        variant="outline"
+                        className="flex-1"
                       >
                         Cancel
                       </Button>
                     </DialogClose>
-                    <div className="flex justify-end">
-                      <Button
-                        className="w-fit"
-                        disabled={submitReservation.isPending}
-                      >
-                        Reserve
-                        {submitReservation.isPending && (
+                    <Button
+                      type="submit"
+                      className="flex-1"
+                      disabled={submitReservation.isPending}
+                    >
+                      {submitReservation.isPending ? (
+                        <>
                           <Icon
                             icon="svg-spinners:180-ring"
-                            width="24"
-                            height="24"
+                            width="20"
+                            height="20"
+                            className="mr-2"
                           />
-                        )}
-                      </Button>
-                    </div>
+                          Reserving...
+                        </>
+                      ) : (
+                        <>
+                          <CalendarIcon className="h-4 w-4 mr-2" />
+                          Reserve
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </form>
               </DialogContent>
             </Dialog>
-
-            <div className="text-lg font-semibold text-white flex items-center">
-              <span className="mr-1 text-lg font-bold">{listing.price}</span>
-              <span className="text-sm">per hour</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="text-gray-400 text-sm">{listing.description}</div>
-
-        {/* Features */}
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2 flex-col">
-            <span className="text-white font-medium">
-              {capitalize(listing.type)}
-            </span>
-            <div className="flex items-center gap-2">
-              <Icon icon="noto:star" width="24" height="24" />
-              <span className="text-white font-medium">{listing.rating}</span>
-            </div>
-          </div>
-        </div>
-        {/* Owner Details and Reviews Section */}
-        <div className="flex justify-between items-start gap-8 mt-10">
-          {/* Owner Details */}
-          <div className="flex-1">
-            <div className="font-semibold text-white mb-5">Owner Details</div>
-            <div className="flex items-center gap-4 mt-2">
-              {/* <div className="w-12 h-12 bg-gray-300 rounded-full"></div> */}
-              <img
-                src={listing.owner.avatar}
-                className="w-12 h-12  rounded-full"
-              />
-              <div>
-                <div className="font-medium text-white">
-                  {listing.owner.name}
-                </div>
-                <div className="text-sm text-gray-500">
-                  {listing.owner.email}
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Reviews Section */}
-          <div className="flex-1">
-            <div className="font-semibold text-white">Reviews</div>
-            <div className="   flex flex-col gap-2 w-full">
-              {reviewsOfListing.data.data.length == 0 && (
-                <div className="text-gray-500">
-                  No reviews yet
-                  <Icon
-                    icon="ic:outline-rate-review"
-                    width="24"
-                    height="24"
-                    className="inline mx-2"
-                  />
-                </div>
-              )}
-              {reviewsOfListing.isSuccess &&
-                reviewsOfListing.data.data.slice(0, 3).map((review: any) => (
-                  <div
-                    key={review.id}
-                    className="flex justify-between bg-gray-200 rounded-lg mt-2 items-center"
-                  >
-                    {/* {userR.data.data.length == 0 && <NoData></NoData>} */}
-                    <div className="flex justify-between items-center gap-2 p-2">
-                      <img
-                        src={review.reviewer.avatar}
-                        alt=""
-                        className="bg-white rounded-full h-14 w-14"
-                      />
-                      <div className="flex flex-col ">
-                        <div className="mt-2 text-sm border ">
-                          {review.comment}
-                        </div>
-                        <div>{review.reviewer.name}</div>
-                      </div>
+          <div className="text-center mb-8">
+            <motion.h1
+              className="text-4xl font-bold text-foreground mb-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-primary">{capitalize(listing.street)}</span>
+              , {capitalize(listing.city)}
+            </motion.h1>
+            <motion.p
+              className="text-muted-foreground text-lg max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              {listing.description}
+            </motion.p>
+          </div>
+        </motion.div>
+
+        {/* Listing Image */}
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex justify-center">
+            <motion.img
+              src={listing.photo || ""}
+              alt="Parking Space"
+              className="w-full max-w-4xl h-96 object-cover rounded-2xl shadow-xl"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </motion.div>
+
+        {/* Stats Cards */}
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div variants={cardVariants}>
+              <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-3 bg-primary/10 rounded-lg mr-4">
+                      <Car className="h-6 w-6 text-primary" />
                     </div>
-
-                    <div className="flex items-center gap-1 ">
-                      {review.rating}
-                      <Icon
-                        icon="pepicons-pencil:star-filled"
-                        width="20"
-                        height="20"
-                        className="inline mr-1"
-                      />
+                    <div>
+                      <p className="text-lg font-bold text-foreground">
+                        {capitalize(listing.type)}
+                      </p>
+                      <p className="text-muted-foreground">Vehicle Type</p>
                     </div>
                   </div>
-                ))}
-            </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={cardVariants}>
+              <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-3 bg-green-500/10 rounded-lg mr-4">
+                      <Star className="h-6 w-6 text-green-500" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-foreground">
+                        {listing.rating || "N/A"}
+                      </p>
+                      <p className="text-muted-foreground">Rating</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={cardVariants}>
+              <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="p-3 bg-blue-500/10 rounded-lg mr-4">
+                      <MapPin className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-foreground">
+                        ${listing.price}
+                      </p>
+                      <p className="text-muted-foreground">per hour</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
+        {/* Owner Details and Reviews Section */}
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
+          variants={itemVariants}
+        >
+          {/* Owner Details */}
+          <motion.div variants={cardVariants}>
+            <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow h-full">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-primary/10 rounded-lg">
+                    <User className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Owner Details
+                  </h3>
+                </div>
+                <div className="flex items-center gap-4">
+                  <img
+                    src={listing.owner.avatar}
+                    className="w-16 h-16 rounded-full object-cover shadow-md"
+                    alt="Owner Avatar"
+                  />
+                  <div>
+                    <div className="text-lg font-medium text-foreground">
+                      {listing.owner.name}
+                    </div>
+                    <div className="text-muted-foreground">
+                      {listing.owner.email}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Reviews Section */}
+          <motion.div variants={cardVariants}>
+            <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow h-full">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-green-500/10 rounded-lg">
+                    <Star className="h-6 w-6 text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Reviews
+                  </h3>
+                </div>
+
+                <div className="space-y-4 max-h-80 overflow-y-auto">
+                  {reviewsOfListing.isSuccess &&
+                    reviewsOfListing.data.data.length === 0 && (
+                      <div className="text-center py-8">
+                        <Icon
+                          icon="ic:outline-rate-review"
+                          width="48"
+                          height="48"
+                          className="mx-auto text-muted-foreground mb-2"
+                        />
+                        <p className="text-muted-foreground">No reviews yet</p>
+                      </div>
+                    )}
+
+                  {reviewsOfListing.isSuccess &&
+                    reviewsOfListing.data.data
+                      .slice(0, 3)
+                      .map((review: any) => (
+                        <motion.div
+                          key={review.id}
+                          className="p-4 bg-muted/50 rounded-lg"
+                          whileHover={{ scale: 1.02 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="flex items-start gap-3">
+                            <img
+                              src={review.reviewer.avatar}
+                              alt="Reviewer"
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="font-medium text-foreground">
+                                  {review.reviewer.name}
+                                </h4>
+                                <div className="flex items-center gap-1">
+                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                  <span className="text-sm font-medium">
+                                    {review.rating}
+                                  </span>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {review.comment}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
+
         {/* Add a Review Section */}
-        <div className="mt-5">
-          <div className="font-semibold text-white text-md">Add a Review</div>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="mt-3">
-              <textarea
-                placeholder="Write your review here..."
-                {...form.register("comment")}
-                className="w-full h-28 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-violet-800 resize-none"
-              ></textarea>
-            </div>
-            <div className=" rounded-md w-fit flex items-center justify-center">
-              <Rating
-                name="customized-stars"
-                defaultValue={2}
-                onChange={(event, newValue) => {
-                  form.setValue("rating", newValue!);
-                }}
-                icon={
-                  <StarIcon
-                    style={{
-                      stroke: "white", // color for the border
-                      strokeWidth: 1, // thickness of the border
-                      fill: "gold", // fill color for the star
-                      width: "30px",
-                    }}
-                  />
-                }
-                /* 2) Empty star */
-                emptyIcon={
-                  <StarBorderIcon
-                    style={{
-                      stroke: "white",
-                      strokeWidth: 1,
-                      width: "30px",
-                    }}
-                  />
-                }
-              />
-            </div>
-            <div className="flex justify-end mt-3">
-              <Button
-                className=" text-white px-6 py-2 rounded-lg hover:bg-violet-700 transition"
-                disabled={submitReview.isPending}
+        <motion.div variants={itemVariants}>
+          <Card className="border-border/50 shadow-sm">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-6">
+                Add a Review
+              </h3>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
               >
-                Submit{" "}
-                {submitReview.isPending && (
-                  <Icon icon="svg-spinners:180-ring" width="24" height="24" />
-                )}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+                <div>
+                  <textarea
+                    placeholder="Write your review here..."
+                    {...form.register("comment")}
+                    className="w-full h-32 p-4 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none transition-colors"
+                  ></textarea>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-foreground">
+                      Rating:
+                    </span>
+                    <Rating
+                      name="customized-stars"
+                      defaultValue={2}
+                      onChange={(event, newValue) => {
+                        form.setValue("rating", newValue!);
+                      }}
+                      icon={
+                        <StarIcon
+                          style={{
+                            fill: "yellow",
+                            width: "24px",
+                            height: "24px",
+                          }}
+                        />
+                      }
+                      emptyIcon={
+                        <StarBorderIcon
+                          style={{
+                            color: "hsl(var(--muted-foreground))",
+                            width: "24px",
+                            height: "24px",
+                          }}
+                        />
+                      }
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={submitReview.isPending}
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    {submitReview.isPending ? (
+                      <>
+                        <Icon
+                          icon="svg-spinners:180-ring"
+                          width="20"
+                          height="20"
+                          className="mr-2"
+                        />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Review"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
