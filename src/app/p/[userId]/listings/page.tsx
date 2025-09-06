@@ -1,4 +1,5 @@
 "use client";
+import Map from "@/components/maps/Map";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -46,17 +47,39 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const createSchema = z.object({
-  description: z.string().min(1, "Description cannot be empty"),
-  type: z.string().min(1, "Please choose a type"),
-  numberOfvehicle: z.coerce.string().min(1, "No. of vehicles cannot be empty"),
-  street: z.string().min(2, "Street cannot be empty"),
-  zipcode: z.string().min(1, "Zipcode cannot be empty"),
-  price: z.string().min(1, "Price cannot be empty"),
-  city: z.string().min(1, "City cannot be empty"),
-  country: z.string().min(1, "Country cannot be empty"),
-  photo: z.object({}),
-});
+const createSchema = z
+  .object({
+    description: z.string().min(1, "Description cannot be empty"),
+    type: z.string().min(1, "Please choose a type"),
+    numberOfvehicle: z.coerce
+      .string()
+      .min(1, "No. of vehicles cannot be empty"),
+    street: z.string().min(2, "Street cannot be empty"),
+    zipcode: z.string().min(1, "Zipcode cannot be empty"),
+    price: z.string().min(1, "Price cannot be empty"),
+    city: z.string().min(1, "City cannot be empty"),
+    country: z.string().min(1, "Country cannot be empty"),
+    photo: z.object({}),
+    location: z.any().optional(),
+  })
+  .superRefine((v, c) => {
+    console.log(v);
+    if (Array.isArray(v.location)) {
+      if (v.location.length !== 2) {
+        return c.addIssue({
+          path: ["location"],
+          message: "Please select a location in map",
+          code: "custom",
+        });
+      }
+    } else {
+      c.addIssue({
+        path: ["location"],
+        message: "Please select a location in map",
+        code: "custom",
+      });
+    }
+  });
 
 const Page: FC<{
   params: Promise<{ userId: string }>;
@@ -77,6 +100,7 @@ const Page: FC<{
       city: "",
       country: "",
       photo: "",
+      location: [0, 0],
     },
     resolver: zodResolver(createSchema),
   });
@@ -100,6 +124,8 @@ const Page: FC<{
       formData.append("zipcode", value.zipcode);
       formData.append("photo", value.photo[0]);
       formData.append("ownerId", rparams.userId);
+      formData.append("lat", String(value.location[0]));
+      formData.append("long", String(value.location[1]));
 
       const response = await axiosInstance.post(`/listing`, formData);
       return response.data;
@@ -352,10 +378,9 @@ const Page: FC<{
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-foreground flex items-center gap-1">
                             <span className="text-destructive">*</span>
-                            Price per Hour (₹)
+                            Price per Hour (Rs)
                           </label>
                           <div className="relative">
-                            <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="number"
                               className="border-border/50 focus:border-primary pl-10"
@@ -559,6 +584,21 @@ const Page: FC<{
                         </motion.div>
                       )}
                     </div>
+                  </motion.div>
+
+                  {/* Map Section */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <div className={"text-xl font-bold"}>
+                      Choose select a location in the map
+                    </div>
+                    <div className={"text-destructive"}>
+                      {form.formState.errors.location?.message}{" "}
+                    </div>
+                    <Map move={true} form={form}></Map>
                   </motion.div>
                 </CardContent>
 

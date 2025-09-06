@@ -1,4 +1,5 @@
 "use client";
+import Map from "@/components/maps/Map";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -58,19 +59,39 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const createSchema = z.object({
-  description: z.string().min(1, "Description cannot be empty"),
-  type: z.string().min(1, "Please choose a type"),
-  noOfVehicle: z
-    .string()
-    .min(1, "No. of vehicles cannot be empty")
-    .refine((v) => Number(v) > 0, "No. of vehicle must be greater than 0"),
-  street: z.string().min(2, "Street cannot be empty"),
-  zipcode: z.string().min(1, "Zipcode cannot be empty"),
-  price: z.string().min(1, "Price cannot be empty"),
-  city: z.string().min(1, "City cannot be empty"),
-  country: z.string().min(1, "Country cannot be empty"),
-});
+const createSchema = z
+  .object({
+    description: z.string().min(1, "Description cannot be empty"),
+    type: z.string().min(1, "Please choose a type"),
+    noOfVehicle: z
+      .string()
+      .min(1, "No. of vehicles cannot be empty")
+      .refine((v) => Number(v) > 0, "No. of vehicle must be greater than 0"),
+    street: z.string().min(2, "Street cannot be empty"),
+    zipcode: z.string().min(1, "Zipcode cannot be empty"),
+    price: z.string().min(1, "Price cannot be empty"),
+    city: z.string().min(1, "City cannot be empty"),
+    country: z.string().min(1, "Country cannot be empty"),
+    location: z.any().optional(),
+  })
+  .superRefine((v, c) => {
+    console.log(v);
+    if (Array.isArray(v.location)) {
+      if (v.location.length !== 2) {
+        return c.addIssue({
+          path: ["location"],
+          message: "Please select a location in map",
+          code: "custom",
+        });
+      }
+    } else {
+      c.addIssue({
+        path: ["location"],
+        message: "Please select a location in map",
+        code: "custom",
+      });
+    }
+  });
 
 const page: FC<{
   params: Promise<{
@@ -91,9 +112,14 @@ const page: FC<{
       price: "",
       city: "",
       country: "",
+      location: [0, 0],
     },
     resolver: zodResolver(createSchema),
   });
+
+  useEffect(() => {
+    console.log(form.watch("location"));
+  }, [form.watch("location")]);
 
   const photoForm = useForm({
     defaultValues: {
@@ -147,9 +173,15 @@ const page: FC<{
   const submitUpdatedListing = useMutation({
     mutationFn: async () => {
       const data = form.getValues();
+      const dataToSend = {
+        ...data,
+        lat: data.location[0],
+        long: data.location[1],
+        location: undefined,
+      };
       const response = await axiosInstance.patch(
         `/listing/${rparams.listingsId}`,
-        data
+        dataToSend
       );
       return response.data;
     },
@@ -202,23 +234,6 @@ const page: FC<{
       setRenderError("Failed to populate form data");
     }
   }, [listingDetailQuery.data, listingDetailQuery.isSuccess]);
-
-  // Debug log to track query states
-  useEffect(() => {
-    console.log("Query state:", {
-      isLoading: listingDetailQuery.isLoading,
-      isSuccess: listingDetailQuery.isSuccess,
-      isError: listingDetailQuery.isError,
-      data: listingDetailQuery.data,
-      error: listingDetailQuery.error,
-    });
-  }, [
-    listingDetailQuery.isLoading,
-    listingDetailQuery.isSuccess,
-    listingDetailQuery.isError,
-    listingDetailQuery.data,
-    listingDetailQuery.error,
-  ]);
 
   const updatePhotoMutation = useMutation({
     mutationFn: async () => {
@@ -787,6 +802,24 @@ const page: FC<{
             </Card>
           </motion.div>
         </div>
+
+        {/* Map Section */}
+        {listingDetailQuery.isSuccess && listingDetailQuery.data && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Map
+              location={[
+                Number(listingDetailQuery.data.data.lat),
+                Number(listingDetailQuery.data.data.long),
+              ]}
+              form={form}
+              move={true}
+            ></Map>
+          </motion.div>
+        )}
 
         {/* Bottom Section - Reservations and Reviews */}
         <motion.div

@@ -1,4 +1,5 @@
 "use client";
+import Map from "@/components/maps/Map";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -488,6 +489,23 @@ const Page: FC<{
             </Card>
           </motion.div>
         </motion.div>
+
+        {/* Map Section */}
+        {listingsQuery.isSuccess && listingsQuery.data && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Map
+              location={[
+                Number(listingsQuery.data.data.lat),
+                Number(listingsQuery.data.data.long),
+              ]}
+              move={false}
+            ></Map>
+          </motion.div>
+        )}
 
         {/* Add a Review Section */}
         <motion.div variants={itemVariants}>
