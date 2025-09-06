@@ -4,15 +4,20 @@ import SkeletonView from "@/components/SkeletonView";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Clock, MapPin, Plus, Search } from "lucide-react";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const rparams = React.use(params);
+
+  const [userLat, setUserLat] = useState(0);
+  const [userLng, setUserLng] = useState(0);
+
   const form = useForm({
     defaultValues: {
       search: "",
@@ -27,6 +32,33 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       );
       return response.data;
     },
+  });
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        setUserLat(userLat);
+        setUserLng(userLng);
+      },
+      (error) => {
+        console.error("Error getting location:", error.message);
+      }
+    );
+  }, []);
+
+  const recommendationQuery = useQuery({
+    queryKey: ["recommendation"],
+    queryFn: async () => {
+      const response = await axiosInstance.post("/recommendation/recommend", {
+        lat: userLat,
+        lng: userLng,
+      });
+
+      return response.data;
+    },
+    enabled: !!(userLat && userLng),
   });
 
   // Animation variants
@@ -160,6 +192,31 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               </div>
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Recommendation Section */}
+        <motion.div variants={itemVariants} className="space-y-8 pb-10">
+          <div className="text-xl text-muted-foreground font-bold">
+            Nearest Lising
+          </div>
+          {recommendationQuery.isLoading && (
+            <motion.div
+              className="flex flex-col space-y-3"
+              variants={itemVariants}
+            >
+              <Skeleton className="h-48 w-full rounded-xl bg-muted/50" />
+              <div className="space-y-2 p-2">
+                <Skeleton className="h-4 w-full bg-muted/30" />
+                <Skeleton className="h-4 w-3/4 bg-muted/20" />
+              </div>
+            </motion.div>
+          )}
+          {recommendationQuery.isSuccess && recommendationQuery.data && (
+            <Display
+              listingQueryData={recommendationQuery.data.data}
+              userId={rparams.userId}
+            />
+          )}
         </motion.div>
 
         {/* Listings Section */}
