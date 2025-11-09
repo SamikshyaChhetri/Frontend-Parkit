@@ -28,6 +28,8 @@ const ProvidersWrapper: FC<{ children: ReactNode }> = ({ children }) => {
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
         gcTime: 1000 * 60 * 10, // 10 minutes
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
       },
       mutations: {
         onError(error) {
@@ -46,7 +48,7 @@ const ProvidersWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Toaster richColors />
+        <Toaster richColors position="top-right" />
 
         {children}
       </QueryClientProvider>

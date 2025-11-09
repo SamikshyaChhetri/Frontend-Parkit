@@ -40,7 +40,6 @@ import {
   Camera,
   Edit,
   FileText,
-  Hash,
   Home,
   IndianRupee,
   MapPin,
@@ -68,10 +67,8 @@ const createSchema = z
       .min(1, "No. of vehicles cannot be empty")
       .refine((v) => Number(v) > 0, "No. of vehicle must be greater than 0"),
     street: z.string().min(2, "Street cannot be empty"),
-    zipcode: z.string().min(1, "Zipcode cannot be empty"),
     price: z.string().min(1, "Price cannot be empty"),
     city: z.string().min(1, "City cannot be empty"),
-    country: z.string().min(1, "Country cannot be empty"),
     location: z.any().optional(),
   })
   .superRefine((v, c) => {
@@ -93,7 +90,7 @@ const createSchema = z
     }
   });
 
-const page: FC<{
+const Page: FC<{
   params: Promise<{
     userId: string;
     listingsId: string;
@@ -108,18 +105,12 @@ const page: FC<{
       type: "",
       noOfVehicle: "",
       street: "",
-      zipcode: "",
       price: "",
       city: "",
-      country: "",
       location: [0, 0],
     },
     resolver: zodResolver(createSchema),
   });
-
-  useEffect(() => {
-    console.log(form.watch("location"));
-  }, [form.watch("location")]);
 
   const photoForm = useForm({
     defaultValues: {
@@ -128,7 +119,6 @@ const page: FC<{
   });
   const [dialogOpen, setdialogOpen] = useState(false);
   const [listingToDelete, setListingToDelete] = useState(false);
-  const [photo, setPhoto] = useState(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
 
@@ -222,10 +212,8 @@ const page: FC<{
       console.log(listingData.type);
       form.setValue("noOfVehicle", listingData.noOfVehicle?.toString() || "");
       form.setValue("street", listingData.street || "");
-      form.setValue("zipcode", listingData.zipcode || "");
       form.setValue("price", listingData.price?.toString() || "");
       form.setValue("city", listingData.city || "");
-      form.setValue("country", listingData.country || "");
 
       // Clear any previous render errors
       setRenderError(null);
@@ -373,7 +361,8 @@ const page: FC<{
             Listing Not Found
           </h2>
           <p className="text-muted-foreground mb-4">
-            The listing you're looking for doesn't exist or has been removed.
+            The listing you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <Link href={`/p/${rparams.userId}/yourListings`}>
             <Button variant="outline">
@@ -751,50 +740,6 @@ const page: FC<{
                           )}
                         </div>
                       </div>
-
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {/* Country */}
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium text-foreground flex items-center gap-1">
-                            <span className="text-destructive">*</span>
-                            Country
-                          </label>
-                          <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              className="border-border/50 focus:border-primary pl-10"
-                              placeholder="India"
-                              {...form.register("country")}
-                            />
-                          </div>
-                          {form.formState.errors.country && (
-                            <Label className="text-destructive text-sm">
-                              {form.formState.errors.country.message}
-                            </Label>
-                          )}
-                        </div>
-
-                        {/* Zip Code */}
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium text-foreground flex items-center gap-1">
-                            <span className="text-destructive">*</span>
-                            Zip Code
-                          </label>
-                          <div className="relative">
-                            <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              className="border-border/50 focus:border-primary pl-10"
-                              placeholder="400001"
-                              {...form.register("zipcode")}
-                            />
-                          </div>
-                          {form.formState.errors.zipcode && (
-                            <Label className="text-destructive text-sm">
-                              {form.formState.errors.zipcode.message}
-                            </Label>
-                          )}
-                        </div>
-                      </div>
                     </div>
                   </motion.div>
                 </form>
@@ -1057,4 +1002,4 @@ const page: FC<{
   );
 };
 
-export default page;
+export default Page;

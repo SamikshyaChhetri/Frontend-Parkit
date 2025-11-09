@@ -11,6 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { capitalize } from "@/lib/utils";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -28,7 +36,6 @@ import {
   Star,
   User,
 } from "lucide-react";
-import moment from "moment";
 import Link from "next/link";
 import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -43,11 +50,16 @@ const Page: FC<{
   const reserveForm = useForm({
     defaultValues: {
       date: new Date(),
+      startTime: "01:30:00",
+      endTime: "02:30:00",
       reserverId: rparams.userId,
       listingId: rparams.listingsId,
+      slots: 1,
     },
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<Date | undefined>(undefined);
 
   // Initialize the form with default values
   const form = useForm({
@@ -69,6 +81,35 @@ const Page: FC<{
       return response.data;
     },
   });
+
+  // Function to calculate available slots for current time
+  const calculateAvailableSlots = () => {
+    if (!listingsQuery.data?.data) return 0;
+
+    const listing = listingsQuery.data.data;
+    const totalSlots = Number(listing.noOfVehicle) || 0;
+    const reservations = listing.reservation || [];
+
+    // Get current time
+    const now = new Date();
+
+    // Filter reservations that are currently active (ongoing)
+    const activeReservations = reservations.filter((reservation: any) => {
+      const startTime = new Date(reservation.date);
+      const endTime = new Date(reservation.endDate);
+      return now >= startTime && now <= endTime;
+    });
+
+    // Sum up slots from active reservations
+    const bookedSlots = activeReservations.reduce(
+      (sum: number, reservation: any) => {
+        return sum + (Number(reservation.slots) || 0);
+      },
+      0
+    );
+
+    return Math.max(0, totalSlots - bookedSlots);
+  };
 
   // Query to fetch reviews of the listing
   const reviewsOfListing = useQuery({
@@ -103,29 +144,69 @@ const Page: FC<{
     mutationFn: async () => {
       const reservationValue = reserveForm.getValues();
 
-      const response = await axiosInstance.post("/reserve", reservationValue);
-      console.log(response.data);
+      // Combine selected date with start and end times to form ISO datetimes
+      const selectedDate = reservationValue.date || date || new Date();
+      const parseTime = (timeStr: string) => {
+        const parts = (timeStr || "").split(":");
+        const hh = Number(parts[0]) || 0;
+        const mm = Number(parts[1]) || 0;
+        const ss = Number(parts[2]) || 0;
+        return { hh, mm, ss };
+      };
+
+      const combineDateTime = (dAny: any, timeStr: string) => {
+        const base = dAny instanceof Date ? new Date(dAny) : new Date(dAny);
+        const { hh, mm, ss } = parseTime(timeStr);
+        base.setHours(hh, mm, ss, 0);
+        return base.toISOString();
+      };
+
+      const payload = {
+        reserverId: reservationValue.reserverId,
+        listingId: reservationValue.listingId,
+        date: combineDateTime(selectedDate, reservationValue.startTime),
+        endDate: combineDateTime(selectedDate, reservationValue.endTime),
+        slots: Number(reservationValue.slots) || 1,
+      };
+
+      const response = await axiosInstance.post("/reserve", payload);
       return response.data;
     },
     onSuccess: () => {
       toast.success("Reservation submitted successfully!");
       reserveForm.reset();
       setIsOpen(false);
+      setDate(undefined);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message);
     },
   });
   const onSubmitReservation = () => {
+    // Validate date: must be selected and not in the past
+    const reservationValues = reserveForm.getValues();
+    const selected = reservationValues.date || date;
+    if (!selected) {
+      toast.error("Please pick a date for the reservation.");
+      return;
+    }
+
+    const sel =
+      selected instanceof Date ? new Date(selected) : new Date(selected);
+    const today = new Date();
+    // normalize to date-only for comparison
+    today.setHours(0, 0, 0, 0);
+    sel.setHours(0, 0, 0, 0);
+    if (sel < today) {
+      toast.error("Reservation date cannot be in the past.");
+      return;
+    }
+
+    // passed validation
     submitReservation.mutate();
   };
   // Form submit handler
-  const onSubmit = (data: {
-    rating: number;
-    comment: string;
-    reviewerId: string;
-    listingId: string;
-  }) => {
+  const onSubmit = () => {
     submitReview.mutate();
   };
 
@@ -238,23 +319,77 @@ const Page: FC<{
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={reserveForm.handleSubmit(onSubmitReservation)}>
-                  <div className="flex justify-center items-center py-6">
-                    <Calendar
-                      mode="single"
-                      className="rounded-md border shadow"
-                      {...reserveForm.register("date")}
-                      selected={reserveForm.watch("date")}
-                      disabled={(date) => {
-                        if (date < moment().subtract(1, "day").toDate())
-                          return true;
-                        return listingsQuery.data.data.unavailableDates.includes(
-                          moment(date).format("YYYY-MM-DD").toString()
-                        );
-                      }}
-                      onSelect={(value) => {
-                        reserveForm.setValue("date", value!);
-                      }}
-                    />
+                  <div className="flex flex-col gap-6 w-full">
+                    <div className="flex w-full flex-col gap-3">
+                      <Label htmlFor="date" className="px-1">
+                        Date
+                      </Label>
+                      <Select open={open} onOpenChange={setOpen}>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={reserveForm
+                              .watch("date")
+                              .toLocaleDateString()}
+                          />
+                        </SelectTrigger>
+                        <SelectContent
+                          className="w-auto overflow-hidden p-0 z-[9999999]"
+                          align="start"
+                        >
+                          <Calendar
+                            mode="single"
+                            selected={date}
+                            onSelect={(date) => {
+                              setDate(date);
+                              // keep react-hook-form in sync with calendar selection
+                              if (date) reserveForm.setValue("date", date);
+                              setOpen(false);
+                            }}
+                          />
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex gap-4 w-full justify-between mb-10">
+                      <div className="flex flex-col gap-3">
+                        <Label htmlFor="time-from" className="px-1">
+                          From
+                        </Label>
+                        <Input
+                          type="time"
+                          id="time-from"
+                          step="1"
+                          className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                          {...reserveForm.register("startTime")}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <Label htmlFor="time-to" className="px-1">
+                          To
+                        </Label>
+                        <Input
+                          type="time"
+                          id="time-to"
+                          step="1"
+                          className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                          {...reserveForm.register("endTime")}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3 w-1/3">
+                        <Label htmlFor="slots" className="px-1">
+                          Slots
+                        </Label>
+                        <Input
+                          type="number"
+                          id="slots"
+                          min={1}
+                          step={1}
+                          className="bg-background"
+                          {...reserveForm.register("slots", {
+                            valueAsNumber: true,
+                          })}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="flex justify-between gap-4">
                     <DialogClose asChild>
@@ -330,7 +465,7 @@ const Page: FC<{
 
         {/* Stats Cards */}
         <motion.div className="mb-12" variants={itemVariants}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <motion.div variants={cardVariants}>
               <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
                 <CardContent className="p-6 flex items-center justify-between">
@@ -379,6 +514,63 @@ const Page: FC<{
                         ${listing.price}
                       </p>
                       <p className="text-muted-foreground">per hour</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={cardVariants}>
+              <Card
+                className={`border-border/50 shadow-sm hover:shadow-md transition-shadow ${
+                  calculateAvailableSlots() === 0
+                    ? "border-red-300 dark:border-red-800 bg-red-50/50 dark:bg-red-950/20"
+                    : calculateAvailableSlots() <= 2
+                    ? "border-orange-300 dark:border-orange-800 bg-orange-50/50 dark:bg-orange-950/20"
+                    : "border-green-300 dark:border-green-800 bg-green-50/50 dark:bg-green-950/20"
+                }`}
+              >
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div
+                      className={`p-3 rounded-lg mr-4 ${
+                        calculateAvailableSlots() === 0
+                          ? "bg-red-500/10"
+                          : calculateAvailableSlots() <= 2
+                          ? "bg-orange-500/10"
+                          : "bg-green-500/10"
+                      }`}
+                    >
+                      <Icon
+                        icon="mdi:parking"
+                        className={`h-6 w-6 ${
+                          calculateAvailableSlots() === 0
+                            ? "text-red-600 dark:text-red-400"
+                            : calculateAvailableSlots() <= 2
+                            ? "text-orange-600 dark:text-orange-400"
+                            : "text-green-600 dark:text-green-400"
+                        }`}
+                      />
+                    </div>
+                    <div>
+                      <p
+                        className={`text-lg font-bold ${
+                          calculateAvailableSlots() === 0
+                            ? "text-red-600 dark:text-red-400"
+                            : calculateAvailableSlots() <= 2
+                            ? "text-orange-600 dark:text-orange-400"
+                            : "text-green-600 dark:text-green-400"
+                        }`}
+                      >
+                        {calculateAvailableSlots()} / {listing.noOfVehicle}
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        {calculateAvailableSlots() === 0
+                          ? "Fully Booked"
+                          : calculateAvailableSlots() === 1
+                          ? "Slot Available"
+                          : "Slots Available"}
+                      </p>
                     </div>
                   </div>
                 </CardContent>

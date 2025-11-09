@@ -1,6 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -12,6 +20,8 @@ import {
   Calendar,
   Car,
   CheckCircle,
+  Clock,
+  CreditCard,
   Eye,
   Mail,
   MapPin,
@@ -19,11 +29,12 @@ import {
   StarIcon,
   Trash2,
   User,
+  Wallet,
 } from "lucide-react";
+import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
-import { useForm } from "react-hook-form";
+import React, { FC, useState } from "react";
 import { toast } from "sonner";
 
 const Page: FC<{
@@ -33,12 +44,12 @@ const Page: FC<{
     listingsId: string;
   }>;
 }> = ({ params }) => {
-  const form = useForm({
-    defaultValues: {
-      comment: "",
-    },
-  });
   const rparams = React.use(params);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    "cash" | "qr" | null
+  >(null);
+
   const reservationsQuery = useQuery({
     queryKey: ["reservationQuery"],
     queryFn: async () => {
@@ -46,6 +57,7 @@ const Page: FC<{
         message: string;
         data: {
           date: string;
+          endDate: string;
           listing: {
             id: string;
             photo: string;
@@ -54,7 +66,7 @@ const Page: FC<{
             rating: string;
             street: string;
             city: string;
-            country: string;
+            paymentQr?: string;
             owner: {
               name: string;
               email: string;
@@ -202,6 +214,18 @@ const Page: FC<{
                   </div>
 
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    Reserved Time:{" "}
+                    {moment(reservationsQuery.data?.data.date).format(
+                      "hh:mm A"
+                    )}{" "}
+                    -{" "}
+                    {moment(reservationsQuery.data?.data.endDate).format(
+                      "hh:mm A"
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Car className="h-4 w-4" />
                     Vehicle Type: {reservationsQuery.data?.data.listing.type}
                   </div>
@@ -223,6 +247,183 @@ const Page: FC<{
                       <SquareArrowOutUpRight className="h-4 w-4 ml-2" />
                     </Button>
                   </Link>
+
+                  <Dialog
+                    open={paymentDialogOpen}
+                    onOpenChange={setPaymentDialogOpen}
+                  >
+                    <DialogTrigger asChild>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                          <Wallet className="h-4 w-4 mr-2" />
+                          Proceed Payment
+                        </Button>
+                      </motion.div>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle className="text-center text-xl font-bold">
+                          Choose Payment Method
+                        </DialogTitle>
+                        <DialogDescription className="text-center">
+                          Select how you would like to pay for your reservation
+                        </DialogDescription>
+                      </DialogHeader>
+
+                      {selectedPaymentMethod === null ? (
+                        <div className="space-y-4 py-4">
+                          {/* Cash Option */}
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <Button
+                              variant="outline"
+                              className="w-full h-auto py-6 flex flex-col items-center gap-3 hover:border-primary hover:bg-primary/5"
+                              onClick={() => setSelectedPaymentMethod("cash")}
+                            >
+                              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                <CreditCard className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                              </div>
+                              <div className="text-center">
+                                <p className="font-semibold text-base">
+                                  Pay with Cash
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Pay directly to the owner
+                                </p>
+                              </div>
+                            </Button>
+                          </motion.div>
+
+                          {/* QR Option (only if paymentQr exists) */}
+                          {reservationsQuery.data?.data.listing.paymentQr &&
+                            reservationsQuery.data?.data.listing.paymentQr.trim() !==
+                              "" && (
+                              <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <Button
+                                  variant="outline"
+                                  className="w-full h-auto py-6 flex flex-col items-center gap-3 hover:border-primary hover:bg-primary/5"
+                                  onClick={() => setSelectedPaymentMethod("qr")}
+                                >
+                                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                                    <Icon
+                                      icon="mdi:qrcode-scan"
+                                      className="h-6 w-6 text-purple-600 dark:text-purple-400"
+                                    />
+                                  </div>
+                                  <div className="text-center">
+                                    <p className="font-semibold text-base">
+                                      Pay with QR Code
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      Scan and pay instantly
+                                    </p>
+                                  </div>
+                                </Button>
+                              </motion.div>
+                            )}
+                        </div>
+                      ) : selectedPaymentMethod === "cash" ? (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="py-6"
+                        >
+                          <div className="text-center space-y-4">
+                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto">
+                              <CreditCard className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold mb-2">
+                                Cash Payment
+                              </h3>
+                              <p className="text-muted-foreground mb-4">
+                                You can pay the cash directly to the owner when
+                                you arrive at the parking location.
+                              </p>
+                              <div className="bg-muted/50 rounded-lg p-4 text-sm">
+                                <p className="font-medium mb-2">
+                                  Owner Details:
+                                </p>
+                                <p className="text-muted-foreground">
+                                  <strong>Name:</strong>{" "}
+                                  {
+                                    reservationsQuery.data?.data.listing.owner
+                                      .name
+                                  }
+                                </p>
+                                <p className="text-muted-foreground">
+                                  <strong>Email:</strong>{" "}
+                                  {
+                                    reservationsQuery.data?.data.listing.owner
+                                      .email
+                                  }
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              onClick={() => setSelectedPaymentMethod(null)}
+                              variant="outline"
+                              className="w-full"
+                            >
+                              Back to Payment Options
+                            </Button>
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="py-6"
+                        >
+                          <div className="text-center space-y-4">
+                            <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto">
+                              <Icon
+                                icon="mdi:qrcode"
+                                className="h-8 w-8 text-purple-600 dark:text-purple-400"
+                              />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold mb-2">
+                                Scan QR Code
+                              </h3>
+                              <p className="text-muted-foreground mb-4">
+                                Scan the QR code below to complete your payment
+                              </p>
+                              <div className="bg-white p-6 rounded-lg shadow-md border border-border/50 inline-block">
+                                <img
+                                  src={
+                                    reservationsQuery.data?.data.listing
+                                      .paymentQr
+                                  }
+                                  alt="Payment QR Code"
+                                  className="w-64 h-64 object-contain mx-auto"
+                                />
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-3">
+                                Use any UPI app or digital wallet to scan and
+                                pay
+                              </p>
+                            </div>
+                            <Button
+                              onClick={() => setSelectedPaymentMethod(null)}
+                              variant="outline"
+                              className="w-full"
+                            >
+                              Back to Payment Options
+                            </Button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </DialogContent>
+                  </Dialog>
 
                   <motion.div
                     whileHover={{ scale: 1.02 }}

@@ -58,7 +58,13 @@ const Page = () => {
     },
     onSuccess: (data) => {
       toast.success(data.message);
-      router.push(`/p/${data.data.user.id}/dashboard`);
+
+      // Check if user is admin and redirect accordingly
+      if (data.data.user.type === "admin") {
+        router.push("/admin");
+      } else {
+        router.push(`/p/${data.data.user.id}/dashboard`);
+      }
     },
     onError: (err: AxiosError<{ message: string }>) => {
       toast.error(err.response?.data.message || "Login failed");

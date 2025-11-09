@@ -14,8 +14,6 @@ const Display: FC<{
     numberOfVehicle: string;
     city: string;
     street: string;
-    country: string;
-    zipcode: string;
     photo: string;
   }[];
 }> = ({ listingQueryData, userId }) => {
@@ -67,7 +65,7 @@ const Display: FC<{
       animate="visible"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {listingQueryData.map((item, index) => (
+        {listingQueryData.map((item) => (
           <motion.div
             key={item.id}
             variants={itemVariants}
@@ -81,7 +79,6 @@ const Display: FC<{
             <ListingCard
               photo={item.photo}
               city={item.city}
-              country={item.country}
               price={item.price}
               type="listing"
             />

@@ -10,7 +10,6 @@ import { AxiosResponse } from "axios";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, Car, Plus } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 
 const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
@@ -29,6 +28,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
             id: string;
           };
           date: string;
+          endDate: string;
           id: string;
         }[];
       }> = await axiosInstance.get(
@@ -41,7 +41,6 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       return response.data;
     },
   });
-  const router = useRouter();
 
   // Animation variants
   const containerVariants = {
@@ -207,7 +206,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                     variants={containerVariants}
                   >
-                    {userReservations.data?.data.map((item, index) => (
+                    {userReservations.data?.data.map((item) => (
                       <motion.div
                         key={item.id}
                         variants={cardVariants}
@@ -220,10 +219,10 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                         >
                           <ListingCard
                             city={item.listing.city}
-                            country={item.listing.country}
                             photo={item.listing.photo}
                             price={item.listing.price}
                             date={item.date}
+                            endDate={item.endDate}
                             type="reservation"
                           />
                         </Link>

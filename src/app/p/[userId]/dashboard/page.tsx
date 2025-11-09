@@ -42,8 +42,8 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
         setUserLat(userLat);
         setUserLng(userLng);
       },
-      (error) => {
-        console.error("Error getting location:", error.message);
+      () => {
+        // console.error("Error getting location:", error.message);
       }
     );
   }, []);

@@ -31,7 +31,6 @@ import {
   CheckCircle,
   Clock,
   FileText,
-  Hash,
   Home,
   IndianRupee,
   MapPin,
@@ -55,15 +54,37 @@ const createSchema = z
       .string()
       .min(1, "No. of vehicles cannot be empty"),
     street: z.string().min(2, "Street cannot be empty"),
-    zipcode: z.string().min(1, "Zipcode cannot be empty"),
     price: z.string().min(1, "Price cannot be empty"),
     city: z.string().min(1, "City cannot be empty"),
-    country: z.string().min(1, "Country cannot be empty"),
-    photo: z.object({}),
+    photo: z.any().optional(),
+    paymentQr: z.any().optional(),
     location: z.any().optional(),
   })
   .superRefine((v, c) => {
-    console.log(v);
+    if (
+      !v.photo ||
+      !(v.photo instanceof Object) ||
+      Object.keys(v.photo).length === 0 ||
+      v.photo.length === 0
+    ) {
+      c.addIssue({
+        path: ["photo"],
+        message: "Please upload a photo",
+        code: "custom",
+      });
+    }
+    if (
+      !v.paymentQr ||
+      !(v.paymentQr instanceof Object) ||
+      Object.keys(v.paymentQr).length === 0 ||
+      v.paymentQr.length === 0
+    ) {
+      c.addIssue({
+        path: ["paymentQr"],
+        message: "Please upload payment QR code",
+        code: "custom",
+      });
+    }
     if (Array.isArray(v.location)) {
       if (v.location.length !== 2) {
         return c.addIssue({
@@ -86,8 +107,8 @@ const Page: FC<{
 }> = ({ params }) => {
   const router = useRouter();
   const rparams = React.use(params);
-  const [currentStep, setCurrentStep] = useState(1);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [qrPreview, setQrPreview] = useState<string | null>(null);
 
   const form = useForm({
     defaultValues: {
@@ -95,11 +116,10 @@ const Page: FC<{
       type: "",
       noOfVehicle: "",
       street: "",
-      zipcode: "",
       price: "",
       city: "",
-      country: "",
       photo: "",
+      paymentQr: "",
       location: [0, 0],
     },
     resolver: zodResolver(createSchema),
@@ -120,9 +140,8 @@ const Page: FC<{
       formData.append("price", value.price);
       formData.append("noOfVehicle", value.noOfVehicle);
       formData.append("street", value.street);
-      formData.append("country", value.country);
-      formData.append("zipcode", value.zipcode);
       formData.append("photo", value.photo[0]);
+      formData.append("paymentQr", value.paymentQr[0]);
       formData.append("ownerId", rparams.userId);
       formData.append("lat", String(value.location[0]));
       formData.append("long", String(value.location[1]));
@@ -150,6 +169,17 @@ const Page: FC<{
     }
   };
 
+  const handleQrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setQrPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -170,12 +200,6 @@ const Page: FC<{
       transition: { duration: 0.5 },
     },
   };
-
-  const steps = [
-    { id: 1, title: "Basic Info", icon: FileText },
-    { id: 2, title: "Location", icon: MapPin },
-    { id: 3, title: "Photos", icon: Camera },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -215,8 +239,8 @@ const Page: FC<{
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Turn your unused parking space into income. It's easy, secure, and
-              profitable.
+              Turn your unused parking space into income. It&apos;s easy,
+              secure, and profitable.
             </motion.p>
           </div>
 
@@ -234,7 +258,7 @@ const Page: FC<{
                 Earn Extra Income
               </h3>
               <p className="text-sm text-muted-foreground">
-                Make money from your parking space when you're not using it
+                Make money from your parking space when you&apos;re not using it
               </p>
             </motion.div>
 
@@ -479,50 +503,6 @@ const Page: FC<{
                           )}
                         </div>
                       </div>
-
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {/* Country */}
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium text-foreground flex items-center gap-1">
-                            <span className="text-destructive">*</span>
-                            Country
-                          </label>
-                          <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              className="border-border/50 focus:border-primary pl-10"
-                              placeholder="Nepal"
-                              {...form.register("country")}
-                            />
-                          </div>
-                          {form.formState.errors.country && (
-                            <p className="text-sm text-destructive">
-                              {form.formState.errors.country.message}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Zip Code */}
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium text-foreground flex items-center gap-1">
-                            <span className="text-destructive">*</span>
-                            Zip Code
-                          </label>
-                          <div className="relative">
-                            <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              className="border-border/50 focus:border-primary pl-10"
-                              placeholder="400001"
-                              {...form.register("zipcode")}
-                            />
-                          </div>
-                          {form.formState.errors.zipcode && (
-                            <p className="text-sm text-destructive">
-                              {form.formState.errors.zipcode.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
                     </div>
                   </motion.div>
 
@@ -580,6 +560,76 @@ const Page: FC<{
                             src={imagePreview}
                             alt="Parking space preview"
                             className="w-full max-w-md h-48 object-cover rounded-lg border border-border/50"
+                          />
+                        </motion.div>
+                      )}
+                    </div>
+                  </motion.div>
+
+                  {/* Payment QR Section */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <Icon
+                          icon="mdi:qrcode"
+                          className="h-4 w-4 text-primary"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        Payment QR Code
+                      </h3>
+                    </div>
+
+                    <div className="space-y-4 pl-10">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground flex items-center gap-1">
+                          <span className="text-destructive">*</span>
+                          Upload Payment QR Code
+                        </label>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          Upload your payment QR code (e.g., UPI, bank transfer,
+                          digital wallet) for customers to pay you directly
+                        </p>
+                        <div className="border-2 border-dashed border-border/50 rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                          <Icon
+                            icon="mdi:qrcode-scan"
+                            className="h-8 w-8 text-muted-foreground mx-auto mb-2"
+                          />
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Choose your payment QR code image
+                          </p>
+                          <Input
+                            {...form.register("paymentQr")}
+                            type="file"
+                            accept="image/*"
+                            className="border-0 p-0 h-auto file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary file:text-primary-foreground file:hover:bg-primary/90"
+                            onChange={handleQrChange}
+                          />
+                        </div>
+                        {form.formState.errors.paymentQr && (
+                          <p className="text-sm text-destructive">
+                            {form.formState.errors.paymentQr.message}
+                          </p>
+                        )}
+                      </div>
+
+                      {qrPreview && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="mt-4"
+                        >
+                          <p className="text-sm font-medium text-foreground mb-2">
+                            QR Code Preview:
+                          </p>
+                          <img
+                            src={qrPreview}
+                            alt="Payment QR code preview"
+                            className="w-full max-w-xs h-64 object-contain rounded-lg border border-border/50 bg-white p-4"
                           />
                         </motion.div>
                       )}

@@ -1,21 +1,18 @@
 import { capitalize } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Calendar, IndianRupee, MapPin } from "lucide-react";
+import { Calendar, Clock, IndianRupee, MapPin } from "lucide-react";
 import moment from "moment";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Card, CardContent, CardDescription } from "./ui/card";
 
 const ListingCard: FC<{
   photo: string;
   city: string;
-  country: string;
   price: string;
   type?: "listing" | "reservation";
   date?: string;
-}> = ({ photo, city, country, price, type, date }) => {
-  const router = useRouter();
-
+  endDate?: string;
+}> = ({ photo, city, price, type, date, endDate }) => {
   return (
     <motion.div
       whileHover={{
@@ -32,7 +29,7 @@ const ListingCard: FC<{
             <motion.img
               src={photo}
               className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-              alt={`Parking in ${city}, ${country}`}
+              alt={`Parking in ${city}`}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             />
@@ -60,7 +57,7 @@ const ListingCard: FC<{
               transition={{ type: "spring", stiffness: 400 }}
             >
               <MapPin className="h-4 w-4 mr-2 text-muted-foreground group-hover:text-primary transition-colors" />
-              {capitalize(city)}, {capitalize(country)}
+              {capitalize(city)}
             </motion.div>
 
             {type === "listing" && (
@@ -71,9 +68,16 @@ const ListingCard: FC<{
             )}
 
             {type === "reservation" && (
-              <CardDescription className="text-muted-foreground flex items-center">
-                <Calendar className="h-4 w-4 mr-1" />
-                {moment(date).format("DD MMM YYYY")}
+              <CardDescription className="text-muted-foreground  flex flex-col">
+                <div className="font-bold flex gap-1 items-center">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {moment(date).format("DD MMM YYYY")}
+                </div>
+                <div className="flex gap-1 items-center mt-2">
+                  <Clock className="h-4 w-4 mr-1" />
+                  {moment(date).format("hh:mm A")} -{" "}
+                  {moment(endDate).format("hh:mm A")}
+                </div>
               </CardDescription>
             )}
           </div>
