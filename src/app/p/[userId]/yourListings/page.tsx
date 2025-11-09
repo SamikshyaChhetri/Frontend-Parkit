@@ -22,7 +22,6 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
         message: string;
         data: {
           city: string;
-          country: string;
           photo: string;
           price: string;
           id: string;
@@ -224,7 +223,6 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                         >
                           <ListingCard
                             city={item.city}
-                            country={item.country}
                             photo={item.photo}
                             price={item.price}
                             type="listing"
