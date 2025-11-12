@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BACKEND_URL } from "@/lib/env";
@@ -144,15 +143,6 @@ const Page = () => {
                 </motion.div>
 
                 <div className="flex justify-between items-center">
-                  <div className="flex gap-2 items-center">
-                    <Checkbox id="remember" />
-                    <Label
-                      htmlFor="remember"
-                      className="text-slate-600 dark:text-slate-300"
-                    >
-                      Remember me
-                    </Label>
-                  </div>
                   <Link
                     href="/resetPassword"
                     className="text-sm text-purple-600 dark:text-purple-400 hover:underline"

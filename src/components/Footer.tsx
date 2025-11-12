@@ -102,7 +102,7 @@ const Footer = () => {
               variants={staggerContainer}
             >
               {[
-                { label: "About", href: "/about" },
+                { label: "About", href: "/" },
                 { label: "FAQs", href: "/faqs" },
                 { label: "Become a host", href: "/login" },
                 { label: "Terms and Conditions", href: "/termsCondition" },

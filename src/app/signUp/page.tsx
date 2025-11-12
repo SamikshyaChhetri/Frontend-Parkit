@@ -1,5 +1,4 @@
 "use client";
-import { CountryDropdown } from "@/components/country";
 import { ModeToggle } from "@/components/theme/ModeToggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,16 +17,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { motion } from "framer-motion";
-import {
-  Earth,
-  Lock,
-  Mail,
-  MapPin,
-  MapPinHouse,
-  PersonStanding,
-  Phone,
-  User2,
-} from "lucide-react";
+import { Lock, Mail, MapPin, PersonStanding, Phone, User2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,8 +31,6 @@ const createSchema = z.object({
   password: z.string().min(6).max(20),
   phone: z.string().min(10).max(15),
   address: z.string().min(1),
-  country: z.string().min(1),
-  zipcode: z.string().min(1),
   gender: z.string().min(1),
 });
 
@@ -66,8 +54,6 @@ const Page = () => {
       password: "",
       phone: "",
       address: "",
-      country: "",
-      zipcode: "",
       gender: "",
     },
     resolver: zodResolver(createSchema),
@@ -278,54 +264,6 @@ const Page = () => {
                   </RadioGroup>
                   <label className="text-red-500 text-sm">
                     {form.formState.errors.gender?.message}
-                  </label>
-                </motion.div>
-
-                {/* Zipcode */}
-                <motion.div
-                  variants={fadeInUp}
-                  initial="hidden"
-                  animate="visible"
-                  custom={7}
-                  className="flex flex-col gap-1"
-                >
-                  <Label
-                    htmlFor="zipcode"
-                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
-                  >
-                    Zipcode <MapPinHouse size={20} />
-                  </Label>
-                  <Input
-                    className="bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
-                    placeholder="Enter zipcode"
-                    {...form.register("zipcode")}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.zipcode?.message}
-                  </label>
-                </motion.div>
-
-                {/* Country */}
-                <motion.div
-                  variants={fadeInUp}
-                  initial="hidden"
-                  animate="visible"
-                  custom={8}
-                  className="flex flex-col gap-1"
-                >
-                  <Label
-                    htmlFor="country"
-                    className="flex gap-1 items-center text-zinc-700 dark:text-zinc-300"
-                  >
-                    Country <Earth size={20} />
-                  </Label>
-                  <CountryDropdown
-                    placeholder="Select country"
-                    defaultValue="NPL"
-                    onChange={(value) => form.setValue("country", value.name)}
-                  />
-                  <label className="text-red-500 text-sm">
-                    {form.formState.errors.country?.message}
                   </label>
                 </motion.div>
 

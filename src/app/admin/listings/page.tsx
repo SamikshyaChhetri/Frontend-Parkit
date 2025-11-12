@@ -30,8 +30,6 @@ type Listing = {
   id: string;
   city: string;
   street: string;
-  country?: string;
-  zipcode?: string;
   type: string;
   description: string;
   rating: number;
@@ -117,7 +115,6 @@ export default function AdminListingsPage() {
     (listing) =>
       listing.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.street.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      listing.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.owner.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -211,19 +208,12 @@ export default function AdminListingsPage() {
                               {listing.street}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                              {listing.city}, {listing.country || "N/A"}
+                              {listing.city}
                             </p>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p className="font-medium">{listing.city}</p>
-                          <p className="text-xs text-gray-500">
-                            {listing.zipcode || "N/A"}
-                          </p>
-                        </div>
-                      </TableCell>
+                      <TableCell></TableCell>
                       <TableCell>
                         <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
                           {listing.type}

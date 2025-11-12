@@ -162,11 +162,7 @@ const Navbar = () => {
               variants={scaleIn}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-            >
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                Get Started
-              </Button>
-            </motion.div>
+            ></motion.div>
           </motion.div>
 
           <motion.div

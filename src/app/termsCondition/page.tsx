@@ -238,9 +238,8 @@ const page = () => {
               </p>
               <div className="bg-muted/20 p-4 rounded-lg border-l-4 border-primary/50">
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">Important:</strong> You
-                  must be 18+ years old to use our services. We reserve the
-                  right to update these terms as needed.
+                  <strong className="text-foreground">Important:</strong> We
+                  reserve the right to update these terms as needed.
                 </p>
               </div>
             </div>
@@ -266,7 +265,7 @@ const page = () => {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                      <span>Cancel 24+ hours ahead for full refund</span>
+                      <span>Search and find location for safe parking</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>

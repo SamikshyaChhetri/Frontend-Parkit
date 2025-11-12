@@ -195,9 +195,13 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
         </motion.div>
 
         {/* Recommendation Section */}
-        <motion.div variants={itemVariants} className="space-y-8 pb-10">
+        <motion.div
+          variants={itemVariants}
+          className="space-y-8 pb-10"
+          key={"abc"}
+        >
           <div className="text-xl text-muted-foreground font-bold">
-            Nearest Lising
+            Nearest Listing
           </div>
           {recommendationQuery.isLoading && (
             <motion.div
@@ -211,12 +215,11 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               </div>
             </motion.div>
           )}
-          {recommendationQuery.isSuccess && recommendationQuery.data && (
-            <Display
-              listingQueryData={recommendationQuery.data.data}
-              userId={rparams.userId}
-            />
-          )}
+          {recommendationQuery.isSuccess &&
+            recommendationQuery.data &&
+            recommendationQuery.data.data.map((i: any) => {
+              return <Display listingQueryData={i} userId={rparams.userId} />;
+            })}
         </motion.div>
 
         {/* Listings Section */}

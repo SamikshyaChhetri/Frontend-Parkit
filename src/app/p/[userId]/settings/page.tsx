@@ -1,5 +1,4 @@
 "use client";
-import { CountryDropdown } from "@/components/country";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -59,14 +58,6 @@ const schema = z.object({
     .min(1, "Phone number is required")
     .max(50, "Phone number is too long"),
   gender: z.string().min(1, "Gender is required").max(10, "Gender is too long"),
-  zipcode: z
-    .string()
-    .min(1, "Zipcode is required")
-    .max(20, "Zipcode is too long"),
-  country: z
-    .string()
-    .min(1, "Country is required")
-    .max(30, "Country name is too long"),
 });
 const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   const [files, setFiles] = React.useState<File[]>([]);
@@ -86,8 +77,6 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       address: "",
       phone: "",
       gender: "",
-      zipcode: "",
-      country: "",
     },
   });
   const rparams = React.use(params);
@@ -143,9 +132,7 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
     form.setValue("email", userQuery.data.data.email);
     form.setValue("address", userQuery.data.data.address);
     form.setValue("phone", userQuery.data.data.phone);
-    form.setValue("country", userQuery.data.data.country);
     form.setValue("gender", userQuery.data.data.gender);
-    form.setValue("zipcode", userQuery.data.data.zipcode);
   }, [userQuery.data]);
   const [isDisabled, setDisable] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -496,45 +483,6 @@ const page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                     {form.formState.errors.gender && (
                       <p className="text-sm text-destructive">
                         {form.formState.errors.gender.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="zipcode" className="text-sm font-medium">
-                      Zip Code
-                    </Label>
-                    <Input
-                      type="text"
-                      id="zipcode"
-                      placeholder="Enter your zip code"
-                      {...form.register("zipcode")}
-                      disabled={isDisabled}
-                      className="transition-all duration-200"
-                    />
-                    {form.formState.errors.zipcode && (
-                      <p className="text-sm text-destructive">
-                        {form.formState.errors.zipcode.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="md:col-span-2 space-y-2">
-                    <Label htmlFor="country" className="text-sm font-medium">
-                      Country
-                    </Label>
-                    <CountryDropdown
-                      placeholder="Select country"
-                      defaultValue="NPL"
-                      disabled={isDisabled}
-                      onChange={(value) => {
-                        form.setValue("country", value.name);
-                      }}
-                      value={form.watch("country")}
-                    />
-                    {form.formState.errors.country && (
-                      <p className="text-sm text-destructive">
-                        {form.formState.errors.country.message}
                       </p>
                     )}
                   </div>
