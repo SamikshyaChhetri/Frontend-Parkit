@@ -23,6 +23,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
           listing: {
             city: string;
             country: string;
+            street: string;
             photo: string;
             price: string;
             id: string;
@@ -40,6 +41,8 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
       // console.log(response.data);
       return response.data;
     },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   // Animation variants
@@ -222,6 +225,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
                             photo={item.listing.photo}
                             price={item.listing.price}
                             date={item.date}
+                            street={item.listing.street}
                             endDate={item.endDate}
                             type="reservation"
                           />

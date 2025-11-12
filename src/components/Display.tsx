@@ -79,6 +79,7 @@ const Display: FC<{
             <ListingCard
               photo={item.photo}
               city={item.city}
+              street={item.street}
               price={item.price}
               type="listing"
             />

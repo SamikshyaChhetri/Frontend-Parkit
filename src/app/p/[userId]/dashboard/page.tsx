@@ -25,7 +25,7 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
   });
 
   const listingQuery = useQuery({
-    queryKey: [`allListings${form.watch("search")}`],
+    queryKey: [`allListings`, form.watch("search")],
     queryFn: async () => {
       const response = await axiosInstance.get(
         "/listing?search=" + form.watch("search")
@@ -194,33 +194,34 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
           </Card>
         </motion.div>
 
-        {/* Recommendation Section */}
-        <motion.div
-          variants={itemVariants}
-          className="space-y-8 pb-10"
-          key={"abc"}
-        >
-          <div className="text-xl text-muted-foreground font-bold">
-            Nearest Listing
-          </div>
-          {recommendationQuery.isLoading && (
-            <motion.div
-              className="flex flex-col space-y-3"
-              variants={itemVariants}
-            >
-              <Skeleton className="h-48 w-full rounded-xl bg-muted/50" />
-              <div className="space-y-2 p-2">
-                <Skeleton className="h-4 w-full bg-muted/30" />
-                <Skeleton className="h-4 w-3/4 bg-muted/20" />
-              </div>
-            </motion.div>
-          )}
-          {recommendationQuery.isSuccess &&
-            recommendationQuery.data &&
-            recommendationQuery.data.data.map((i: any) => {
-              return <Display listingQueryData={i} userId={rparams.userId} />;
-            })}
-        </motion.div>
+        {!form.watch("search") && (
+          <motion.div
+            variants={itemVariants}
+            className="space-y-8 pb-10"
+            key={"abc"}
+          >
+            <div className="text-xl text-muted-foreground font-bold">
+              Nearest Listing
+            </div>
+            {recommendationQuery.isLoading && (
+              <motion.div
+                className="flex flex-col space-y-3"
+                variants={itemVariants}
+              >
+                <Skeleton className="h-48 w-full rounded-xl bg-muted/50" />
+                <div className="space-y-2 p-2">
+                  <Skeleton className="h-4 w-full bg-muted/30" />
+                  <Skeleton className="h-4 w-3/4 bg-muted/20" />
+                </div>
+              </motion.div>
+            )}
+            {recommendationQuery.isSuccess &&
+              recommendationQuery.data &&
+              recommendationQuery.data.data.map((i: any) => {
+                return <Display listingQueryData={i} userId={rparams.userId} />;
+              })}
+          </motion.div>
+        )}
 
         {/* Listings Section */}
         <motion.div variants={itemVariants} className="space-y-8">

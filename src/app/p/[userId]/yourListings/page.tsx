@@ -89,10 +89,10 @@ const Page: FC<{ params: Promise<{ userId: string }> }> = ({ params }) => {
               </Button>
             </Link>
 
-            <Link href={`/p/${rparams.userId}/dashboard`}>
+            <Link href={`/p/${rparams.userId}/listings`}>
               <Button className="bg-primary hover:bg-primary/90">
                 <Plus className="h-4 w-4 mr-2" />
-                Find More Parking
+                Add Listings
               </Button>
             </Link>
           </div>

@@ -37,6 +37,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -47,6 +48,7 @@ const Page: FC<{
   }>;
 }> = ({ params }) => {
   const rparams = React.use(params);
+  const router = useRouter();
   const reserveForm = useForm({
     defaultValues: {
       date: new Date(),
@@ -71,7 +73,7 @@ const Page: FC<{
     },
   });
 
-  const { listingsId } = rparams;
+  const { listingsId, userId } = rparams;
 
   // Query to fetch listing details
   const listingsQuery = useQuery({
@@ -177,6 +179,7 @@ const Page: FC<{
       reserveForm.reset();
       setIsOpen(false);
       setDate(undefined);
+      router.push(`/p/${userId}/reservations`);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message);

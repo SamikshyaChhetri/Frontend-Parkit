@@ -23,19 +23,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { axiosInstance } from "@/providers/AxiosInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Camera,
   CheckCircle,
-  Clock,
   FileText,
   Home,
-  IndianRupee,
   MapPin,
   Plus,
-  Shield,
   Upload,
   Users,
 } from "lucide-react";
@@ -129,6 +126,8 @@ const Page: FC<{
     submitDataMutation.mutate();
   };
 
+  const qc = useQueryClient();
+
   const submitDataMutation = useMutation({
     mutationFn: async () => {
       const value = form.getValues();
@@ -151,6 +150,9 @@ const Page: FC<{
     },
     onSuccess: (data: { message: string }) => {
       toast.success(data.message);
+      qc.invalidateQueries({
+        queryKey: ["allListings"],
+      });
       router.push(`dashboard`);
     },
     onError: (data: { error: string }) => {
@@ -209,93 +211,6 @@ const Page: FC<{
         initial="hidden"
         animate="visible"
       >
-        {/* Header */}
-        <motion.div className="mb-8" variants={cardVariants}>
-          <div className="flex items-center justify-between mb-6">
-            <Link href={`/p/${rparams.userId}/dashboard`}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="hover:bg-primary/10 hover:border-primary/50 transition-colors"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
-
-          <div className="text-center mb-8">
-            <motion.h1
-              className="text-4xl font-bold text-foreground mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Share Your Parking Space
-            </motion.h1>
-            <motion.p
-              className="text-muted-foreground text-lg max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              Turn your unused parking space into income. It&apos;s easy,
-              secure, and profitable.
-            </motion.p>
-          </div>
-
-          {/* Benefits Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <motion.div
-              className="text-center p-6 rounded-lg bg-card/50 border border-border/50"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <IndianRupee className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">
-                Earn Extra Income
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Make money from your parking space when you&apos;re not using it
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="text-center p-6 rounded-lg bg-card/50 border border-border/50"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Shield className="h-6 w-6 text-blue-600" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">
-                Safe & Secure
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                All bookings are verified and insured for your peace of mind
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="text-center p-6 rounded-lg bg-card/50 border border-border/50"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Clock className="h-6 w-6 text-purple-600" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">
-                24/7 Support
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Round-the-clock customer support for hosts and renters
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
-
         <div className="max-w-4xl mx-auto">
           {/* Form */}
           <motion.div variants={cardVariants}>

@@ -8,11 +8,12 @@ import { Card, CardContent, CardDescription } from "./ui/card";
 const ListingCard: FC<{
   photo: string;
   city: string;
+  street?: string;
   price: string;
   type?: "listing" | "reservation";
   date?: string;
   endDate?: string;
-}> = ({ photo, city, price, type, date, endDate }) => {
+}> = ({ photo, city, price, type, date, endDate, street }) => {
   return (
     <motion.div
       whileHover={{
@@ -57,7 +58,7 @@ const ListingCard: FC<{
               transition={{ type: "spring", stiffness: 400 }}
             >
               <MapPin className="h-4 w-4 mr-2 text-muted-foreground group-hover:text-primary transition-colors" />
-              {capitalize(city)}
+              {capitalize(street || "")}, {capitalize(city)}
             </motion.div>
 
             {type === "listing" && (
