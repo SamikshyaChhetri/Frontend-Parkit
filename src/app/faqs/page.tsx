@@ -213,13 +213,9 @@ const faqItems = [
   },
   {
     question: "What payment methods are accepted?",
-    answer: "Parkify accepts secure online payments through multiple methods.",
+    answer: "Parkify accepts secure QR and Cash payments method.",
   },
-  {
-    question: "How are parking fees structured?",
-    answer:
-      "Prices are set by hosts and may vary by location, time, or demand. Rates can be hourly, daily, or custom.",
-  },
+
   {
     question: "How can I list my parking spot?",
     answer:
@@ -463,29 +459,6 @@ export default function FAQ() {
               </div>
             </motion.div>
           )}
-        </motion.div>
-
-        {/* Footer CTA */}
-        <motion.div
-          className="text-center mt-16 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          <h3 className="text-xl font-semibold text-foreground mb-4">
-            Still have questions?
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Can't find what you're looking for? Our support team is here to
-            help.
-          </p>
-          <motion.button
-            className="parking-button text-sm px-6 py-3 rounded-xl"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Contact Support
-          </motion.button>
         </motion.div>
       </div>
     </div>
